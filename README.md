@@ -17,3 +17,7 @@ In Jukeboks, you can preview images and movies while selecting files.
 ## Application's screen
 
 ![screen](https://cloud.githubusercontent.com/assets/1519837/22404096/2456b34a-e66d-11e6-81e0-02ad54954e26.png)
+
+## License
+
+Jukeboks is available under the MIT license.
