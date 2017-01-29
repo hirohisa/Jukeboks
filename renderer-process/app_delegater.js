@@ -51,6 +51,16 @@ function onKeyboardEvent(event) {
   f[event.code]()
 }
 
+function onMouseEvent(event) {
+  var target = event.target
+  var f = {}
+  f["path-move-parent-directory"] = function() {
+    navigator.upDirectory()
+  }
+
+  f[target.id]()
+}
+
 class AppDelegater {
 
   render(data) {
@@ -58,10 +68,16 @@ class AppDelegater {
   }
 
   on(event) {
-    var f = {}
-    f[KeyboardEvent] = onKeyboardEvent(event)
-
-    f[event]
+    switch (event.type) {
+      case "keydown":
+      onKeyboardEvent(event)
+      break
+      case "click":
+      onMouseEvent(event)
+      break
+      default:
+      break
+    }
   }
 }
 
