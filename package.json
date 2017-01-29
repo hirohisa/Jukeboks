@@ -1,7 +1,7 @@
 {
   "name": "Jukeboks",
-  "version": "1.0.0",
-  "description": "Jukeboks is a fast viewer",
+  "version": "1.0.1",
+  "description": "Jukeboks is a fast viewer / player app",
   "main": "main.js",
   "scripts": {
     "start": "NODE_ENV=development electron .",
