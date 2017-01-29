@@ -17,7 +17,7 @@ packager({
     overwrite: true,
     asar: true,
     prune: true,
-    ignore: "node_modules/(electron-packager|electron-prebuilt|\.bin)|release\.js|app\.icns"
+    ignore: "node_modules/(electron-packager|electron-prebuilt|\.bin)|release\.js|app\.icns|static"
 }, function done (err, appPath) {
     if(err) {
         throw new Error(err);
