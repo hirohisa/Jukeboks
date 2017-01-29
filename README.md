@@ -1,4 +1,4 @@
-![Jukeboks](https://cloud.githubusercontent.com/assets/1519837/22403673/12bf779e-e662-11e6-8cbf-7d3fdaecc5a0.png)
+![Jukeboks](https://cloud.githubusercontent.com/assets/1519837/22404160/c89e41a6-e66e-11e6-87e4-1b78e201bce3.png)
 
 
 Jukeboks is a fast viewer / player app, built on Electron.
