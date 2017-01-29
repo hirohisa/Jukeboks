@@ -12,7 +12,6 @@ pathInput.addEventListener('input', function() {
 
 ipc.on('searchFiles', (event, data) => {
   app.render(data)
-  // todo: app.navigator.render(data)
 })
 
 document.addEventListener("keydown" , (event) => {
