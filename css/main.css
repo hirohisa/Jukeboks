@@ -1,0 +1,51 @@
+input.form-control {
+  outline: 0;
+  width: 95%;
+  margin: 5px;
+}
+input.form-control:focus{
+  box-shadow: none;
+}
+
+#directory-current-page {
+  color: orange;
+}
+
+.pane {
+  background-color: #333;
+}
+.pane img {
+  width: auto;
+  height: auto;
+  max-width: 800px;
+  max-height: 800px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+.pane video {
+  max-width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+
+/* https://github.com/connors/photon/pull/129 */
+.sidebar {
+  overflow: scroll;
+}
+
+img.visible {
+  display:inline
+}
+
+img.hidden {
+  display:none
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Jukeboks</title>
+
+    <link rel="stylesheet" href="module/photon-0.1.2/css/photon.min.css">
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+  <body>
+    <div class="window">
+      <div class="window-content">
+        <!-- .navigation -->
+        <div class="pane-sm sidebar">
+          <nav class="nav-group">
+            <form>
+              <h5 class="nav-group-title">Directory</h5>
+              <div class="form-group">
+                <input type="text" id="path-input", class="form-control">
+              </div>
+            </form>
+            <h5 class="nav-group-title">Files</h5>
+            <nav id="directory-link"></nav>
+          </nav>
+        </div>
+
+        <!-- .main-content -->
+        <div class="pane">
+          <main id="main-content"></main>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+  <script type="text/javascript" src="./renderer-process/renderer_main.js"></script>
+</html>
