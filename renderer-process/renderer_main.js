@@ -21,6 +21,7 @@ document.addEventListener("keydown" , (event) => {
 
 // document onload
 function load() {
-  functions.jump(__dirname)
+  var home = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
+  functions.jump(home)
 }
 window.onload = load
