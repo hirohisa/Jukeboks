@@ -26,7 +26,7 @@ function createLink(filePath, referer) {
   var id = referer === file ? 'directory-current-page' : ''
   var innerHTML = '<span class="icon ' + ensureIconName(filePath) + '"></span>' + file + '</span>'
   var link = createElement('span', id, 'nav-group-item', innerHTML)
-  link.setAttribute('href', path.normalize(filePath)) // triming '//'
+  link.setAttribute('href', path.normalize(filePath))
   return link
 }
 
@@ -102,8 +102,8 @@ class FileNavigator {
   }
 
   upDirectory() {
-    const path = require('path')
-    functions.jump(pathInput.value + '/..', path.basename(path.normalize(pathInput.value)))
+    var href = directoryContent.getAttribute("href")
+    functions.jump(href + '/..', directoryContentInner.innerHTML)
   }
 
   downDirectory() {

@@ -1,10 +1,5 @@
-input.form-control {
-  outline: 0;
-  width: 95%;
-  margin: 5px;
-}
-input.form-control:focus{
-  box-shadow: none;
+nav.nav-group {
+  margin-top: 10px;
 }
 
 #directory-current-page {
