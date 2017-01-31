@@ -1,10 +1,5 @@
-input.form-control {
-  outline: 0;
-  width: 95%;
-  margin: 5px;
-}
-input.form-control:focus{
-  box-shadow: none;
+nav.nav-group {
+  margin-top: 10px;
 }
 
 #directory-current-page {
@@ -17,8 +12,8 @@ input.form-control:focus{
 .pane img {
   width: auto;
   height: auto;
-  max-width: 800px;
-  max-height: 800px;
+  max-width: 100%;
+  max-height: 100%;
   position: absolute;
   top: 0;
   right: 0;

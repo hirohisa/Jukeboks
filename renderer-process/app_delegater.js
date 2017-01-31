@@ -54,7 +54,7 @@ function onKeyboardEvent(event) {
 function onMouseEvent(event) {
   var target = event.target
   var f = {}
-  f["path-move-parent-directory"] = function() {
+  f["move-parent-directory"] = function() {
     navigator.upDirectory()
   }
 
