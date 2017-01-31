@@ -17,8 +17,8 @@ input.form-control:focus{
 .pane img {
   width: auto;
   height: auto;
-  max-width: 800px;
-  max-height: 800px;
+  max-width: 100%;
+  max-height: 100%;
   position: absolute;
   top: 0;
   right: 0;
