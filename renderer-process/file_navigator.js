@@ -1,6 +1,7 @@
 const _ = require('underscore')
 
 const directoryLink = document.getElementById('directory-link')
+const sideBar = document.getElementById('sidebar')
 
 // functions
 
@@ -62,6 +63,17 @@ function clickFileLink(filePath) {
   }
 }
 
+function scrollTo(element) {
+  var top = element.getBoundingClientRect().top
+  sideBar.scrollTop = top
+}
+
+function scrollToRelative(from, to) {
+  var fromTop = from.getBoundingClientRect().top
+  var toTop = to.getBoundingClientRect().top
+  sideBar.scrollTop += toTop - fromTop
+}
+
 /////////////
 
 class FileNavigator {
@@ -77,6 +89,7 @@ class FileNavigator {
     var previous = current.previousSibling
     if (!previous) return
     this.select(previous)
+    scrollToRelative(current, previous)
   }
 
   nextSibling() {
@@ -85,6 +98,7 @@ class FileNavigator {
     var next = current.nextSibling
     if (!next) return
     this.select(next)
+    scrollToRelative(current, next)
   }
 
   upDirectory() {
@@ -101,7 +115,6 @@ class FileNavigator {
     var current = findCurrent()
     current.id = ''
     element.id = 'directory-current-page'
-
     this.transport.on({type: 'selectFile', data: element})
   }
 
@@ -133,10 +146,12 @@ class FileNavigator {
       directoryLink.appendChild(link)
     }
 
-    // render media
     var current = findCurrent()
     if (current) {
+      // render media
       this.select(current)
+      // scroll
+      scrollTo(current)
     }
   }
 }
