@@ -1,3 +1,5 @@
+'use strict'
+
 function convertFilePaths(directoryPath, files) {
   const path = require('path')
   var filePaths = []
@@ -14,8 +16,8 @@ function convertFilePaths(directoryPath, files) {
 
 function deleteRelationlessData(directoryPath) {
   const path = require('path')
-  removeKeys = []
-  for(key in storage) {
+  var removeKeys = []
+  for(var key in storage) {
     var relative = path.relative(directoryPath, key)
     var separate = relative.split(path.sep)
     if (separate.length > 2) {
@@ -23,7 +25,7 @@ function deleteRelationlessData(directoryPath) {
     }
   }
 
-  for(i in removeKeys) {
+  for(var i in removeKeys) {
     delete storage[removeKeys[i]]
   }
 }
@@ -49,7 +51,7 @@ var sort = function(a, b) {
     return 0
   }
 
-  for (i in aList) {
+  for (var i in aList) {
     var aInt = parseInt(aList[i])
     var bInt = parseInt(bList[i])
     if (aInt && bInt && aInt != bInt) {
@@ -58,19 +60,6 @@ var sort = function(a, b) {
   }
 
   return 0
-}
-
-function findFiles(directoryPath, callback) {
-  const fs = require('fs')
-  fs.readdir(directoryPath, function(error, files) {
-    if (error) files = []
-
-    files = filter(files)
-    var filePaths = convertFilePaths(directoryPath, files.sort(sort))
-
-    storage[directoryPath] = filePaths
-    callback(filePaths)
-  })
 }
 
 const storage = {}
@@ -86,8 +75,27 @@ class FileFinder {
       callback(filePaths)
       return
     }
-    findFiles(directoryPath, callback)
+    this.findFiles(directoryPath, callback)
   }
+
+  findFiles(directoryPath, callback) {
+    const fs = require('fs')
+    var self = this
+    fs.readdir(directoryPath, function(error, files) {
+      if (error) files = []
+
+      files = filter(files)
+      var filePaths = convertFilePaths(directoryPath, self.sortFiles(files))
+
+      storage[directoryPath] = filePaths
+      callback(filePaths)
+    })
+  }
+
+  sortFiles(files) {
+    return files.sort(sort)
+  }
+
 }
 
 module.exports = FileFinder

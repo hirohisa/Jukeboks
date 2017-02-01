@@ -1,9 +1,24 @@
+'use strict'
+
 const _ = require('underscore')
 
 const directoryLink = document.getElementById('directory-link')
 const sideBar = document.getElementById('sidebar')
 
-// functions
+function jump(directoryPath, referer = undefined) {
+  const path = require('path')
+  directoryPath = path.normalize(directoryPath)
+  directoryContent.setAttribute('href', directoryPath)
+  directoryContentInner.innerHTML = path.basename(directoryPath)
+
+  var data = {
+    path: directoryPath,
+    referer: referer
+  }
+
+  const ipc = require('electron').ipcRenderer
+  ipc.send('inputPath', data)
+}
 
 function createElement(type, id, className, innerHTML = "") {
   var element = document.createElement(type)
@@ -59,7 +74,7 @@ function clickFileLink(filePath) {
   var stats = fs.lstatSync(filePath)
 
   if (stats.isDirectory()) {
-    functions.jump(filePath)
+    jump(filePath)
   }
 }
 
@@ -103,7 +118,7 @@ class FileNavigator {
 
   upDirectory() {
     var href = directoryContent.getAttribute("href")
-    functions.jump(href + '/..', directoryContentInner.innerHTML)
+    jump(href + '/..', directoryContentInner.innerHTML)
   }
 
   downDirectory() {
@@ -128,6 +143,11 @@ class FileNavigator {
       }
     }
     this.select(_.sample(nodes))
+  }
+
+  start() {
+    var home = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
+    jump(home)
   }
 
   render(data) {

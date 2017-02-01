@@ -1,3 +1,5 @@
+'use strict'
+
 const FileNavigator = require('./file_navigator.js')
 const MediaLoader = require('./media_loader.js')
 
@@ -78,6 +80,10 @@ class AppDelegater {
       default:
       break
     }
+  }
+
+  start() {
+    navigator.start()
   }
 }
 

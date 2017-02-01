@@ -1,3 +1,5 @@
+'use strict'
+
 const FileFinder = require('./file_finder.js')
 
 const fileFinder = new FileFinder()
