@@ -1,3 +1,5 @@
+'use strict'
+
 const _ = require('underscore')
 
 const directoryLink = document.getElementById('directory-link')

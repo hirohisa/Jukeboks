@@ -1,3 +1,5 @@
+'use strict'
+
 const FileNavigator = require('./file_navigator.js')
 const MediaLoader = require('./media_loader.js')
 

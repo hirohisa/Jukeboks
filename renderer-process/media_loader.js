@@ -1,3 +1,5 @@
+'use strict'
+
 var MEDIA = {
   UNKNOWN : 0,
   IMAGE: 1,

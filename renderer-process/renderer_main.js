@@ -1,3 +1,5 @@
+'use strict'
+
 const AppDelegater = require('./renderer-process/app_delegater.js')
 
 const ipc = require('electron').ipcRenderer
