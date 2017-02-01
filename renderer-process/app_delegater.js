@@ -79,6 +79,10 @@ class AppDelegater {
       break
     }
   }
+
+  start() {
+    navigator.start()
+  }
 }
 
 module.exports = AppDelegater
