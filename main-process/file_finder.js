@@ -1,5 +1,8 @@
 'use strict'
 
+const FileOrganizer = require('./file_organizer')
+const fileOrganizer = new FileOrganizer()
+
 function convertFilePaths(directoryPath, files) {
   const path = require('path')
   var filePaths = []
@@ -80,12 +83,11 @@ class FileFinder {
 
   findFiles(directoryPath, callback) {
     const fs = require('fs')
-    var self = this
     fs.readdir(directoryPath, function(error, files) {
       if (error) files = []
 
       files = filter(files)
-      var filePaths = convertFilePaths(directoryPath, self.sortFiles(files))
+      var filePaths = convertFilePaths(directoryPath, fileOrganizer.sortFiles(files))
 
       storage[directoryPath] = filePaths
       callback(filePaths)
