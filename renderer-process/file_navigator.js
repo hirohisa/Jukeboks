@@ -123,12 +123,16 @@ class FileNavigator {
 
   downDirectory() {
     var current = findCurrent()
-    clickFileLink(current.getAttribute('href'))
+    if (current) {
+      clickFileLink(current.getAttribute('href'))
+    }
   }
 
   select(element) {
     var current = findCurrent()
-    current.id = ''
+    if (current) {
+      current.id = ''
+    }
     element.id = 'directory-current-page'
     this.transport.on({type: 'selectFile', data: element})
   }
