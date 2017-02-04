@@ -1,5 +1,7 @@
 'use strict'
 
+const _ = require('underscore')
+
 var MEDIA = {
   UNKNOWN : 0,
   IMAGE: 1,
@@ -56,6 +58,24 @@ class MediaLoader {
 
   clearContent() {
     clearContents()
+  }
+
+  cleanContentsExclude(srcs) {
+    var removeNodes = []
+    for (var i in mainContent.childNodes) {
+      var node = mainContent.childNodes[i]
+      if (!node.nodeName) continue
+
+      var src = node.src.replace(/^file:\/\//,'')
+      if (!_.contains(srcs, src)) {
+        removeNodes.push(node)
+      }
+    }
+
+    for (var i in removeNodes) {
+      var node = removeNodes[i]
+      mainContent.removeChild(node)
+    }
   }
 
   preRender(filePath) {

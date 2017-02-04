@@ -6,16 +6,27 @@ const MediaLoader = require('./media_loader.js')
 function fileNavigatorOn(event) {
   var f = {}
   f["selectFile"] = function() {
-    loader.render(event.data.getAttribute('href'))
+    var srcs = []
+
+    var href = event.data.getAttribute('href')
+    loader.render(href)
+    srcs.push(href)
     var next = event.data.nextSibling
     if (next) {
-      loader.preRender(next.getAttribute('href'))
+      href = next.getAttribute('href')
+      loader.preRender(href)
+      srcs.push(href)
     }
     var previous = event.data.previousSibling
     if (previous) {
+      href = previous.getAttribute('href')
       loader.preRender(previous.getAttribute('href'))
+      srcs.push(href)
     }
+
+    loader.cleanContentsExclude(srcs)
   }
+
   f["changeDirectory"] = function() {
     loader.clearContent()
   }
