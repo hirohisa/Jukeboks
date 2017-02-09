@@ -2,6 +2,8 @@
 
 const _ = require('underscore')
 
+const userDirectoryPath = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
+
 const directoryLink = document.getElementById('directory-link')
 const sideBar = document.getElementById('sidebar')
 
@@ -128,6 +130,17 @@ class FileNavigator {
     }
   }
 
+  moveToTrash() {
+    var current = findCurrent();
+    if (current) {
+      var filePath = current.getAttribute('href');
+      const path = require('path');
+      const fs = require('fs');
+      var trashPath = userDirectoryPath + "/.Trash/" + path.basename(filePath);
+      fs.rename(filePath, trashPath, (e) => {});
+    }
+  }
+
   select(element) {
     var current = findCurrent()
     if (current) {
@@ -150,8 +163,7 @@ class FileNavigator {
   }
 
   start() {
-    var home = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
-    jump(home)
+    jump(userDirectoryPath)
   }
 
   render(data) {
