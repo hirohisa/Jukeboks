@@ -7,7 +7,7 @@ packager({
     name: config.name,
     platform: 'darwin',
     arch: 'x64',
-    version: '1.0.0',
+    version: '1.6.0',
     icon: './app.icns',
 
     'app-bundle-id': 'net.hirohisa.jukeboks',
