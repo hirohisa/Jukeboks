@@ -15,6 +15,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "electron-packager": "^8.5.1"
+    "electron-packager": "^8.5.1",
+    "fastimage": "^2.0.1"
   }
 }
