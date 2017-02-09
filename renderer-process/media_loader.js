@@ -8,25 +8,30 @@ var MEDIA = {
   VIDEO: 2
 }
 
-function ext(filePath) {
+function ext(filePath, callback) {
   if (!filePath) return MEDIA.UNKNOWN
+  const fs = require('fs')
+  var stats = fs.lstatSync(filePath)
+  if (stats.isDirectory()) return MEDIA.UNKNOWN
 
   const path = require('path')
   switch (path.extname(filePath)) {
-    case ".jpg":
-    case ".jpeg":
-    case ".gif":
-    case ".png":
-    return MEDIA.IMAGE
-    break
     case ".mp3":
     case ".mp4":
-    return MEDIA.VIDEO
+    callback(MEDIA.VIDEO)
     break
     default:
     break
   }
-  return MEDIA.UNKNOWN
+
+  const fastimage = require('fastimage')
+  fastimage.info(filePath)
+  .then(function(info){
+    callback(MEDIA.IMAGE)
+  })
+  .catch(function(error){
+    callback(MEDIA.UNKNOWN)
+  })
 }
 
 function createImage(src) {
@@ -103,7 +108,9 @@ class MediaLoader {
     f[MEDIA.VIDEO] = function() {}
     f[MEDIA.UNKNOWN] = function() {}
 
-    f[ext(filePath)]()
+    ext(filePath, (e) => {
+      f[e]()
+    });
   }
 
   render(filePath) {
@@ -142,7 +149,9 @@ class MediaLoader {
     }
     f[MEDIA.UNKNOWN] = function() {}
 
-    f[ext(filePath)]()
+    ext(filePath, (e) => {
+      f[e]()
+    });
   }
 }
 
