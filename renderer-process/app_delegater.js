@@ -60,6 +60,9 @@ function onKeyboardEvent(event) {
   f["ArrowRight"] = function() {
     navigator.downDirectory()
   }
+  f["Backspace"] = function() {
+    navigator.moveToTrash()
+  }
 
   f[event.code]()
 }
