@@ -1,7 +1,8 @@
 'use strict'
 
-const FileOrganizer = require('./file_organizer')
-const fileOrganizer = new FileOrganizer()
+const FileOrganizer = require('./file_organizer');
+const fileOrganizer = new FileOrganizer();
+const _ = require('underscore');
 
 function convertFilePaths(directoryPath, files) {
   const path = require('path')
@@ -78,6 +79,12 @@ class FileFinder {
       storage[directoryPath] = filePaths
       callback(filePaths)
     })
+  }
+
+  removeFileInStorage(filePath) {
+    const path = require('path');
+    var directoryPath = path.dirname(filePath);
+    storage[directoryPath] = _.without(storage[directoryPath], filePath);
   }
 
 }

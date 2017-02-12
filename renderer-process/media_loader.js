@@ -9,11 +9,16 @@ var MEDIA = {
 }
 
 function ext(filePath, callback) {
-  if (!filePath) return MEDIA.UNKNOWN
-  const fs = require('fs')
-  var stats = fs.lstatSync(filePath)
-  if (stats.isDirectory()) return MEDIA.UNKNOWN
+  if (!filePath) return MEDIA.UNKNOWN;
+  const fs = require('fs');
 
+  try {
+    var stats = fs.lstatSync(filePath);
+  } catch(e) {
+    return MEDIA.UNKNOWN;
+  }
+
+  if (stats.isDirectory()) return MEDIA.UNKNOWN;
   const path = require('path')
   switch (path.extname(filePath)) {
     case ".mp3":
