@@ -137,7 +137,20 @@ class FileNavigator {
       const path = require('path');
       const fs = require('fs');
       var trashPath = userDirectoryPath + "/.Trash/" + path.basename(filePath);
-      fs.rename(filePath, trashPath, (e) => {});
+      var self = this;
+      fs.rename(filePath, trashPath, (e) => {
+        if (!e) {
+          var data = {
+            path: filePath
+          };
+
+          this.nextSibling();
+          directoryLink.removeChild(current);
+
+          const ipc = require('electron').ipcRenderer;
+          ipc.send('removePath', data);
+        }
+      });
     }
   }
 

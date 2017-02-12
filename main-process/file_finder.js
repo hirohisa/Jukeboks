@@ -1,7 +1,8 @@
 'use strict'
 
-const FileOrganizer = require('./file_organizer')
-const fileOrganizer = new FileOrganizer()
+const FileOrganizer = require('./file_organizer');
+const fileOrganizer = new FileOrganizer();
+const _ = require('underscore');
 
 function convertFilePaths(directoryPath, files) {
   const path = require('path')
@@ -31,19 +32,6 @@ function deleteRelationlessData(directoryPath) {
   for(var i in removeKeys) {
     delete storage[removeKeys[i]]
   }
-}
-
-function filter(files) {
-  var renew = []
-  for (var i in files) {
-    var file = files[i]
-    if (!file) continue
-    if (file.startsWith('.')) continue
-
-    renew.push(file)
-  }
-
-  return renew
 }
 
 var sort = function(a, b) {
@@ -86,7 +74,6 @@ class FileFinder {
     fs.readdir(directoryPath, function(error, files) {
       if (error) files = []
 
-      files = filter(files)
       var filePaths = convertFilePaths(directoryPath, fileOrganizer.sortFiles(files))
 
       storage[directoryPath] = filePaths
@@ -94,8 +81,10 @@ class FileFinder {
     })
   }
 
-  sortFiles(files) {
-    return files.sort(sort)
+  removeFileInStorage(filePath) {
+    const path = require('path');
+    var directoryPath = path.dirname(filePath);
+    storage[directoryPath] = _.without(storage[directoryPath], filePath);
   }
 
 }
