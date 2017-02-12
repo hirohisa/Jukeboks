@@ -29,17 +29,25 @@ function createWindow() {
   })
 }
 
+function registerShortcut() {
+  electron.globalShortcut.register('Command+Y', () => {
+    openDevTools();
+  });
+}
+
+function unregisterShortcut() {
+  electron.globalShortcut.unregister('Command+Y');
+}
+
 function openDevTools() {
   win.webContents.openDevTools();
 }
 
-require('./main-process/search.js')
+require('./main-process/search.js');
 
 function onReady() {
   createWindow();
-  electron.globalShortcut.register('Command+Control+Y', () => {
-    openDevTools()
-  });
+  registerShortcut();
 }
 
 // App
@@ -47,8 +55,9 @@ function onReady() {
 app.on('ready', onReady)
 app.on('activate', () => {
   if (win === null) {
-    createWindow()
+    createWindow();
   }
 })
 app.on('will-quit', function() {
+  unregisterShortcut();
 });
