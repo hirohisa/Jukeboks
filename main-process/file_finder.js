@@ -33,19 +33,6 @@ function deleteRelationlessData(directoryPath) {
   }
 }
 
-function filter(files) {
-  var renew = []
-  for (var i in files) {
-    var file = files[i]
-    if (!file) continue
-    if (file.startsWith('.')) continue
-
-    renew.push(file)
-  }
-
-  return renew
-}
-
 var sort = function(a, b) {
   var aList = a.match(/\d+/g)
   var bList = b.match(/\d+/g)
@@ -86,16 +73,11 @@ class FileFinder {
     fs.readdir(directoryPath, function(error, files) {
       if (error) files = []
 
-      files = filter(files)
       var filePaths = convertFilePaths(directoryPath, fileOrganizer.sortFiles(files))
 
       storage[directoryPath] = filePaths
       callback(filePaths)
     })
-  }
-
-  sortFiles(files) {
-    return files.sort(sort)
   }
 
 }

@@ -37,7 +37,10 @@ class FileOrganizer {
   sortFiles(files) {
     var objects = []
     for (var i in files) {
-      objects.push(new O(files[i]))
+      var file = files[i]
+      if (!file) continue
+      if (file.startsWith('.')) continue
+      objects.push(new O(file))
     }
 
     return objects.sort(sort).map((e, i, a) => {
