@@ -21,7 +21,7 @@ function createWindow() {
   }))
 
   if (process.env.NODE_ENV == 'development') {
-    win.webContents.openDevTools()
+    openDevTools()
   }
 
   win.on('closed', () => {
@@ -29,10 +29,17 @@ function createWindow() {
   })
 }
 
+function openDevTools() {
+  win.webContents.openDevTools();
+}
+
 require('./main-process/search.js')
 
 function onReady() {
-  createWindow()
+  createWindow();
+  electron.globalShortcut.register('Command+Control+Y', () => {
+    openDevTools()
+  });
 }
 
 // App

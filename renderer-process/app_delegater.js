@@ -47,24 +47,24 @@ const navigator = new FileNavigator({ on: fileNavigatorOn })
 const loader = new MediaLoader({ on: mediaLoaderOn })
 
 function onKeyboardEvent(event) {
-  var f = {}
-  f["ArrowUp"] = function() {
+  switch (event.code) {
+    case "ArrowUp":
     navigator.prefiousSibling()
-  }
-  f["ArrowDown"] = function() {
+      break;
+    case "ArrowDown":
     navigator.nextSibling()
-  }
-  f["ArrowLeft"] = function() {
+      break;
+    case "ArrowLeft":
     navigator.upDirectory()
-  }
-  f["ArrowRight"] = function() {
+      break;
+    case "ArrowRight":
     navigator.downDirectory()
-  }
-  f["Backspace"] = function() {
+      break;
+    case "Backspace":
     navigator.moveToTrash()
+      break;
+    default:
   }
-
-  f[event.code]()
 }
 
 function onMouseEvent(event) {
