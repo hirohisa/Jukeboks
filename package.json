@@ -13,6 +13,7 @@
     "electron-json-storage": "^3.0.0",
     "fastimage": "^2.0.1",
     "glob": "^7.1.1",
+    "queue": "^4.2.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
