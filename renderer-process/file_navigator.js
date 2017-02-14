@@ -185,10 +185,11 @@ class FileNavigator {
     jump(userDirectoryPath)
   }
 
-  render(data) {
+  clear() {
     clearContent()
-    this.transport.on({type: 'changeDirectory', data: data})
+  }
 
+  render(data) {
     const queue = require('queue');
     var q = queue();
     q.autostart = true;
