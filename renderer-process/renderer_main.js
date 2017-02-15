@@ -8,7 +8,12 @@ const directoryContentInner = document.getElementById('path-directory-inner')
 const app = new AppDelegater()
 
 ipc.on('searchFiles', (event, data) => {
-  app.render(data)
+  app.navigator.render(data)
+})
+
+ipc.on('changeDirectory', (event, data) => {
+  app.navigator.clear()
+  app.loader.clear()
 })
 
 document.addEventListener("keydown" , (event) => {
@@ -21,6 +26,6 @@ document.getElementById('move-parent-directory').addEventListener("click", (even
 
 // document onload
 function load() {
-  app.start()
+  app.navigator.start()
 }
 window.onload = load

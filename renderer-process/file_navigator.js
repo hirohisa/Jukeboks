@@ -91,6 +91,12 @@ function scrollToRelative(from, to) {
   sideBar.scrollTop += toTop - fromTop
 }
 
+function appendLink(filePath, referer, click) {
+  var link = createLink(filePath, referer)
+  link.addEventListener("click", click, false)
+  directoryLink.appendChild(link)
+}
+
 /////////////
 
 class FileNavigator {
@@ -179,29 +185,39 @@ class FileNavigator {
     jump(userDirectoryPath)
   }
 
-  render(data) {
+  clear() {
     clearContent()
-    this.transport.on({type: 'changeDirectory', data: data})
+  }
+
+  render(data) {
+    const queue = require('queue');
+    var q = queue();
+    q.autostart = true;
 
     for (var i in data.files) {
       var filePath = data.files[i]
 
-      var link = createLink(filePath, data.referer)
-      var self = this
-      link.addEventListener("click", function() {
-        self.select(this)
-        clickFileLink(this.getAttribute('href'))
-      }, false)
-      directoryLink.appendChild(link)
+      q.push(
+
+        // Bug: wrong links occur when queue has tasks
+        () => {
+          appendLink(filePath, data.referer, (e) => {
+            this.select(e.target);
+            clickFileLink(e.target.getAttribute('href'));
+          })
+        }
+      );
     }
 
-    var current = findCurrent()
-    if (current) {
-      // render media
-      this.select(current)
-      // scroll
-      scrollTo(current)
-    }
+    q.push(
+      () => {
+        var current = findCurrent();
+        if (current) {
+          this.select(current);
+          scrollTo(current);
+        }
+      }
+    )
   }
 }
 

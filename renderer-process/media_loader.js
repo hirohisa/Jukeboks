@@ -66,7 +66,7 @@ class MediaLoader {
     this.transport = transport
   }
 
-  clearContent() {
+  clear() {
     clearContents()
   }
 

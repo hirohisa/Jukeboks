@@ -27,10 +27,6 @@ function fileNavigatorOn(event) {
     loader.cleanContentsExclude(srcs)
   }
 
-  f["changeDirectory"] = function() {
-    loader.clearContent()
-  }
-
   f[event.type]()
 }
 
@@ -79,8 +75,9 @@ function onMouseEvent(event) {
 
 class AppDelegater {
 
-  render(data) {
-    navigator.render(data)
+  constructor() {
+    this.navigator = navigator;
+    this.loader = loader;
   }
 
   on(event) {
@@ -94,10 +91,6 @@ class AppDelegater {
       default:
       break
     }
-  }
-
-  start() {
-    navigator.start()
   }
 }
 
