@@ -1,9 +1,9 @@
 'use strict';
 
-const FileFinder = require('./file_finder.js');
-
-const fileFinder = new FileFinder();
 const ipc = require('electron').ipcMain;
+
+const FileFinder = require('./file_finder.js');
+const fileFinder = new FileFinder();
 
 ipc.on('inputPath', function(event, data) {
   event.sender.send('changeDirectory', data);

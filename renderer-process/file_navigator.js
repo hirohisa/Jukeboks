@@ -1,11 +1,16 @@
 'use strict'
 
 const _ = require('underscore')
+const Storage = require('./storage.js');
+const storage = new Storage();
 
 const userDirectoryPath = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
 
-const directoryLink = document.getElementById('directory-link')
-const sideBar = document.getElementById('sidebar')
+const directoryContent = document.getElementById('path-directory');
+const directoryContentInner = document.getElementById('path-directory-inner');
+const directoryLink = document.getElementById('file-directory-link');
+const favoriteLink = document.getElementById('favorite-directory-link');
+const sideBar = document.getElementById('sidebar');
 
 function jump(directoryPath, referer = undefined) {
   const path = require('path')
@@ -91,10 +96,10 @@ function scrollToRelative(from, to) {
   sideBar.scrollTop += toTop - fromTop
 }
 
-function appendLink(filePath, referer, click) {
+function appendLink(parent, filePath, referer, click) {
   var link = createLink(filePath, referer)
   link.addEventListener("click", click, false)
-  directoryLink.appendChild(link)
+  parent.appendChild(link)
 }
 
 /////////////
@@ -182,6 +187,16 @@ class FileNavigator {
   }
 
   start() {
+    storage.getShortcuts((shortcuts) => {
+      for (var i in shortcuts) {
+        var filePath = shortcuts[i];
+
+        appendLink(favoriteLink, filePath, "", (e) => {
+          this.select(e.target);
+          clickFileLink(e.target.getAttribute('href'));
+        });
+      }
+    });
     jump(userDirectoryPath)
   }
 
@@ -201,7 +216,7 @@ class FileNavigator {
 
         // Bug: wrong links occur when queue has tasks
         () => {
-          appendLink(filePath, data.referer, (e) => {
+          appendLink(directoryLink, filePath, data.referer, (e) => {
             this.select(e.target);
             clickFileLink(e.target.getAttribute('href'));
           })
@@ -218,6 +233,11 @@ class FileNavigator {
         }
       }
     )
+  }
+
+  // storage
+  saveShortcut(filePath) {
+     storage.saveShortcut(filePath);
   }
 }
 

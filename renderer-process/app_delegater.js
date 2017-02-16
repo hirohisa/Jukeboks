@@ -73,6 +73,15 @@ function onMouseEvent(event) {
   f[target.id]()
 }
 
+function onDragDropEvent(event) {
+  var file = event.dataTransfer.files[0];
+  const fs = require('fs');
+  var stats = fs.lstatSync(file.path);
+  if (stats.isDirectory()) {
+    navigator.saveShortcut(file.path);
+  }
+}
+
 class AppDelegater {
 
   constructor() {
@@ -88,8 +97,10 @@ class AppDelegater {
       case "click":
       onMouseEvent(event)
       break
-      default:
+      case "drop":
+      onDragDropEvent(event)
       break
+      default:
     }
   }
 }
