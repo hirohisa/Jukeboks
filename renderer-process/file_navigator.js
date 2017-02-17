@@ -165,12 +165,14 @@ class FileNavigator {
     }
   }
 
-  select(element) {
+  select(element, skipMark = false) {
     var current = findCurrent()
     if (current) {
       current.id = ''
     }
-    element.id = 'directory-current-page'
+    if (!skipMark) {
+      element.id = 'directory-current-page'
+    }
     this.transport.on({type: 'selectFile', data: element})
   }
 
@@ -191,8 +193,8 @@ class FileNavigator {
       for (var i in shortcuts) {
         var filePath = shortcuts[i];
 
-        appendLink(favoriteLink, filePath, "", (e) => {
-          this.select(e.target);
+        appendLink(favoriteLink, filePath, undefined, (e) => {
+          this.select(e.target, true);
           clickFileLink(e.target.getAttribute('href'));
         });
       }
