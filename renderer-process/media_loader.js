@@ -10,17 +10,11 @@ var MEDIA = {
 
 function ext(filePath, callback) {
   if (!filePath) return MEDIA.UNKNOWN;
-  const fs = require('fs');
-
-  try {
-    var stats = fs.lstatSync(filePath);
-  } catch(e) {
-    return MEDIA.UNKNOWN;
-  }
-
-  if (stats.isDirectory()) return MEDIA.UNKNOWN;
-  const path = require('path')
-  switch (path.extname(filePath)) {
+  const sy = require('../lib/sy')
+  if (sy.isDirectory(filePath)) return MEDIA.UNKNOWN;
+  const path = require('path');
+  var extname = path.extname(filePath).toLowerCase();
+  switch (extname) {
     case ".mp3":
     case ".mp4":
     callback(MEDIA.VIDEO)
@@ -31,12 +25,25 @@ function ext(filePath, callback) {
 
   const fastimage = require('fastimage')
   fastimage.info(filePath)
-  .then(function(info){
+  .then(function(info) {
     callback(MEDIA.IMAGE)
   })
-  .catch(function(error){
-    callback(MEDIA.UNKNOWN)
-  })
+  .catch(function(error) {
+
+    // bug: fastimage checks a file then request escaped path.
+    switch (extname) {
+      case ".jpeg":
+      case ".jpg":
+      case ".png":
+      case ".gif":
+      case ".svn":
+      callback(MEDIA.IMAGE);
+      break;
+      default:
+      callback(MEDIA.UNKNOWN);
+      break;
+    }
+  });
 }
 
 function createImage(src) {

@@ -48,10 +48,8 @@ function createLink(filePath, referer) {
 }
 
 function ensureIconName(filePath) {
-  const fs = require('fs')
-  var stats = fs.lstatSync(filePath)
-
-  if (stats.isDirectory()) {
+  const sy = require('../lib/sy')
+  if (sy.isDirectory(filePath)) {
     return "icon-folder"
   }
 
@@ -72,10 +70,8 @@ function findCurrent() {
 }
 
 function clickFileLink(filePath) {
-  const fs = require('fs')
-  var stats = fs.lstatSync(filePath)
-
-  if (stats.isDirectory()) {
+  const sy = require('../lib/sy')
+  if (sy.isDirectory(filePath)) {
     jump(filePath)
   }
 }
