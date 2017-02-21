@@ -1,3 +1,9 @@
+1.0.3
+-----
+* [Use queue](https://github.com/hirohisa/Jukeboks/pull/11)
+* [Improve Performance](https://github.com/hirohisa/Jukeboks/pull/10)
+* [Bugfix: fastimage checks wrong path](https://github.com/hirohisa/Jukeboks/pull/13)
+
 1.0.2
 -----
 * [Trash a file on tapping backspace](https://github.com/hirohisa/Jukeboks/pull/8)
