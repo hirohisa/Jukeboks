@@ -1,6 +1,7 @@
 'use strict'
 
 const _ = require('underscore')
+const sy = require('../lib/sy')
 
 const userDirectoryPath = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
 
@@ -48,7 +49,6 @@ function createLink(filePath, referer) {
 }
 
 function ensureIconName(filePath) {
-  const sy = require('../lib/sy')
   if (sy.isDirectory(filePath)) {
     return "icon-folder"
   }
@@ -56,21 +56,7 @@ function ensureIconName(filePath) {
   return "icon-picture"
 }
 
-function findCurrent() {
-  var current = document.getElementById('directory-current-page')
-  if (current) {
-    return current
-  }
-
-  current = directoryLink.firstChild
-  if (!current) return
-
-  current.id = 'directory-current-page'
-  return current
-}
-
 function clickFileLink(filePath) {
-  const sy = require('../lib/sy')
   if (sy.isDirectory(filePath)) {
     jump(filePath)
   }
@@ -103,7 +89,7 @@ class FileNavigator {
 
   // change to select a file
   prefiousSibling() {
-    var current = findCurrent()
+    var current = sy.getCurrent()
     if (!current) return
     var previous = current.previousSibling
     if (!previous) return
@@ -112,7 +98,7 @@ class FileNavigator {
   }
 
   nextSibling() {
-    var current = findCurrent()
+    var current = sy.getCurrent()
     if (!current) return
     var next = current.nextSibling
     if (!next) return
@@ -126,14 +112,14 @@ class FileNavigator {
   }
 
   downDirectory() {
-    var current = findCurrent()
+    var current = sy.getCurrent()
     if (current) {
       clickFileLink(current.getAttribute('href'))
     }
   }
 
   moveToTrash() {
-    var current = findCurrent();
+    var current = sy.getCurrent();
     if (current) {
       var filePath = current.getAttribute('href');
       const path = require('path');
@@ -157,7 +143,7 @@ class FileNavigator {
   }
 
   select(element) {
-    var current = findCurrent()
+    var current = sy.getCurrent()
     if (current) {
       current.id = ''
     }
@@ -207,7 +193,7 @@ class FileNavigator {
 
     q.push(
       () => {
-        var current = findCurrent();
+        var current = sy.getCurrent();
         if (current) {
           this.select(current);
           scrollTo(current);
