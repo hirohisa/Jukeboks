@@ -24,6 +24,13 @@ document.getElementById('move-parent-directory').addEventListener("click", (even
   app.on(event)
 })
 
+const menu = require('./renderer-process/menu.js')
+
+window.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+  menu.open(e);
+}, false);
+
 // document onload
 function load() {
   app.navigator.start()
