@@ -1,7 +1,6 @@
 'use strict'
 
-const FileOrganizer = require('./file_organizer');
-const fileOrganizer = new FileOrganizer();
+const fileOrganizer = require('./file_organizer');
 const _ = require('underscore');
 
 function convertFilePaths(directoryPath, files) {
@@ -89,4 +88,4 @@ class FileFinder {
 
 }
 
-module.exports = FileFinder
+module.exports = new FileFinder()

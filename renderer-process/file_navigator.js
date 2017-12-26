@@ -9,8 +9,8 @@ const userDirectoryPath = process.env[process.platform == "win32" ? "USERPROFILE
 function jump(directoryPath, referer = undefined) {
   const path = require('path')
   directoryPath = path.normalize(directoryPath)
-  directoryContent.setAttribute('href', directoryPath)
-  directoryContentInner.innerHTML = path.basename(directoryPath)
+  ui.directoryContent.setAttribute('href', directoryPath)
+  ui.directoryContentInner.innerHTML = path.basename(directoryPath)
 
   var data = {
     path: directoryPath,
@@ -105,8 +105,8 @@ class FileNavigator {
   }
 
   upDirectory() {
-    var href = directoryContent.getAttribute("href")
-    jump(href + '/..', directoryContentInner.innerHTML)
+    var href = ui.directoryContent.getAttribute("href")
+    jump(href + '/..', ui.directoryContentInner.innerHTML)
   }
 
   downDirectory() {

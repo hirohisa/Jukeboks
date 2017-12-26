@@ -3,8 +3,6 @@
 const AppDelegater = require('./renderer-process/app_delegater.js')
 
 const ipc = require('electron').ipcRenderer
-const directoryContent = document.getElementById('path-directory')
-const directoryContentInner = document.getElementById('path-directory-inner')
 const app = new AppDelegater()
 
 ipc.on('searchFiles', (event, data) => {

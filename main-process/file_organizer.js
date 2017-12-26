@@ -50,4 +50,4 @@ class FileOrganizer {
 
 }
 
-module.exports = FileOrganizer
+module.exports = new FileOrganizer()
