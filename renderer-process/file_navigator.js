@@ -2,11 +2,9 @@
 
 const _ = require('underscore')
 const sy = require('../lib/sy')
+const ui = require('../lib/ui')
 
 const userDirectoryPath = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
-
-const directoryLink = document.getElementById('directory-link')
-const sideBar = document.getElementById('sidebar')
 
 function jump(directoryPath, referer = undefined) {
   const path = require('path')
@@ -32,8 +30,8 @@ function createElement(type, id, className, innerHTML = "") {
 }
 
 function clearContent() {
-  while (directoryLink.firstChild) {
-      directoryLink.removeChild(directoryLink.firstChild)
+  while (ui.directoryTree.firstChild) {
+      ui.directoryTree.removeChild(ui.directoryTree.firstChild)
   }
 }
 
@@ -64,19 +62,19 @@ function clickFileLink(filePath) {
 
 function scrollTo(element) {
   var top = element.getBoundingClientRect().top
-  sideBar.scrollTop = top
+  ui.sideBar.scrollTop = top
 }
 
 function scrollToRelative(from, to) {
   var fromTop = from.getBoundingClientRect().top
   var toTop = to.getBoundingClientRect().top
-  sideBar.scrollTop += toTop - fromTop
+  ui.sideBar.scrollTop += toTop - fromTop
 }
 
 function appendLink(filePath, referer, click) {
   var link = createLink(filePath, referer)
   link.addEventListener("click", click, false)
-  directoryLink.appendChild(link)
+  ui.directoryTree.appendChild(link)
 }
 
 /////////////
@@ -89,7 +87,7 @@ class FileNavigator {
 
   // change to select a file
   prefiousSibling() {
-    var current = sy.getCurrent()
+    var current = ui.getCurrent()
     if (!current) return
     var previous = current.previousSibling
     if (!previous) return
@@ -98,7 +96,7 @@ class FileNavigator {
   }
 
   nextSibling() {
-    var current = sy.getCurrent()
+    var current = ui.getCurrent()
     if (!current) return
     var next = current.nextSibling
     if (!next) return
@@ -112,14 +110,14 @@ class FileNavigator {
   }
 
   downDirectory() {
-    var current = sy.getCurrent()
+    var current = ui.getCurrent()
     if (current) {
       clickFileLink(current.getAttribute('href'))
     }
   }
 
   moveToTrash() {
-    var current = sy.getCurrent();
+    var current = ui.getCurrent();
     if (current) {
       var filePath = current.getAttribute('href');
       const path = require('path');
@@ -133,7 +131,7 @@ class FileNavigator {
           };
 
           this.nextSibling();
-          directoryLink.removeChild(current);
+          ui.directoryTree.removeChild(current);
 
           const ipc = require('electron').ipcRenderer;
           ipc.send('removePath', data);
@@ -143,7 +141,7 @@ class FileNavigator {
   }
 
   select(element) {
-    var current = sy.getCurrent()
+    var current = ui.getCurrent()
     if (current) {
       current.id = ''
     }
@@ -153,7 +151,7 @@ class FileNavigator {
 
   selectRandom() {
     var nodes = []
-    var children = directoryLink.childNodes
+    var children = ui.directoryTree.childNodes
     for (var i in children) {
       var element = children[i]
       if (element.id != 'directory-current-page') {
@@ -193,7 +191,7 @@ class FileNavigator {
 
     q.push(
       () => {
-        var current = sy.getCurrent();
+        var current = ui.getCurrent();
         if (current) {
           this.select(current);
           scrollTo(current);

@@ -9,7 +9,7 @@ var menu = Menu.buildFromTemplate([
     label: 'Show in Finder',
     click: function() {
       const sy = require('../lib/sy');
-      var current = sy.getCurrent();
+      var current = ui.getCurrent();
       var href = current.getAttribute('href')
       sy.openDirectory(href);
     }
