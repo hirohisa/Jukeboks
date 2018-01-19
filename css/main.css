@@ -44,3 +44,7 @@ img.visible {
 img.hidden {
   display:none
 }
+
+.nav-group-item-disactive:active {
+  background-color: transparent;
+}

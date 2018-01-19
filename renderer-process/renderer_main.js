@@ -1,26 +1,10 @@
 'use strict'
 
-const AppDelegater = require('./renderer-process/app_delegater.js')
+require('./renderer-process/click_binder')
+require('./renderer-process/key_binder')
+require('./renderer-process/directory_view.js')
 
-const ipc = require('electron').ipcRenderer
-const app = new AppDelegater()
-
-ipc.on('searchFiles', (event, data) => {
-  app.navigator.render(data)
-})
-
-ipc.on('changeDirectory', (event, data) => {
-  app.navigator.clear()
-  app.loader.clear()
-})
-
-document.addEventListener("keydown" , (event) => {
-  app.on(event)
-})
-
-document.getElementById('move-parent-directory').addEventListener("click", (event) => {
-  app.on(event)
-})
+const define = require('./lib/define');
 
 const menu = require('./renderer-process/menu.js')
 
@@ -30,7 +14,9 @@ window.addEventListener('contextmenu', function (e) {
 }, false);
 
 // document onload
+const utils = require('./renderer-process/utils')
+
 function load() {
-  app.navigator.start()
+  utils.jump(define.rootPath)
 }
 window.onload = load

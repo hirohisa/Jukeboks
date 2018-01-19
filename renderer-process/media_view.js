@@ -69,14 +69,6 @@ const mainContent = document.getElementById('main-content')
 
 class MediaLoader {
 
-  constructor(transport) {
-    this.transport = transport
-  }
-
-  clear() {
-    clearContents()
-  }
-
   cleanContentsExclude(srcs) {
     var removeNodes = []
     for (var i in mainContent.childNodes) {
@@ -93,36 +85,6 @@ class MediaLoader {
       var node = removeNodes[i]
       mainContent.removeChild(node)
     }
-  }
-
-  preRender(filePath) {
-    var src = "file://" + filePath
-    var f = {}
-    f[MEDIA.IMAGE] = function() {
-      var hit
-      for (var i in mainContent.childNodes) {
-        var node = mainContent.childNodes[i]
-        if (!node.nodeName) continue
-        if (node.nodeName.toLowerCase() != "img") continue
-
-        if (src == node.src) {
-          hit = node
-          break
-        }
-      }
-
-      if (!hit) {
-        var element = createImage(src)
-        element.className = "hidden"
-        mainContent.appendChild(element)
-      }
-    }
-    f[MEDIA.VIDEO] = function() {}
-    f[MEDIA.UNKNOWN] = function() {}
-
-    ext(filePath, (e) => {
-      f[e]()
-    });
   }
 
   render(filePath) {

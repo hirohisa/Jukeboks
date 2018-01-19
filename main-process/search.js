@@ -3,8 +3,8 @@
 const fileFinder = require('./file_finder.js');
 
 const ipc = require('electron').ipcMain;
-ipc.on('inputPath', function(event, data) {
-  event.sender.send('changeDirectory', data);
+ipc.on('movePath', function(event, data) {
+  event.sender.send('didMoveDirectory', data);
 
   const queue = require('queue');
   var q = queue();
@@ -14,6 +14,7 @@ ipc.on('inputPath', function(event, data) {
     () => {
       fileFinder.search(data.path, (files) => {
         var result = {
+          path: data.path,
           files: files,
           referer: data.referer
         };
@@ -26,6 +27,16 @@ ipc.on('inputPath', function(event, data) {
 
 })
 
-ipc.on('removePath', function(event, data) {
-  fileFinder.removeFileInStorage(data.path);
+ipc.on('keydown', function(event, data) {
+  switch (data.code) {
+    case "Backspace":
+    fileFinder.moveToTrash(event, data.filePath)
+      break;
+    default:
+  }
+  event.sender.send('keydown', data);
+})
+
+ipc.on('click', function(event, data) {
+  event.sender.send('click', data);
 })
