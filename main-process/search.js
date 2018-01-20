@@ -27,6 +27,14 @@ ipc.on('movePath', function(event, data) {
 
 })
 
+ipc.on('selectFile', function(event, data) {
+  event.sender.send('selectFile', data);
+})
+
+ipc.on('endedVideo', function(event, data) {
+  event.sender.send('endedVideo', data);
+})
+
 ipc.on('keydown', function(event, data) {
   switch (data.code) {
     case "Backspace":

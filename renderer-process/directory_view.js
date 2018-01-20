@@ -4,6 +4,7 @@ const sy = require('../lib/sy')
 const ui = require('../lib/ui')
 const utils = require('./utils.js')
 const path = require('path')
+const ipc = require('electron').ipcRenderer;
 
 function scrollTo(element) {
   var top = element.getBoundingClientRect().top
@@ -87,7 +88,10 @@ class DirectoryView {
       current.id = ''
     }
     element.id = 'directory-current-page'
-    // this.transport.on({type: 'selectFile', data: element})
+    var data = {
+      filePath: element.getAttribute('href')
+    }
+    ipc.send('selectFile', data)
   }
 
   selectRandom() {
@@ -135,7 +139,6 @@ class DirectoryView {
 
 const directoryView = new DirectoryView();
 
-const ipc = require('electron').ipcRenderer;
 ipc.on('searchFiles', (event, data) => {
   directoryView.render(data)
 })
@@ -181,4 +184,8 @@ ipc.on('didMoveDirectory', (event, data) => {
   const path = require('path')
   ui.directoryPath.innerHTML = path.basename(data.path)
   ui.directoryPath.setAttribute('href', data.path)
+})
+
+ipc.on('endedVideo', (event, data) => {
+  directoryView.selectRandom()
 })
