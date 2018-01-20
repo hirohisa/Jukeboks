@@ -27,11 +27,10 @@ function appendLink(filePath, referer, click) {
   var link = document.createElement('span')
   link.className = 'nav-group-item'
 
-  var file = path.basename(filePath)
-  link.id = referer === file ? 'directory-current-page' : ''
+  link.id = referer == filePath ? 'directory-current-page' : ''
 
   var klass = sy.isDirectory(filePath) ? "icon-folder" : "icon-picture"
-  link.innerHTML = '<span class="icon ' + klass + '"></span>' + file + '</span>'
+  link.innerHTML = '<span class="icon ' + klass + '"></span>' + path.basename(filePath) + '</span>'
 
   link.setAttribute('href', path.normalize(filePath))
 
