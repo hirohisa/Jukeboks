@@ -11,6 +11,7 @@ const menu = require('./renderer-process/menu.js')
 
 window.addEventListener('contextmenu', function (e) {
   e.preventDefault();
+  
   menu.open(e);
 }, false);
 

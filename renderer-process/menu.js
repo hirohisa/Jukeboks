@@ -3,6 +3,7 @@
 const _ = require('underscore');
 const remote = require('electron').remote;
 const Menu = remote.Menu;
+const ui = require('../lib/ui')
 
 var menu = Menu.buildFromTemplate([
   {
