@@ -1,11 +1,12 @@
 'use strict'
 
-const FileOrganizer = require('./file_organizer');
-const fileOrganizer = new FileOrganizer();
+const fileOrganizer = require('./file_organizer');
+const define = require('../lib/define');
 const _ = require('underscore');
+const fs = require('fs');
+const path = require('path');
 
 function convertFilePaths(directoryPath, files) {
-  const path = require('path')
   var filePaths = []
   for (var i in files) {
     var file = files[i]
@@ -19,7 +20,6 @@ function convertFilePaths(directoryPath, files) {
 }
 
 function deleteRelationlessData(directoryPath) {
-  const path = require('path')
   var removeKeys = []
   for(var key in storage) {
     var relative = path.relative(directoryPath, key)
@@ -59,7 +59,6 @@ class FileFinder {
 
   search(directoryPath, callback) {
     deleteRelationlessData(directoryPath)
-    const path = require('path')
     directoryPath = path.normalize(directoryPath)
     var filePaths = storage[directoryPath]
     if (filePaths) {
@@ -82,11 +81,27 @@ class FileFinder {
   }
 
   removeFileInStorage(filePath) {
-    const path = require('path');
     var directoryPath = path.dirname(filePath);
     storage[directoryPath] = _.without(storage[directoryPath], filePath);
   }
 
+  moveToTrash(event, filePath) {
+    if (filePath == undefined) return;
+
+    var trashPath = define.rootPath + "/.Trash/" + path.basename(filePath);
+    var self = this;
+    fs.rename(filePath, trashPath, (e) => {
+      if (!e) {
+        var data = {
+          path: filePath
+        };
+
+        self.removeFileInStorage(filePath)
+        event.sender.send('removePath', data)
+      }
+    });
+  }
+
 }
 
-module.exports = FileFinder
+module.exports = new FileFinder()

@@ -3,20 +3,23 @@
 const _ = require('underscore');
 const remote = require('electron').remote;
 const Menu = remote.Menu;
+const ui = require('../lib/ui')
 
-var menu = Menu.buildFromTemplate([
-  {
-    label: 'Show in Finder',
-    click: function() {
-      const sy = require('../lib/sy');
-      var current = sy.getCurrent();
-      var href = current.getAttribute('href')
-      sy.openDirectory(href);
-    }
-  },
-]);
+function openByFinder(path) {
+  const sy = require('../lib/sy');
+  sy.openDirectory(path);
+}
 
-function isNavigationEvent(event) {
+function showInFinder() {
+  console.log('showInFinder')
+  if (menuManager.event == undefined) return;
+
+  var element = menuManager.event.srcElement;
+  var href = element.getAttribute('href')
+  openByFinder(href)
+}
+
+function onNavigationEvent(event) {
   var result = _.filter(event.path, function(o) {
     return o.id === 'sidebar'
   })
@@ -24,15 +27,23 @@ function isNavigationEvent(event) {
   return result.length > 0;
 }
 
+var menu = Menu.buildFromTemplate([
+  {
+    label: 'Show in Finder',
+    click: showInFinder
+  },
+]);
+
 class MenuManager {
 
   open(event) {
+    this.event = event;
+    if (!onNavigationEvent(event)) return;
 
-    if (isNavigationEvent(event)) {
-      menu.popup(remote.getCurrentWindow());
-    }
+    menu.popup(remote.getCurrentWindow());
   }
-
 }
 
-module.exports = new MenuManager()
+const menuManager = new MenuManager()
+
+module.exports = menuManager
