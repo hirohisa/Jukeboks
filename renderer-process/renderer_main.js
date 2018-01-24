@@ -6,12 +6,11 @@ require('./renderer-process/directory_view.js')
 require('./renderer-process/content_view.js')
 
 const def = require('./lib/define');
-
 const menu = require('./renderer-process/menu.js')
 
 window.addEventListener('contextmenu', function (e) {
   e.preventDefault();
-  
+
   menu.open(e);
 }, false);
 

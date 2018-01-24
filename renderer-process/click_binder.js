@@ -5,5 +5,6 @@ document.getElementById('move-parent-directory').addEventListener("click", (even
   var data = {
     id: event.target.id
   };
+
   ipc.send('click', data);
 })
