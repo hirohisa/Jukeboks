@@ -27,14 +27,6 @@ ipc.on('movePath', function(event, data) {
 
 })
 
-ipc.on('selectFile', function(event, data) {
-  event.sender.send('selectFile', data);
-})
-
-ipc.on('endedVideo', function(event, data) {
-  event.sender.send('endedVideo', data);
-})
-
 ipc.on('keydown', function(event, data) {
   switch (data.code) {
     case "Backspace":
@@ -45,6 +37,10 @@ ipc.on('keydown', function(event, data) {
   event.sender.send('keydown', data);
 })
 
-ipc.on('click', function(event, data) {
-  event.sender.send('click', data);
+// delegate
+const proxyList = ['click', 'endedVideo', 'selectFile']
+proxyList.forEach(function(e) {
+  ipc.on(e, function(event, data) {
+    event.sender.send(e, data);
+  })
 })
