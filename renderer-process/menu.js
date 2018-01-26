@@ -11,7 +11,6 @@ function openByFinder(path) {
 }
 
 function showInFinder() {
-  console.log('showInFinder')
   if (menuManager.event == undefined) return;
 
   var element = menuManager.event.srcElement;
@@ -46,4 +45,8 @@ class MenuManager {
 
 const menuManager = new MenuManager()
 
-module.exports = menuManager
+window.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+
+  menuManager.open(e);
+}, false);
