@@ -63,11 +63,11 @@ function render(filePath) {
   var f = {}
 
   var element = createContent(filePath)
-  if (element != undefined) {
+  if (element) {
     element.className = "visible"
     mainContent.appendChild(element)
 
-    if (element.tagName == 'video') {
+    if (element.tagName.toLowerCase() == 'video') {
       element.addEventListener("ended", function() {
         ipc.send('endedVideo')
       }, true)
@@ -75,6 +75,34 @@ function render(filePath) {
   }
 
 }
+
+function moveVideoTime(event) {
+  if (!onVideoContent(event)) return;
+
+  var mainContentRect = mainContent.getBoundingClientRect()
+
+  const video = mainContent.firstChild;
+
+  var timeX = (event.x - mainContentRect.left) / mainContentRect.width;
+  video.currentTime = video.duration * timeX;
+}
+
+function onVideoContent(event) {
+  if (!mainContent.firstChild) {
+    return false;
+  }
+  if (mainContent.firstChild.tagName.toLowerCase() != 'video') {
+    return false;
+  }
+
+  if (event.x < mainContent.getBoundingClientRect().left) {
+    return false;
+  }
+
+  return true;
+}
+
+document.onmousemove = moveVideoTime;
 
 const ipc = require('electron').ipcRenderer;
 
