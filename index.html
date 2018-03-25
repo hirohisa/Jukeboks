@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Jukeboks</title>
 
+    <link rel="stylesheet" href="node_modules/xel/stylesheets/macos.theme.css">
     <link rel="stylesheet" href="module/photon-0.1.2/css/photon.min.css">
     <link rel="stylesheet" href="./css/main.css" />
+
+    <script src="node_modules/xel/xel.min.js"></script>
   </head>
   <body>
     <div class="window">
@@ -27,10 +30,9 @@
         <!-- .main-content -->
         <div class="pane">
           <main id="main-content"></main>
+          <x-slider value="0" min="0" max="100" id="video-slider"></x-slider>
         </div>
       </div>
-
-
     </div>
   </body>
   <script type="text/javascript" src="./renderer-process/renderer_main.js"></script>

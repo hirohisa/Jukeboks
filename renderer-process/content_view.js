@@ -1,6 +1,8 @@
 'use strict'
 
 const mainContent = document.getElementById('main-content')
+const videoSlider = document.getElementById('video-slider')
+var videoTimer;
 
 var MEDIA = {
   UNDEFINED : 0,
@@ -66,12 +68,20 @@ function render(filePath) {
   if (element) {
     element.className = "visible"
     mainContent.appendChild(element)
-
     if (element.tagName.toLowerCase() == 'video') {
       element.addEventListener("ended", function() {
         ipc.send('endedVideo')
       }, true)
     }
+
+  }
+
+  if (isVideoContent()) {
+    videoTimer = setInterval(seekVideo, 1000)
+    videoSlider.style.display =  "block";
+  } else {
+    clearInterval(videoTimer);
+    videoSlider.style.display =  "none";
   }
 
 }
@@ -80,29 +90,39 @@ function moveVideoTime(event) {
   if (!onVideoContent(event)) return;
 
   var mainContentRect = mainContent.getBoundingClientRect()
-
-  const video = mainContent.firstChild;
-
-  var timeX = (event.x - mainContentRect.left) / mainContentRect.width;
-  video.currentTime = video.duration * timeX;
+  var ratio = (event.x - mainContentRect.left) / mainContentRect.width;
+  moveCurrentTimeOfVideoWithRatio(ratio)
 }
 
-function onVideoContent(event) {
+function moveCurrentTimeOfVideoWithRatio(ratio) {
+  const video = mainContent.firstChild;
+  video.currentTime = video.duration * ratio;
+}
+
+function reflectCurrentTimeOnSlider(ratio) {
+  videoSlider.value = 100 * ratio
+}
+
+function seekVideo() {
+  if (!isVideoContent()) return;
+
+  const video = mainContent.firstChild;
+  var ratio = video.currentTime / video.duration;
+  reflectCurrentTimeOnSlider(ratio);
+}
+
+function isVideoContent() {
   if (!mainContent.firstChild) {
     return false;
   }
-  if (mainContent.firstChild.tagName.toLowerCase() != 'video') {
-    return false;
-  }
 
-  if (event.x < mainContent.getBoundingClientRect().left) {
-    return false;
-  }
-
-  return true;
+  return mainContent.firstChild.tagName.toLowerCase() == 'video';
 }
 
-document.onmousemove = moveVideoTime;
+videoSlider.addEventListener("change", (event) => {
+  var ratio = videoSlider.value / 100;
+  moveCurrentTimeOfVideoWithRatio(ratio);
+})
 
 const ipc = require('electron').ipcRenderer;
 

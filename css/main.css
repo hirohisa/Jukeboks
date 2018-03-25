@@ -48,3 +48,7 @@ img.hidden {
 .nav-group-item-disactive:active {
   background-color: transparent;
 }
+x-slider {
+  position: fixed;
+  bottom: 0;
+}
