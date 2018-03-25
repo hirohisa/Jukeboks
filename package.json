@@ -13,7 +13,8 @@
     "electron-json-storage": "^3.0.0",
     "glob": "^7.1.1",
     "queue": "^4.2.1",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "xel": "0.0.130"
   },
   "devDependencies": {
     "electron-packager": "^8.5.1"
