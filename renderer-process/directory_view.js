@@ -4,6 +4,7 @@ const sy = require('../lib/sy')
 const ui = require('../lib/ui')
 const utils = require('./utils.js')
 const path = require('path')
+const _ = require('underscore');
 const ipc = require('electron').ipcRenderer;
 
 function scrollTo(element) {
