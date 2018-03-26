@@ -48,7 +48,17 @@ img.hidden {
 .nav-group-item-disactive:active {
   background-color: transparent;
 }
+
+#main-content {
+  width: auto;
+  height: 95%;
+}
+
+.video-component {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
 x-slider {
-  position: fixed;
   bottom: 0;
 }
