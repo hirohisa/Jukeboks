@@ -4,18 +4,14 @@ const _ = require('underscore');
 const remote = require('electron').remote;
 const Menu = remote.Menu;
 const ui = require('../lib/ui')
-
-function openByFinder(path) {
-  const sy = require('../lib/sy');
-  sy.openDirectory(path);
-}
+const sy = require('../lib/sy');
 
 function showInFinder() {
   if (menuManager.event == undefined) return;
 
   var element = menuManager.event.srcElement;
   var href = element.getAttribute('href')
-  openByFinder(href)
+  sy.showInFinder(href);
 }
 
 function onNavigationEvent(event) {
