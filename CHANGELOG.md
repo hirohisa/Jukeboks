@@ -1,3 +1,20 @@
+1.3.1
+-----
+* Update UI about the slider
+
+1.3.0
+-----
+* Use `Xel`
+* Improve slider with movie's current time.
+
+1.2.0
+-----
+* Control the movie's current time.
+
+1.1.0
+-----
+* Add a menu `show in finder`
+
 1.0.3
 -----
 * [Use queue](https://github.com/hirohisa/Jukeboks/pull/11)
