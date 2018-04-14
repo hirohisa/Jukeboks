@@ -1,3 +1,7 @@
+1.4.0
+-----
+* Update app icon, thank you, @moenawar85.
+
 1.3.1
 -----
 * Update UI about the slider
