@@ -22,3 +22,7 @@ In Jukeboks, you can preview images and movies while selecting files.
 ## License
 
 Jukeboks is available under the ISC license.
+
+## Links
+
+- [Acknowledgements](Acknowledgements.md)
