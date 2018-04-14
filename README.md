@@ -1,5 +1,5 @@
-![Jukeboks](https://cloud.githubusercontent.com/assets/1519837/22404160/c89e41a6-e66e-11e6-87e4-1b78e201bce3.png)
-
+Jukeboks
+===
 
 Jukeboks is a fast viewer / player app, built on Electron.
 In Jukeboks, you can preview images and movies while selecting files.
