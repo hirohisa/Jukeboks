@@ -29,16 +29,6 @@ function createWindow() {
   })
 }
 
-function registerShortcut() {
-  electron.globalShortcut.register('Command+Y', () => {
-    openDevTools();
-  });
-}
-
-function unregisterShortcut() {
-  electron.globalShortcut.unregister('Command+Y');
-}
-
 function openDevTools() {
   win.webContents.openDevTools();
 }
@@ -47,7 +37,6 @@ require('./main-process/search.js');
 
 function onReady() {
   createWindow();
-  registerShortcut();
 }
 
 // App
@@ -58,6 +47,3 @@ app.on('activate', () => {
     createWindow();
   }
 })
-app.on('will-quit', function() {
-  unregisterShortcut();
-});
