@@ -96,6 +96,8 @@ function moveVideoTime(event) {
 
 function moveCurrentTimeOfVideoWithRatio(ratio) {
   const video = mainContent.firstChild;
+  if (ratio < 0.0) ratio = 0.0
+  if (ratio > 1.0) ratio = 1.0
   video.currentTime = video.duration * ratio;
 }
 
@@ -131,4 +133,16 @@ ipc.on('selectFile', function(event, data) {
   cleanContents()
   render(data.filePath)
 
+})
+
+ipc.on('keydown', (event, data) => {
+  switch (data.code) {
+    case "ArrowRight":
+    if (isVideoContent()) {
+      var ratio = (videoSlider.value + 5) / 100;
+      moveCurrentTimeOfVideoWithRatio(ratio);
+    }
+      break;
+    default:
+  }
 })

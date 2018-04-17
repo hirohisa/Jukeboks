@@ -187,5 +187,6 @@ ipc.on('didMoveDirectory', (event, data) => {
 })
 
 ipc.on('endedVideo', (event, data) => {
-  directoryView.selectRandom()
+  directoryView.next()
+  // directoryView.selectRandom()
 })
