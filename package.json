@@ -1,6 +1,6 @@
 {
   "name": "Jukeboks",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Jukeboks is a fast viewer / player app",
   "main": "main.js",
   "scripts": {

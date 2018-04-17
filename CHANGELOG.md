@@ -1,3 +1,7 @@
+1.4.1
+-----
+* [Improve interface functions](https://github.com/hirohisa/Jukeboks/pull/24)
+
 1.4.0
 -----
 * Update app icon, thank you, @moenawar85.
