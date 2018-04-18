@@ -16,13 +16,15 @@
         <!-- .navigation -->
         <div class="pane-sm sidebar" id="sidebar">
           <nav class="nav-group">
-            <span class="nav-group-item" id="move-parent-directory">
-              <span class="icon icon-reply" id="move-parent-directory"></span>
-            </span>
+            <span class="nav-group-item icon icon-reply" id="move-parent-directory"></span>
             <h5 class="nav-group-title">Directory</h5>
-            <span class="nav-group-item nav-group-item-disactive" id="path-directory" >
-            </span>
+            <span class="nav-group-item nav-group-item-disactive" id="path-directory"></span>
             <h5 class="nav-group-title">Files</h5>
+            <ul class="list-group">
+              <li class="list-group-header">
+                <input class="form-control" type="text" placeholder="Search" id="search-form-input">
+              </li>
+            </ul>
             <nav id="directory-tree"></nav>
           </nav>
         </div>
