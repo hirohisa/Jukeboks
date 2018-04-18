@@ -2,7 +2,7 @@
 
 require('./renderer-process/click_binder')
 require('./renderer-process/key_binder')
-require('./renderer-process/directory_view.js')
+require('./renderer-process/file_cursor.js')
 require('./renderer-process/content_view.js')
 require('./renderer-process/menu.js')
 
