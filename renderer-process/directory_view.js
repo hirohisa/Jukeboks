@@ -8,6 +8,7 @@ const _ = require('underscore');
 const ipc = require('electron').ipcRenderer;
 
 function scrollTo(element) {
+  if (!element) { return; }
   var top = element.getBoundingClientRect().top
   ui.sideBar.scrollTop = top
 }
@@ -50,7 +51,7 @@ class DirectoryView {
   filter(term) {
     clear()
     var referer = ui.getCurrent() ? ui.getCurrent().getAttribute('href') : undefined;
-    this._render(this.files, referer, term)
+    this._render(this.files, referer, term, ui.searchInputForm)
   }
 
   render(data) {
@@ -60,10 +61,10 @@ class DirectoryView {
     // TODO: get current directory and validate with data.path
 
     this.files = data.files
-    this._render(data.files, data.referer, undefined)
+    this._render(data.files, data.referer, undefined, undefined)
   }
 
-  _render(files, referer, term) {
+  _render(files, referer, term, focusTarget) {
 
     const queue = require('queue');
     var q = queue();
@@ -92,16 +93,19 @@ class DirectoryView {
     q.push(
       () => {
         var current = ui.getCurrent();
-        if (current) {
-          this.select(current);
-          scrollTo(current);
+        this.select(current);
+        if (!focusTarget) {
+          focusTarget = current;
         }
+        scrollTo(focusTarget);
       }
     )
 
   }
 
   select(element) {
+    if (!element) { return; }
+
     var current = ui.getCurrent()
     if (current) {
       current.id = ''
