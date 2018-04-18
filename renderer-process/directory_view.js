@@ -24,14 +24,14 @@ function clear() {
   }
 }
 
-function appendLink(filePath, referer, click) {
+function appendLink(filePath, fileName, referer, click) {
   var link = document.createElement('span')
   link.className = 'nav-group-item'
 
   link.id = referer == filePath ? 'directory-current-page' : ''
 
   var klass = sy.isDirectory(filePath) ? "icon-folder" : "icon-picture"
-  link.innerHTML = '<span class="icon ' + klass + '"></span>' + path.basename(filePath) + '</span>'
+  link.innerHTML = '<span class="icon ' + klass + '"></span>' + fileName + '</span>'
 
   link.setAttribute('href', path.normalize(filePath))
 
@@ -47,23 +47,41 @@ function clickFileLink(filePath) {
 
 class DirectoryView {
 
+  filter(term) {
+    clear()
+    var referer = ui.getCurrent() ? ui.getCurrent().getAttribute('href') : undefined;
+    this._render(this.files, referer, term)
+  }
+
   render(data) {
+    clear()
+    ui.searchInputForm.value = ''
+
     // TODO: get current directory and validate with data.path
 
-    clear()
+    this.files = data.files
+    this._render(data.files, data.referer, undefined)
+  }
+
+  _render(files, referer, term) {
 
     const queue = require('queue');
     var q = queue();
     q.autostart = true;
 
-    for (var i in data.files) {
-      var filePath = data.files[i]
+    for (var i in files) {
+      var filePath = files[i]
+      var fileName = path.basename(filePath)
+
+      if (term && !fileName.includes(term)) {
+        continue;
+      }
 
       q.push(
 
         // Bug: wrong links occur when queue has tasks
         () => {
-          appendLink(filePath, data.referer, (e) => {
+          appendLink(filePath, fileName, referer, (e) => {
             this.select(e.target);
             clickFileLink(e.target.getAttribute('href'));
           })
@@ -80,6 +98,7 @@ class DirectoryView {
         }
       }
     )
+
   }
 
   select(element) {
@@ -139,10 +158,19 @@ class DirectoryView {
 
 const directoryView = new DirectoryView();
 
+var previousSearchInputValue = undefined
+function filterIfNeeded() {
+  if (previousSearchInputValue != ui.searchInputForm.value) {
+    directoryView.filter(ui.searchInputForm.value)
+  }
+  previousSearchInputValue = ui.searchInputForm.value
+}
+
 ipc.on('searchFiles', (event, data) => {
   directoryView.render(data)
 })
 
+var previousKey = undefined
 ipc.on('keydown', (event, data) => {
   switch (data.code) {
     case "ArrowUp":
@@ -157,8 +185,21 @@ ipc.on('keydown', (event, data) => {
     case "ArrowRight":
     directoryView.down()
       break;
+    case "Backspace":
+    if (document.activeElement.tagName.toLowerCase() != "input") {
+      ipc.send('moveToTrash', data);
+    }
+      break;
+    case "KeyS":
+    if (["MetaLeft", "MetaRight"].includes(previousKey)) {
+      ui.searchInputForm.focus();
+    }
+      break;
     default:
   }
+  previousKey = data.code
+
+  filterIfNeeded();
 })
 
 ipc.on('click', (event, data) => {

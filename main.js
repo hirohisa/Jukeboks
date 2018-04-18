@@ -21,16 +21,12 @@ function createWindow() {
   }))
 
   if (process.env.NODE_ENV == 'development') {
-    openDevTools()
+    win.webContents.openDevTools();
   }
 
   win.on('closed', () => {
     win = null
   })
-}
-
-function openDevTools() {
-  win.webContents.openDevTools();
 }
 
 require('./main-process/search.js');

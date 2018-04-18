@@ -27,13 +27,11 @@ ipc.on('movePath', function(event, data) {
 
 })
 
+ipc.on('moveToTrash', function(event, data) {
+  fileFinder.moveToTrash(event, data.filePath)
+})
+
 ipc.on('keydown', function(event, data) {
-  switch (data.code) {
-    case "Backspace":
-    fileFinder.moveToTrash(event, data.filePath)
-      break;
-    default:
-  }
   event.sender.send('keydown', data);
 })
 
