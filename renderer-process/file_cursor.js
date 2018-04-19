@@ -70,7 +70,7 @@ function render(files, referer, term, focusTarget) {
 
   for (var i in files) {
     var filePath = files[i]
-    var fileName = path.basename(filePath)
+    var fileName = path.basename(filePath).normalize()
 
     if (term && !fileName.includes(term)) {
       continue;
@@ -187,6 +187,8 @@ ipc.on('searchFiles', (event, data) => {
 
 var previousKey = undefined
 ipc.on('keydown', (event, data) => {
+  var isFocusInput = document.activeElement.tagName.toLowerCase() == "input"
+
   switch (data.code) {
     case "ArrowUp":
     fileCursor.previous()
@@ -195,13 +197,15 @@ ipc.on('keydown', (event, data) => {
     fileCursor.next()
       break;
     case "ArrowLeft":
-    fileCursor.up()
+    if (!isFocusInput) {
+      fileCursor.up()
+    }
       break;
     case "ArrowRight":
     fileCursor.down()
       break;
     case "Backspace":
-    if (document.activeElement.tagName.toLowerCase() != "input") {
+    if (!isFocusInput) {
       ipc.send('moveToTrash', data);
     }
       break;
