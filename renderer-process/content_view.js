@@ -65,7 +65,7 @@ function render(filePath) {
   var f = {}
 
   var element = createContent(filePath)
-  if (element) {
+  if (element && isActive()) {
     element.className = "visible"
     mainContent.appendChild(element)
     if (element.tagName.toLowerCase() == 'video') {
@@ -73,17 +73,19 @@ function render(filePath) {
         ipc.send('endedVideo')
       }, true)
     }
-
   }
 
-  if (isVideoContent()) {
+  displayVideoSlider()
+}
+
+function displayVideoSlider() {
+  if (isDisplayingVideo()) {
     videoTimer = setInterval(seekVideo, 1000)
     videoSlider.style.display =  "block";
   } else {
     clearInterval(videoTimer);
     videoSlider.style.display =  "none";
   }
-
 }
 
 function moveVideoTime(event) {
@@ -106,17 +108,22 @@ function reflectCurrentTimeOnSlider(ratio) {
 }
 
 function seekVideo() {
-  if (!isVideoContent()) return;
+  if (!isDisplayingVideo()) return;
 
   const video = mainContent.firstChild;
   var ratio = video.currentTime / video.duration;
   reflectCurrentTimeOnSlider(ratio);
 }
 
-function isVideoContent() {
-  if (!mainContent.firstChild) {
-    return false;
-  }
+function isActive() {
+  if (mainContent.style.display == "none") { return false; }
+
+  return true;
+}
+
+function isDisplayingVideo() {
+  if (!isActive()) { return false }
+  if (!mainContent.firstChild) { return false; }
 
   return mainContent.firstChild.tagName.toLowerCase() == 'video';
 }
@@ -138,7 +145,7 @@ ipc.on('selectFile', function(event, data) {
 ipc.on('keydown', (event, data) => {
   switch (data.code) {
     case "ArrowRight":
-    if (isVideoContent()) {
+    if (isDisplayingVideo()) {
       var ratio = (videoSlider.value + 5) / 100;
       moveCurrentTimeOfVideoWithRatio(ratio);
     }
