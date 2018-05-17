@@ -4,6 +4,7 @@ require('./renderer-process/click_binder')
 require('./renderer-process/key_binder')
 require('./renderer-process/file_cursor.js')
 require('./renderer-process/content_view.js')
+require('./renderer-process/collection_view.js')
 require('./renderer-process/menu.js')
 
 const def = require('./lib/define');

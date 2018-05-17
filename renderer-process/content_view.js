@@ -2,6 +2,8 @@
 
 const mainContent = document.getElementById('main-content')
 const videoSlider = document.getElementById('video-slider')
+const sy = require('../lib/sy');
+const utils = require('./utils');
 var videoTimer;
 
 var MEDIA = {
@@ -12,7 +14,6 @@ var MEDIA = {
 
 function ext(filePath) {
   if (!filePath) return MEDIA.UNDEFINED;
-  const sy = require('../lib/sy')
   if (sy.isDirectory(filePath)) return MEDIA.UNDEFINED;
   const path = require('path');
   var extname = path.extname(filePath).toLowerCase();
@@ -53,17 +54,8 @@ function createContent(src) {
   return element
 }
 
-function cleanContents() {
-  while (mainContent.firstChild) {
-      mainContent.removeChild(mainContent.firstChild)
-  }
-}
-
 function render(filePath) {
-  var self = this
   var src = "file://" + filePath
-  var f = {}
-
   var element = createContent(filePath)
   if (element && isActive()) {
     element.className = "visible"
@@ -135,11 +127,24 @@ videoSlider.addEventListener("change", (event) => {
 
 const ipc = require('electron').ipcRenderer;
 
+var stored = undefined;
+var isContent = true;
 ipc.on('selectFile', function(event, data) {
+  stored = data.filePath;
+  if (isContent) {
+    utils.cleanContents();
+    render(stored);
+  }
+})
 
-  cleanContents()
-  render(data.filePath)
+ipc.on('changeLayoutToContent', function(event, data) {
+  isContent = true
+  utils.cleanContents();
+  render(stored);
+})
 
+ipc.on('changeLayoutToCollection', function(event, data) {
+  isContent = false
 })
 
 ipc.on('keydown', (event, data) => {

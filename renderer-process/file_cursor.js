@@ -9,8 +9,7 @@ const ipc = require('electron').ipcRenderer;
 
 function scrollTo(element) {
   if (!element) { return; }
-  var top = element.getBoundingClientRect().top
-  ui.sideBar.scrollTop = top
+  element.scrollIntoViewIfNeeded();
 }
 
 function scrollToRelative(from, to) {
@@ -225,6 +224,9 @@ ipc.on('click', (event, data) => {
   switch (data.id) {
     case "move-parent-directory":
     fileCursor.up()
+    case "move-home-directory":
+    const def = require('../lib/define');
+    utils.jump(def.rootPath)
       break;
     default:
   }

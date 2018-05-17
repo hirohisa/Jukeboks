@@ -1,10 +1,5 @@
 describe("FileOrganizer", () => {
-  const FileOrganizer = require('../main-process/file_organizer')
-  var organizer
-
-  beforeEach(() => {
-    organizer = new FileOrganizer()
-  })
+  const organizer = require('../lib/file_organizer')
 
   describe("when finder sorts files", () => {
     it("should be possible to sort ascending numbers", () => {

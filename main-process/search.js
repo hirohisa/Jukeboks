@@ -2,29 +2,25 @@
 
 const fileFinder = require('./file_finder.js');
 
+function search(sender, data, identifer) {
+  fileFinder.search(data.path, (files) => {
+    var result = {
+      path: data.path,
+      files: files,
+      referer: data.referer
+    };
+    sender.send(identifer, result);
+  })
+}
+
 const ipc = require('electron').ipcMain;
 ipc.on('movePath', function(event, data) {
   event.sender.send('didMoveDirectory', data);
+  search(event.sender, data, 'searchFiles');
+})
 
-  const queue = require('queue');
-  var q = queue();
-
-  q.push(
-
-    () => {
-      fileFinder.search(data.path, (files) => {
-        var result = {
-          path: data.path,
-          files: files,
-          referer: data.referer
-        };
-        event.sender.send('searchFiles', result);
-      });
-    }
-  );
-
-  q.start();
-
+ipc.on('requestFiles', function(event, data) {
+  search(event.sender, data, 'responseFiles');
 })
 
 ipc.on('moveToTrash', function(event, data) {
@@ -36,7 +32,7 @@ ipc.on('keydown', function(event, data) {
 })
 
 // delegate
-const proxyList = ['click', 'endedVideo', 'selectFile']
+const proxyList = ['click', 'endedVideo', 'selectFile', 'changeLayoutToCollection', 'changeLayoutToContent']
 proxyList.forEach(function(e) {
   ipc.on(e, function(event, data) {
     event.sender.send(e, data);

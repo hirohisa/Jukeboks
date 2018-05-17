@@ -1,23 +1,10 @@
 'use strict'
 
-const fileOrganizer = require('./file_organizer');
 const define = require('../lib/define');
+const sy = require('../lib/sy');
 const _ = require('underscore');
 const fs = require('fs');
 const path = require('path');
-
-function convertFilePaths(directoryPath, files) {
-  var filePaths = []
-  for (var i in files) {
-    var file = files[i]
-    if (!file) continue
-
-    var filePath = directoryPath + '/' + file
-    filePaths.push(path.normalize(filePath))
-  }
-
-  return filePaths
-}
 
 function deleteRelationlessData(directoryPath) {
   var removeKeys = []
@@ -34,25 +21,6 @@ function deleteRelationlessData(directoryPath) {
   }
 }
 
-var sort = function(a, b) {
-  var aList = a.match(/\d+/g)
-  var bList = b.match(/\d+/g)
-
-  if (!aList || !bList) {
-    return 0
-  }
-
-  for (var i in aList) {
-    var aInt = parseInt(aList[i])
-    var bInt = parseInt(bList[i])
-    if (aInt && bInt && aInt != bInt) {
-      return aInt - bInt
-    }
-  }
-
-  return 0
-}
-
 const storage = {}
 
 class FileFinder {
@@ -65,16 +33,7 @@ class FileFinder {
       callback(filePaths)
       return
     }
-    this.findFiles(directoryPath, callback)
-  }
-
-  findFiles(directoryPath, callback) {
-    const fs = require('fs')
-    fs.readdir(directoryPath, function(error, files) {
-      if (error) files = []
-
-      var filePaths = convertFilePaths(directoryPath, fileOrganizer.sortFiles(files))
-
+    sy.findFiles(directoryPath, function(filePaths) {
       storage[directoryPath] = filePaths
       callback(filePaths)
     })
