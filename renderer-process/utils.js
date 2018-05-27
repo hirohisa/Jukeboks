@@ -26,8 +26,14 @@ module.exports.showCollection = function() {
 }
 
 module.exports.isShowingContent = function() {
-  var target = document.getElementById('change-layout');
-  return !target.getAttribute("class").includes("icon-layout");
+  if (mainContent.style.display ==  "block") {
+    return true;
+  }
+  if (mainContent.style.display == undefined) {
+    return true;
+  }
+
+  return false;
 }
 
 module.exports.cleanContents = function() {

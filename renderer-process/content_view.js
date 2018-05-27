@@ -128,23 +128,17 @@ videoSlider.addEventListener("change", (event) => {
 const ipc = require('electron').ipcRenderer;
 
 var stored = undefined;
-var isContent = true;
 ipc.on('selectFile', function(event, data) {
   stored = data.filePath;
-  if (isContent) {
+  if (utils.isShowingContent()) {
     utils.cleanContents();
-    render(stored);
+    render(data.filePath);
   }
 })
 
 ipc.on('changeLayoutToContent', function(event, data) {
-  isContent = true
   utils.cleanContents();
   render(stored);
-})
-
-ipc.on('changeLayoutToCollection', function(event, data) {
-  isContent = false
 })
 
 ipc.on('keydown', (event, data) => {
