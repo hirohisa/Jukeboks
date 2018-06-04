@@ -6,18 +6,16 @@ const _ = require('underscore');
 const fs = require('fs');
 const path = require('path');
 
-function deleteRelationlessData(directoryPath) {
-  var removeKeys = []
-  for(var key in storage) {
-    var relative = path.relative(directoryPath, key)
-    var separate = relative.split(path.sep)
-    if (separate.length > 2) {
-      removeKeys.push(key)
+function cleanData(directoryPath) {
+  var removeKeys = [];
+  for(var storedPath in storage) {
+    if (!sy.keepDirectory(directoryPath, storedPath)) {
+      removeKeys.push(storedPath);
     }
   }
 
   for(var i in removeKeys) {
-    delete storage[removeKeys[i]]
+    delete storage[removeKeys[i]];
   }
 }
 
@@ -26,7 +24,7 @@ const storage = {}
 class FileFinder {
 
   search(directoryPath, callback) {
-    deleteRelationlessData(directoryPath)
+    cleanData(directoryPath)
     directoryPath = path.normalize(directoryPath)
     var filePaths = storage[directoryPath]
     if (filePaths) {

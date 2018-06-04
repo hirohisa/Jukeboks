@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "NODE_ENV=development electron .",
-    "release": "node release.js"
+    "release": "node release.js",
+    "test": "jasmine"
   },
   "author": "hirohisa",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "xel": "0.0.130"
   },
   "devDependencies": {
-    "electron-packager": "^8.5.1"
+    "electron-packager": "^8.5.1",
+    "jasmine": "^3.1.0"
   }
 }

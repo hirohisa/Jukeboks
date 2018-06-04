@@ -1,5 +1,5 @@
 describe("O", () => {
-  const O = require('../main-process/o')
+  const O = require('../lib/o')
 
   it("initialize with string", () => {
     var file, expected, o
