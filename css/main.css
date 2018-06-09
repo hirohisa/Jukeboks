@@ -6,6 +6,10 @@ nav.nav-group {
   color: orange;
 }
 
+#directory-current-page span {
+  color: orange;
+}
+
 .pane {
   background-color: #333;
 }

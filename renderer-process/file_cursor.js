@@ -24,12 +24,11 @@ function clear() {
   }
 }
 
-function makeLink(filePath, fileName, referer, click) {
-  var linkId = referer == filePath ? 'directory-current-page' : '';
+function makeLink(filePath, fileName, click) {
   var klass = sy.isDirectory(filePath) ? "icon-folder" : "icon-picture"
 
   var html = `
-  <span class="nav-group-item" id="${linkId}" href="${path.normalize(filePath)}">
+  <span class="nav-group-item" id="" href="${path.normalize(filePath)}">
     <span class="icon ${klass}"></span>${fileName}</span>
   </span>
   `;
@@ -61,6 +60,31 @@ function reload(data) {
   render(data.files, data.referer, undefined, undefined)
 }
 
+function getElementBy(href) {
+  var array = Array.from(document.getElementsByClassName('nav-group-item'));
+  return array.find(e => e.getAttribute('href') == href);
+}
+
+function selectCurrent(href, focusTarget) {
+  var current = undefined;
+  if (href) {
+    current = getElementBy(href);
+    if (current) {
+      current.id = 'directory-current-page';
+    }
+  }
+  if (!current) {
+    current = ui.getCurrent();
+  }
+
+  fileCursor.select(current);
+  if (!focusTarget) {
+    focusTarget = current;
+  }
+  scrollTo(focusTarget);
+
+}
+
 function render(files, referer, term, focusTarget) {
 
   const queue = require('queue');
@@ -79,9 +103,13 @@ function render(files, referer, term, focusTarget) {
 
       // Bug: wrong links occur when queue has tasks
       () => {
-        var link = makeLink(filePath, fileName, referer, (e) => {
-          fileCursor.select(e.target);
-          clickFileLink(e.target.getAttribute('href'));
+        var link = makeLink(filePath, fileName, (e) => {
+          var target = e.target;
+          if (e.target.className != "nav-group-item") {
+            target = target.parentNode;
+          }
+          fileCursor.select(target);
+          clickFileLink(target.getAttribute('href'));
         })
 
         ui.directoryTree.appendChild(link);
@@ -91,12 +119,7 @@ function render(files, referer, term, focusTarget) {
 
   q.push(
     () => {
-      var current = ui.getCurrent();
-      fileCursor.select(current);
-      if (!focusTarget) {
-        focusTarget = current;
-      }
-      scrollTo(focusTarget);
+      selectCurrent(referer, focusTarget);
     }
   )
 
@@ -231,6 +254,10 @@ ipc.on('click', (event, data) => {
     default:
   }
 })
+
+ipc.on('selectCurrent', (event, data) => {
+  selectCurrent(data.href, undefined);
+});
 
 ipc.on('removePath', function(event, data) {
 

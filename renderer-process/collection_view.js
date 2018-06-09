@@ -3,6 +3,7 @@ const ui = require('../lib/ui');
 const utils = require('./utils');
 const path = require('path');
 const queue = require('queue');
+const ipc = require('electron').ipcRenderer;
 const q = queue();
 q.autostart = true;
 
@@ -14,6 +15,17 @@ function createItem(filePath) {
   element.appendChild(createText(fileName));
   element.id = fileName;
   element.setAttribute('href', filePath);
+  element.addEventListener("click", function(e) {
+    var href = e.target.getAttribute('href');
+    if (!href) {
+      href = e.target.parentNode.getAttribute('href');
+    }
+    if (href) {
+      var data = {href: href};
+      ipc.send('selectCurrent', data);
+    }
+  }, false);
+
   return element;
 }
 
@@ -61,8 +73,6 @@ function renderToCollection(filePath) {
       });
   }
 }
-
-const ipc = require('electron').ipcRenderer;
 
 ipc.on('selectFile', function(event, data) {
   if (!utils.isShowingContent()) {
