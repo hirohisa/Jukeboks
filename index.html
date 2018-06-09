@@ -12,11 +12,25 @@
   </head>
   <body>
     <div class="window">
+      <header class="toolbar toolbar-header">
+        <div class="toolbar-actions">
+          <div class="btn-group">
+            <button class="btn btn-default" id="move-home-directory">
+              <span class="icon icon-home"></span>
+            </button>
+            <button class="btn btn-default" id="move-parent-directory">
+              <span class="icon icon-reply" ></span>
+            </button>
+            <button class="btn btn-default" id="change-layout">
+              <span class="icon icon-newspaper" id="change-layout-icon"></span>
+            </button>
+          </div>
+        </div>
+      </header>
       <div class="window-content">
         <!-- .navigation -->
         <div class="pane-sm sidebar" id="sidebar">
           <nav class="nav-group">
-            <span class="nav-group-item icon icon-reply" id="move-parent-directory"></span>
             <h5 class="nav-group-title">Directory</h5>
             <span class="nav-group-item nav-group-item-disactive" id="path-directory"></span>
             <h5 class="nav-group-title">Files</h5>
@@ -30,8 +44,9 @@
         </div>
 
         <!-- .main-content -->
-        <div class="pane">
+        <div class="pane" id="main-panel">
           <main id="main-content"></main>
+          <main id="main-collection" class="grid"></main>
           <div class="video-component">
             <x-slider value="0" min="0" max="100" id="video-slider"></x-slider>
           </div>

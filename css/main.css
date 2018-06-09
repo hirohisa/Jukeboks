@@ -9,7 +9,7 @@ nav.nav-group {
 .pane {
   background-color: #333;
 }
-.pane img {
+#main-content img {
   width: auto;
   height: auto;
   max-width: 100%;
@@ -21,7 +21,7 @@ nav.nav-group {
   left: 0;
   margin: auto;
 }
-.pane video {
+#main-content video {
   max-width: 100%;
   height: auto;
   position: absolute;
@@ -61,4 +61,38 @@ img.hidden {
 
 x-slider {
   bottom: 0;
+}
+
+.grid {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.grid-item {
+    position: relative;
+    margin: 10px;
+    background-color: #eee;
+    width: 250px;
+    height: 300px;
+    float:left;
+}
+
+.grid-item-content {
+    width: 250px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.grid-item-label {
+    margin: 0;
+    position: absolute;
+    background-color: #333;
+    opacity: 0.5;
+    top: 5px;
+    left: 5px;
+}
+
+.grid-item-label p {
+    margin: 5px;
+    color: #fff;
 }
