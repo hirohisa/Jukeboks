@@ -82,16 +82,20 @@ ipc.on('selectFile', function(event, data) {
   }
 })
 
-ipc.on('changeLayoutToContent', function(event, data) {
-  q.end();
-})
-
-ipc.on('changeLayoutToCollection', function(event, data) {
+const layoutIcon = document.getElementById('change-layout-icon');
+ipc.on('changeLayout', function(event, data) {
   var data = {
     path: ui.directoryPath.getAttribute('href')
   };
+  var isShowingContent = utils.isShowingContent();
+  isShowingContent ? utils.showCollection() : utils.showContent();
+  console.log(layoutIcon);
+  layoutIcon.className = isShowingContent ? 'icon icon-layout' : 'icon icon-newspaper';
+
   ipc.send('requestFiles', data);
 })
+
 ipc.on('responseFiles', function(event, data) {
+  utils.clean(mainCollection);
   render(data.files);
 })

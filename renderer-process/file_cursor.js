@@ -207,38 +207,22 @@ ipc.on('searchFiles', (event, data) => {
   reload(data)
 })
 
-var previousKey = undefined
 ipc.on('keydown', (event, data) => {
-  var isFocusInput = document.activeElement.tagName.toLowerCase() == "input"
-
   switch (data.code) {
     case "ArrowUp":
-    fileCursor.previous()
+      fileCursor.previous()
       break;
     case "ArrowDown":
-    fileCursor.next()
+      fileCursor.next()
       break;
     case "ArrowLeft":
-    if (!isFocusInput) {
       fileCursor.up()
-    }
       break;
     case "ArrowRight":
-    fileCursor.down()
-      break;
-    case "Backspace":
-    if (!isFocusInput) {
-      ipc.send('moveToTrash', data);
-    }
-      break;
-    case "KeyS":
-    if (["MetaLeft", "MetaRight"].includes(previousKey)) {
-      ui.searchInputForm.focus();
-    }
+      fileCursor.down()
       break;
     default:
   }
-  previousKey = data.code
 
   filterIfNeeded();
 })

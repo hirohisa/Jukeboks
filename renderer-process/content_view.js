@@ -144,10 +144,10 @@ ipc.on('changeLayoutToContent', function(event, data) {
 ipc.on('keydown', (event, data) => {
   switch (data.code) {
     case "ArrowRight":
-    if (isDisplayingVideo()) {
-      var ratio = (videoSlider.value + 5) / 100;
-      moveCurrentTimeOfVideoWithRatio(ratio);
-    }
+      if (isDisplayingVideo()) {
+        var ratio = (videoSlider.value + 5) / 100;
+        moveCurrentTimeOfVideoWithRatio(ratio);
+      }
       break;
     default:
   }

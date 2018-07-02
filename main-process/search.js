@@ -32,7 +32,7 @@ ipc.on('keydown', function(event, data) {
 })
 
 // delegate
-const proxyList = ['click', 'endedVideo', 'selectFile', 'changeLayoutToCollection', 'changeLayoutToContent', 'selectCurrent']
+const proxyList = ['click', 'endedVideo', 'selectFile', 'changeLayout', 'selectCurrent']
 proxyList.forEach(function(e) {
   ipc.on(e, function(event, data) {
     event.sender.send(e, data);
