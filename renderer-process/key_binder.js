@@ -48,6 +48,7 @@ document.addEventListener("keydown", (event) => {
 
   if (isFocusInputField()) {
     previous = event.code
+    ipc.send('keydown', data);
     return;
   }
 

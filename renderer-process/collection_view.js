@@ -74,6 +74,15 @@ function renderToCollection(filePath) {
   }
 }
 
+ipc.on('keydown', (event, data) => {
+  switch (data.code) {
+    case "ArrowLeft":
+      q.end();
+      break;
+  }
+})
+
+
 ipc.on('selectFile', function(event, data) {
   if (!utils.isShowingContent()) {
     element = document.getElementById(path.basename(data.filePath));
@@ -89,13 +98,13 @@ ipc.on('changeLayout', function(event, data) {
   };
   var isShowingContent = utils.isShowingContent();
   isShowingContent ? utils.showCollection() : utils.showContent();
-  console.log(layoutIcon);
   layoutIcon.className = isShowingContent ? 'icon icon-layout' : 'icon icon-newspaper';
 
   ipc.send('requestFiles', data);
 })
 
 ipc.on('responseFiles', function(event, data) {
+  q.end();
   utils.clean(mainCollection);
   render(data.files);
 })
