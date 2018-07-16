@@ -15,7 +15,6 @@ function isFocusInputField() {
   return document.activeElement.tagName.toLowerCase() == "input"
 }
 
-
 function execCommands(data) {
   switch (data.code) {
     // Focus Search
@@ -34,30 +33,38 @@ function execCommands(data) {
   }
 }
 
-var previous = undefined
+var isControlCommandKey = false;
+function handleCommand(code, key) {
+  var is = ["MetaLeft", "MetaRight"].includes(code);
+  if (!is) return;
+
+  isControlCommandKey = key != "up";
+}
+
+document.addEventListener("keyup", (event) => {
+  handleCommand(event.code, "up");
+})
+
 document.addEventListener("keydown", (event) => {
+  handleCommand(event.code, "down");
   var data = {
     code: event.code,
     path: ui.directoryPath.getAttribute('href'),
     filePath: getFilePath()
   };
 
-  if (["MetaLeft", "MetaRight"].includes(previous)) {
+  if (isControlCommandKey) {
     execCommands(data);
   }
 
-  if (isFocusInputField()) {
-    previous = event.code
-    ipc.send('keydown', data);
-    return;
+  if (!isFocusInputField()) {
+    switch (event.code) {
+      case "Backspace":
+        ipc.send('moveToTrash', data);
+        break;
+      default:
+    }
   }
 
-  switch (event.code) {
-    case "Backspace":
-      ipc.send('moveToTrash', data);
-      break;
-    default:
-  }
-  previous = event.code
   ipc.send('keydown', data);
 })
