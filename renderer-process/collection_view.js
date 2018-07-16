@@ -41,9 +41,15 @@ function createText(text) {
 }
 
 function render(filePaths) {
+  var myLazyLoad = new LazyLoad({
+    elements_selector: ".lazy"
+  });
+
   filePaths.forEach(function(filePath) {
     renderToCollection(filePath);
   });
+
+  myLazyLoad.update();
 }
 
 function renderToCollection(filePath) {
@@ -58,7 +64,7 @@ function renderToCollection(filePath) {
           if (sy.isDirectory(filePaths[0])) { return }
 
           var img = document.createElement("img");
-          img.className = 'grid-item-content';;
+          img.className = 'grid-item-content lazy';
           img.src = "file://" + filePaths[0];
           element.appendChild(img);
         });
@@ -67,7 +73,7 @@ function renderToCollection(filePath) {
     q.push(
       () => {
         var img = document.createElement("img");
-        img.className = 'grid-item-content';
+        img.className = 'grid-item-content lazy';
         img.src = "file://" + filePath;
         element.appendChild(img);
       });
@@ -78,6 +84,8 @@ ipc.on('keydown', (event, data) => {
   switch (data.code) {
     case "ArrowLeft":
       q.end();
+      utils.clean(mainCollection);
+
       break;
   }
 })
@@ -100,7 +108,9 @@ ipc.on('changeLayout', function(event, data) {
   isShowingContent ? utils.showCollection() : utils.showContent();
   layoutIcon.className = isShowingContent ? 'icon icon-layout' : 'icon icon-newspaper';
 
-  ipc.send('requestFiles', data);
+  if (isShowingContent) {
+    ipc.send('requestFiles', data);
+  }
 })
 
 ipc.on('responseFiles', function(event, data) {
