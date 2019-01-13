@@ -76,15 +76,16 @@ x-slider {
     position: relative;
     margin: 10px;
     background-color: #eee;
-    width: 250px;
+    width: 350px;
     height: 300px;
     float:left;
 }
 
 .grid-item-content {
-    width: 250px;
+    width: 350px;
     height: 300px;
-    object-fit: cover;
+    object-fit: contain;
+    /* object-fit: cover; */
 }
 
 .grid-item-label {
