@@ -41,9 +41,15 @@ function createText(text) {
 }
 
 function render(filePaths) {
+  var myLazyLoad = new LazyLoad({
+    elements_selector: ".lazy"
+  });
+
   filePaths.forEach(function(filePath) {
     renderToCollection(filePath);
   });
+
+  myLazyLoad.update();
 }
 
 function renderToCollection(filePath) {
@@ -58,7 +64,7 @@ function renderToCollection(filePath) {
           if (sy.isDirectory(filePaths[0])) { return }
 
           var img = document.createElement("img");
-          img.className = 'grid-item-content';;
+          img.className = 'grid-item-content lazy';
           img.src = "file://" + filePaths[0];
           element.appendChild(img);
         });
@@ -67,12 +73,23 @@ function renderToCollection(filePath) {
     q.push(
       () => {
         var img = document.createElement("img");
-        img.className = 'grid-item-content';
+        img.className = 'grid-item-content lazy';
         img.src = "file://" + filePath;
         element.appendChild(img);
       });
   }
 }
+
+ipc.on('keydown', (event, data) => {
+  switch (data.code) {
+    case "ArrowLeft":
+      q.end();
+      utils.clean(mainCollection);
+
+      break;
+  }
+})
+
 
 ipc.on('selectFile', function(event, data) {
   if (!utils.isShowingContent()) {
@@ -82,16 +99,22 @@ ipc.on('selectFile', function(event, data) {
   }
 })
 
-ipc.on('changeLayoutToContent', function(event, data) {
-  q.end();
-})
-
-ipc.on('changeLayoutToCollection', function(event, data) {
+const layoutIcon = document.getElementById('change-layout-icon');
+ipc.on('changeLayout', function(event, data) {
   var data = {
     path: ui.directoryPath.getAttribute('href')
   };
-  ipc.send('requestFiles', data);
+  var isShowingContent = utils.isShowingContent();
+  isShowingContent ? utils.showCollection() : utils.showContent();
+  layoutIcon.className = isShowingContent ? 'icon icon-layout' : 'icon icon-newspaper';
+
+  if (isShowingContent) {
+    ipc.send('requestFiles', data);
+  }
 })
+
 ipc.on('responseFiles', function(event, data) {
+  q.end();
+  utils.clean(mainCollection);
   render(data.files);
 })

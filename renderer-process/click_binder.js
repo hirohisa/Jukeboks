@@ -17,15 +17,9 @@ document.getElementById('move-home-directory').addEventListener("click", (event)
   ipc.send('click', data);
 })
 
-var layoutIconElement = document.getElementById('change-layout-icon');
 var changeLayoutElement = document.getElementById('change-layout');
 changeLayoutElement.addEventListener("click", (event) => {
-  var isShowingContent = utils.isShowingContent();
-  isShowingContent ? utils.showCollection() : utils.showContent();
-  layoutIconElement.className = isShowingContent ? 'icon icon-layout' : 'icon icon-newspaper';
-  var data = {};
-  var sendingValue = isShowingContent ? 'changeLayoutToCollection' : 'changeLayoutToContent';
-  ipc.send(sendingValue, data);
+  ipc.send('changeLayout', {});
 })
 
 ipc.on('didMoveDirectory', function(event, data) {

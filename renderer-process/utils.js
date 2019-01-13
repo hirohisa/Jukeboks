@@ -47,3 +47,9 @@ module.exports.cleanContents = function() {
   const videoSlider = document.getElementById('video-slider');
   videoSlider.style.display =  "none";
 }
+
+module.exports.clean = function(element) {
+  while (element.firstChild) {
+      element.removeChild(element.firstChild)
+  }
+}
