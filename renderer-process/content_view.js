@@ -55,6 +55,7 @@ function createContent(src) {
 }
 
 function render(filePath) {
+  filePath = filePath.split('/').map(s => encodeURIComponent(s)).join('/')
   var src = "file://" + filePath
   var element = createContent(filePath)
   if (element && isActive()) {
