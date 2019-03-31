@@ -62,9 +62,16 @@ function render(filePath) {
     element.className = "visible"
     mainContent.appendChild(element)
     if (element.tagName.toLowerCase() == 'video') {
+      element.addEventListener("play", function(e) {
+        var timeLabel = document.getElementById("video-time-label");
+        var duration = e.target.duration + 1
+        var minutes = Math.floor(duration/60)
+        var seconds = ('0' + Math.floor(duration%60)).slice(-2)
+        timeLabel.innerHTML = minutes + ':' + seconds
+      }, true);
       element.addEventListener("ended", function() {
         ipc.send('endedVideo')
-      }, true)
+      }, true);
     }
   }
 

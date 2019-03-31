@@ -48,7 +48,10 @@
           <main id="main-content"></main>
           <main id="main-collection" class="grid"></main>
           <div class="video-component">
-            <x-slider value="0" min="0" max="100" id="video-slider"></x-slider>
+            <x-slider value="0" min="0" max="100" id="video-slider" skin="arrow">
+              <x-label value="0">0:00</x-label>
+              <x-label value="100" id="video-time-label"></x-label>
+            </x-slider>
           </div>
         </div>
       </div>
