@@ -230,11 +230,12 @@ ipc.on('keydown', (event, data) => {
 ipc.on('click', (event, data) => {
   switch (data.id) {
     case "move-parent-directory":
-    fileCursor.up()
+      fileCursor.up()
+    break;
     case "move-home-directory":
-    const def = require('../lib/define');
-    utils.jump(def.rootPath)
-      break;
+      const def = require('../lib/define');
+      utils.jump(def.rootPath)
+    break;
     default:
   }
 })
