@@ -1,6 +1,6 @@
 'use strict'
 
-const sy = require('../lib/sy')
+const sy = require('../lib/system')
 const ui = require('../lib/ui')
 const utils = require('./utils.js')
 const path = require('path')
@@ -86,7 +86,6 @@ function selectCurrent(href, focusTarget) {
 }
 
 function render(files, referer, term, focusTarget) {
-
   const queue = require('queue');
   var q = queue();
   q.autostart = true;
@@ -256,8 +255,8 @@ ipc.on('removePath', function(event, data) {
 
 ipc.on('didMoveDirectory', (event, data) => {
   const path = require('path')
-  ui.directoryPath.innerHTML = path.basename(data.path)
-  ui.directoryPath.setAttribute('href', data.path)
+  ui.directoryPath.innerHTML = '<span class="icon icon-star-empty"></span>' + path.basename(data.path);
+  ui.directoryPath.setAttribute('href', data.path);
 })
 
 ipc.on('endedVideo', (event, data) => {

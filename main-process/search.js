@@ -1,6 +1,7 @@
 'use strict';
 
 const fileFinder = require('./file_finder.js');
+const bookmarker = require('./bookmarker.js');
 
 function search(sender, data, identifer) {
   fileFinder.search(data.path, (files) => {
@@ -13,28 +14,26 @@ function search(sender, data, identifer) {
   })
 }
 
+function fetchBookmarks(sender, identifer) {
+  bookmarker.selectAll((docs) => {
+    var result = {
+      path: '/bookmarks',
+      files: docs.map((doc) => {
+        return doc.path
+      }),
+    };
+    sender.send(identifer, result);
+  });
+}
+
 const ipc = require('electron').ipcMain;
 ipc.on('movePath', function(event, data) {
   event.sender.send('didMoveDirectory', data);
   search(event.sender, data, 'searchFiles');
 })
-
 ipc.on('requestFiles', function(event, data) {
   search(event.sender, data, 'responseFiles');
 })
-
-ipc.on('moveToTrash', function(event, data) {
-  fileFinder.moveToTrash(event, data.filePath)
-})
-
-ipc.on('keydown', function(event, data) {
-  event.sender.send('keydown', data);
-})
-
-// delegate
-const proxyList = ['click', 'endedVideo', 'selectFile', 'changeLayout', 'selectCurrent']
-proxyList.forEach(function(e) {
-  ipc.on(e, function(event, data) {
-    event.sender.send(e, data);
-  })
+ipc.on('requestBookmarks', function(event, data) {
+  fetchBookmarks(event.sender, 'searchFiles');
 })

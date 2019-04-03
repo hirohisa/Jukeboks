@@ -4,7 +4,7 @@ const _ = require('underscore');
 const remote = require('electron').remote;
 const Menu = remote.Menu;
 const ui = require('../lib/ui')
-const sy = require('../lib/sy');
+const sy = require('../lib/system');
 
 function showInFinder() {
   if (menuManager.event == undefined) return;

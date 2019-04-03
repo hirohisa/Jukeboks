@@ -1,23 +1,37 @@
 'use strict'
 
 const utils = require('./utils.js');
-
 const ipc = require('electron').ipcRenderer;
-document.getElementById('move-parent-directory').addEventListener("click", (event) => {
-  var data = {
-    id: 'move-parent-directory'
-  };
-  ipc.send('click', data);
+
+function handleClick(id) {
+  document.getElementById(id).addEventListener('click', (event) => {
+    var data = {
+      id: id
+    };
+    ipc.send('click', data);
+  })
+}
+
+const clickedIdList = ['move-parent-directory', 'move-home-directory'];
+clickedIdList.forEach(function(e) {
+  handleClick(e);
 })
 
-document.getElementById('move-home-directory').addEventListener("click", (event) => {
-  var data = {
-    id: 'move-home-directory'
-  };
-  ipc.send('click', data);
+const showBookmarksElement = document.getElementById('show-bookmarks');
+showBookmarksElement.addEventListener("click", (event) => {
+  ipc.send('requestBookmarks', {});
 })
 
-var changeLayoutElement = document.getElementById('change-layout');
+const directoryPath = document.getElementById('path-directory');
+directoryPath.addEventListener("click", (event) => {
+  var data = {
+    id: 'bookmark-path',
+    path: event.target.getAttribute('href')
+  };
+  ipc.send('bookmark-path', data);
+});
+
+const changeLayoutElement = document.getElementById('change-layout');
 changeLayoutElement.addEventListener("click", (event) => {
   ipc.send('changeLayout', {});
 })

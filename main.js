@@ -3,6 +3,9 @@ const app = electron.app
 
 let win
 
+// let argv = require('optimist').argv;
+// console.log(argv['_'][0]);
+
 function createWindow() {
   const BrowserWindow = electron.BrowserWindow
   win = new BrowserWindow({
@@ -29,7 +32,7 @@ function createWindow() {
   })
 }
 
-require('./main-process/search.js');
+require('./main-process/main.js');
 
 function onReady() {
   createWindow();

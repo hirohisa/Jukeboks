@@ -2,7 +2,7 @@
 
 const mainContent = document.getElementById('main-content')
 const videoSlider = document.getElementById('video-slider')
-const sy = require('../lib/sy');
+const sy = require('../lib/system');
 const utils = require('./utils');
 var videoTimer;
 
