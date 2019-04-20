@@ -1,8 +1,8 @@
 'use strict';
 
 const Database = require('nedb');
-// let db = new Database({ filename: '.resource/db.sqlite', autoload: true });
-let db = new Database();
+let db = new Database({ filename: '.resource/db.sqlite', autoload: true });
+// let db = new Database();
 
 class Bookmarker {
 
