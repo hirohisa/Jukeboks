@@ -1,7 +1,10 @@
 'use strict';
 
 const Database = require('nedb');
-let db = new Database({ filename: '.resource/db.sqlite', autoload: true });
+const define = require('../lib/define');
+
+const databasePath = define.rootPath + "/.Jukeboks/bookmarks.json";
+let db = new Database({ filename: databasePath, autoload: true });
 // let db = new Database();
 
 class Bookmarker {

@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "NODE_ENV=development electron .",
-    "release": "node release.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
     "test": "jasmine"
   },
   "author": "hirohisa",
@@ -21,6 +22,7 @@
     "xel": "0.0.130"
   },
   "devDependencies": {
+    "electron-builder": "^20.39.0",
     "electron-packager": "^13.1.1",
     "jasmine": "^3.3.1"
   }
