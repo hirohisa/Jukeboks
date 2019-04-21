@@ -4,6 +4,10 @@ const mainContent = document.getElementById('main-content')
 const videoSlider = document.getElementById('video-slider')
 const sy = require('../lib/system');
 const utils = require('./utils');
+const queue = require('queue');
+var q = queue();
+q.autostart = true;
+
 var videoTimer;
 
 var MEDIA = {
@@ -153,8 +157,13 @@ ipc.on('keydown', (event, data) => {
   switch (data.code) {
     case "ArrowRight":
       if (isDisplayingVideo()) {
-        var ratio = (videoSlider.value + 5) / 100;
-        moveCurrentTimeOfVideoWithRatio(ratio);
+        const video = mainContent.firstChild;
+        q.push(
+          () => {
+            var seconds = video.duration / 100;
+            video.currentTime = video.currentTime + seconds;
+          }
+        );
       }
       break;
     default:
