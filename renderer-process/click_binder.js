@@ -24,11 +24,14 @@ showBookmarksElement.addEventListener("click", (event) => {
 
 const directoryPath = document.getElementById('path-directory');
 directoryPath.addEventListener("click", (event) => {
-  var data = {
-    id: 'bookmark-path',
-    path: event.target.getAttribute('href')
+  const directoryIcon = document.getElementById('path-directory-icon');
+  let notYetBookmark = directoryIcon.className.indexOf('empty') > -1;
+  let id = notYetBookmark ? 'bookmarkPath' : 'unbookmarkPath';
+  let data = {
+    id: id,
+    path: directoryPath.getAttribute('href')
   };
-  ipc.send('bookmark-path', data);
+  ipc.send(id, data);
 });
 
 const changeLayoutElement = document.getElementById('change-layout');

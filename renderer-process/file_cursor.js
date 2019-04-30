@@ -230,11 +230,11 @@ ipc.on('click', (event, data) => {
   switch (data.id) {
     case "move-parent-directory":
       fileCursor.up()
-    break;
+      break;
     case "move-home-directory":
       const def = require('../lib/define');
       utils.jump(def.rootPath)
-    break;
+      break;
     default:
   }
 })
@@ -244,20 +244,32 @@ ipc.on('selectCurrent', (event, data) => {
 });
 
 ipc.on('removePath', function(event, data) {
-
   var current = ui.getCurrent()
   if (current) {
     fileCursor.next();
     ui.directoryTree.removeChild(current);
   }
-
 })
 
 ipc.on('didMoveDirectory', (event, data) => {
-  const path = require('path')
-  ui.directoryPath.innerHTML = '<span class="icon icon-star-empty"></span>' + path.basename(data.path);
+  let iconClassName = data.isBookmarked ? 'icon-star' : 'icon-star-empty';
+  ui.directoryIcon.className = `icon ${iconClassName}`;
+  ui.directoryName.innerHTML = path.basename(data.path);
   ui.directoryPath.setAttribute('href', data.path);
 })
+
+ipc.on('updateDirectoryData', (event, data) => {
+  if (ui.directoryPath.getAttribute('href') != data.path) { return; }
+  switch (data.id) {
+    case "bookmarkPath":
+      ui.directoryIcon.className = "icon icon-star";
+      break;
+    case "unbookmarkPath":
+      ui.directoryIcon.className = "icon icon-star-empty";
+      break;
+    default:
+  }
+});
 
 ipc.on('endedVideo', (event, data) => {
   fileCursor.next()

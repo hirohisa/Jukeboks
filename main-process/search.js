@@ -28,8 +28,11 @@ function fetchBookmarks(sender, identifer) {
 
 const ipc = require('electron').ipcMain;
 ipc.on('movePath', function(event, data) {
-  event.sender.send('didMoveDirectory', data);
-  search(event.sender, data, 'searchFiles');
+  bookmarker.has(data.path, (isBookmarked) => {
+    data.isBookmarked = isBookmarked;
+    event.sender.send('didMoveDirectory', data);
+    search(event.sender, data, 'searchFiles');
+  });
 })
 ipc.on('requestFiles', function(event, data) {
   search(event.sender, data, 'responseFiles');
