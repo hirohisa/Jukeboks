@@ -14,13 +14,13 @@ class Bookmarker {
       if (doc == null) {
         var newDoc = {
           path: path,
-          createdAt: Date()
+          createdAt: Date.now()
         };
         db.insert(newDoc);
         callback(newDoc);
       } else {
         db.update({ path: path},
-          { $set: { createdAt: Date() } },
+          { $set: { createdAt: Date.now() } },
           {},
           function(err, replaced) {
             callback(replaced);
