@@ -1,6 +1,6 @@
 'use strict'
 
-const sy = require('../lib/sy')
+const sy = require('../lib/system')
 const ui = require('../lib/ui')
 const utils = require('./utils.js')
 const path = require('path')
@@ -86,7 +86,6 @@ function selectCurrent(href, focusTarget) {
 }
 
 function render(files, referer, term, focusTarget) {
-
   const queue = require('queue');
   var q = queue();
   q.autostart = true;
@@ -230,10 +229,11 @@ ipc.on('keydown', (event, data) => {
 ipc.on('click', (event, data) => {
   switch (data.id) {
     case "move-parent-directory":
-    fileCursor.up()
+      fileCursor.up()
+      break;
     case "move-home-directory":
-    const def = require('../lib/define');
-    utils.jump(def.rootPath)
+      const def = require('../lib/define');
+      utils.jump(def.rootPath)
       break;
     default:
   }
@@ -244,20 +244,32 @@ ipc.on('selectCurrent', (event, data) => {
 });
 
 ipc.on('removePath', function(event, data) {
-
   var current = ui.getCurrent()
   if (current) {
     fileCursor.next();
     ui.directoryTree.removeChild(current);
   }
-
 })
 
 ipc.on('didMoveDirectory', (event, data) => {
-  const path = require('path')
-  ui.directoryPath.innerHTML = path.basename(data.path)
-  ui.directoryPath.setAttribute('href', data.path)
+  let iconClassName = data.isBookmarked ? 'icon-star' : 'icon-star-empty';
+  ui.directoryIcon.className = `icon ${iconClassName}`;
+  ui.directoryName.innerHTML = path.basename(data.path);
+  ui.directoryPath.setAttribute('href', data.path);
 })
+
+ipc.on('updateDirectoryData', (event, data) => {
+  if (ui.directoryPath.getAttribute('href') != data.path) { return; }
+  switch (data.id) {
+    case "bookmarkPath":
+      ui.directoryIcon.className = "icon icon-star";
+      break;
+    case "unbookmarkPath":
+      ui.directoryIcon.className = "icon icon-star-empty";
+      break;
+    default:
+  }
+});
 
 ipc.on('endedVideo', (event, data) => {
   fileCursor.next()

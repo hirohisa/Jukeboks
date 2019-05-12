@@ -1,4 +1,4 @@
-const sy = require('../lib/sy');
+const sy = require('../lib/system');
 const ui = require('../lib/ui');
 const utils = require('./utils');
 const path = require('path');

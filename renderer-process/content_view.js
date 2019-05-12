@@ -2,8 +2,12 @@
 
 const mainContent = document.getElementById('main-content')
 const videoSlider = document.getElementById('video-slider')
-const sy = require('../lib/sy');
+const sy = require('../lib/system');
 const utils = require('./utils');
+const queue = require('queue');
+var q = queue();
+q.autostart = true;
+
 var videoTimer;
 
 var MEDIA = {
@@ -62,9 +66,16 @@ function render(filePath) {
     element.className = "visible"
     mainContent.appendChild(element)
     if (element.tagName.toLowerCase() == 'video') {
+      element.addEventListener("play", function(e) {
+        var timeLabel = document.getElementById("video-time-label");
+        var duration = e.target.duration + 1
+        var minutes = Math.floor(duration/60)
+        var seconds = ('0' + Math.floor(duration%60)).slice(-2)
+        timeLabel.innerHTML = minutes + ':' + seconds
+      }, true);
       element.addEventListener("ended", function() {
         ipc.send('endedVideo')
-      }, true)
+      }, true);
     }
   }
 
@@ -146,8 +157,13 @@ ipc.on('keydown', (event, data) => {
   switch (data.code) {
     case "ArrowRight":
       if (isDisplayingVideo()) {
-        var ratio = (videoSlider.value + 5) / 100;
-        moveCurrentTimeOfVideoWithRatio(ratio);
+        const video = mainContent.firstChild;
+        q.push(
+          () => {
+            var seconds = video.duration / 100;
+            video.currentTime = video.currentTime + seconds;
+          }
+        );
       }
       break;
     default:
