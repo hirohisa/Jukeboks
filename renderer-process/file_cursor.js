@@ -209,6 +209,10 @@ ipc.on('searchFiles', (event, data) => {
   reload(data)
 })
 
+ipc.on('updateSearchText', (event, data) => {
+  filterIfNeeded();
+})
+
 ipc.on('keydown', (event, data) => {
   switch (data.code) {
     case "ArrowUp":
@@ -225,8 +229,6 @@ ipc.on('keydown', (event, data) => {
       break;
     default:
   }
-
-  filterIfNeeded();
 })
 
 ipc.on('click', (event, data) => {

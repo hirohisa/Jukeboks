@@ -57,14 +57,17 @@ document.addEventListener("keydown", (event) => {
     execCommands(data);
   }
 
-  if (!isFocusInputField()) {
-    switch (event.code) {
-      case "Backspace":
-        ipc.send('moveToTrash', data);
-        break;
-      default:
-    }
+  if (isFocusInputField()) {
+    ipc.send('updateSearchText', data);
+    return;
   }
 
-  ipc.send('keydown', data);
+  switch (event.code) {
+    case "Backspace":
+      ipc.send('moveToTrash', data);
+      break;
+    default:
+      ipc.send('keydown', data);
+  }
+
 })
