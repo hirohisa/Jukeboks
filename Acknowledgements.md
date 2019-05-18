@@ -2,7 +2,7 @@
 
 ## Software and libraries
 
-- glob
+- nedb
 - queue
 - underscore
 

@@ -1,6 +1,6 @@
 {
   "name": "Jukeboks",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Jukeboks is a fast viewer / player app",
   "main": "main.js",
   "scripts": {
@@ -12,18 +12,15 @@
   "author": "hirohisa",
   "license": "ISC",
   "dependencies": {
-    "cryptiles": ">=4.1.2",
-    "deep-extend": ">=0.5.1",
-    "glob": "^7.1.3",
-    "nedb": "^1.8.0",
-    "optimist": "^0.6.1",
-    "queue": "^4.5.1",
-    "underscore": "^1.9.1",
+    "nedb": "1.8.0",
+    "optimist": "0.6.1",
+    "queue": "4.5.1",
+    "underscore": "1.9.1",
     "xel": "0.0.130"
   },
   "devDependencies": {
-    "electron-builder": "^20.39.0",
-    "electron-packager": "^13.1.1",
-    "jasmine": "^3.3.1"
+    "electron-builder": "20.39.0",
+    "electron-packager": "13.1.1",
+    "jasmine": "3.3.1"
   }
 }
