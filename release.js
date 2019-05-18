@@ -8,7 +8,7 @@ builder.build({
     platform: 'mac',
     config: {
         'appId': 'net.hirohisa.jukeboks',
-        'icon': './app.icns',
+        'icon': './assets/app.icns',
         'mac': {
             'target': 'zip',
         },
