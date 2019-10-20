@@ -11,10 +11,6 @@ ipc.on('moveToTrash', function(event, data) {
     fileFinder.moveToTrash(event, data.filePath)
 })
 
-ipc.on('keydown', function(event, data) {
-  event.sender.send('keydown', data);
-})
-
 ipc.on('bookmarkPath', function(event, data) {
   if (!data.path) { return; }
 
@@ -35,7 +31,7 @@ ipc.on('unbookmarkPath', function(event, data) {
 })
 
 // delegate
-const proxyList = ['click', 'endedVideo', 'selectFile', 'changeLayout', 'selectCurrent']
+const proxyList = ['click', 'keydown', 'updateSearchText', 'endedVideo', 'selectFile', 'changeLayout', 'selectCurrent']
 proxyList.forEach(function(e) {
   ipc.on(e, function(event, data) {
     event.sender.send(e, data);

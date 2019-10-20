@@ -89,12 +89,15 @@ function render(files, referer, term, focusTarget) {
   const queue = require('queue');
   var q = queue();
   q.autostart = true;
+  if (term) {
+    term = term.toLowerCase();
+  }
 
   for (var i in files) {
     var filePath = files[i]
-    var fileName = path.basename(filePath).normalize()
+    var fileName = path.basename(filePath).normalize();
 
-    if (term && !fileName.includes(term)) {
+    if (term && !fileName.toLowerCase().includes(term)) {
       continue;
     }
 
@@ -206,6 +209,10 @@ ipc.on('searchFiles', (event, data) => {
   reload(data)
 })
 
+ipc.on('updateSearchText', (event, data) => {
+  filterIfNeeded();
+})
+
 ipc.on('keydown', (event, data) => {
   switch (data.code) {
     case "ArrowUp":
@@ -222,8 +229,6 @@ ipc.on('keydown', (event, data) => {
       break;
     default:
   }
-
-  filterIfNeeded();
 })
 
 ipc.on('click', (event, data) => {
