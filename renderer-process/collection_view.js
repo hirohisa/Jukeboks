@@ -8,13 +8,12 @@ const q = queue();
 q.autostart = true;
 
 const mainCollection = document.getElementById('main-collection')
-function createItem(filePath) {
-  var fileName = path.basename(filePath);
+function createItem(d) {
   var element = document.createElement("div");
   element.className = 'grid-item';
-  element.appendChild(createText(fileName));
-  element.id = fileName;
-  element.setAttribute('href', filePath);
+  element.appendChild(createText(d.name));
+  element.id = d.name;
+  element.setAttribute('href', d.path);
   element.addEventListener("click", function(e) {
     var href = e.target.getAttribute('href');
     if (!href) {
@@ -40,32 +39,32 @@ function createText(text) {
   return element;
 }
 
-function render(filePaths) {
+function render(ds) {
   var myLazyLoad = new LazyLoad({
     elements_selector: ".lazy"
   });
 
-  filePaths.forEach(function(filePath) {
-    renderToCollection(filePath);
+  ds.forEach(function(d) {
+    renderToCollection(d);
   });
 
   myLazyLoad.update();
 }
 
-function renderToCollection(filePath) {
-  var element = createItem(filePath);
+function renderToCollection(d) {
+  var element = createItem(d);
   mainCollection.appendChild(element);
 
-  if (sy.isDirectory(filePath)) {
+  if (d.isDirectory) {
     q.push(
       () => {
-        sy.findFiles(filePath, function(filePaths) {
-          if (filePaths.length == 0) { return }
-          if (sy.isDirectory(filePaths[0])) { return }
+        sy.findFiles(d.path, function(ds) {
+          if (ds.length == 0) { return }
+          if (ds[0].isDirectory) { return }
 
           var img = document.createElement("img");
           img.className = 'grid-item-content lazy';
-          img.src = "file://" + filePaths[0];
+          img.src = "file://" + ds[0].path;
           element.appendChild(img);
         });
       });
@@ -74,7 +73,7 @@ function renderToCollection(filePath) {
       () => {
         var img = document.createElement("img");
         img.className = 'grid-item-content lazy';
-        img.src = "file://" + filePath;
+        img.src = "file://" + d.path;
         element.appendChild(img);
       });
   }
@@ -102,7 +101,7 @@ ipc.on('selectFile', function(event, data) {
 const layoutIcon = document.getElementById('change-layout-icon');
 ipc.on('changeLayout', function(event, data) {
   var data = {
-    path: ui.directoryPath.getAttribute('href')
+    path: ui.dirPath.getAttribute('href')
   };
   var isShowingContent = utils.isShowingContent();
   isShowingContent ? utils.showCollection() : utils.showContent();
@@ -116,5 +115,5 @@ ipc.on('changeLayout', function(event, data) {
 ipc.on('responseFiles', function(event, data) {
   q.end();
   utils.clean(mainCollection);
-  render(data.files);
+  render(data.ds);
 })

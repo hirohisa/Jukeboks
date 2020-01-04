@@ -32,14 +32,14 @@ class Bookmarker {
     });
   }
 
-  select(path, callback) {
+  _select(path, callback) {
     db.findOne({ path: path }, function (err, doc) {
       callback(doc);
     });
   }
 
   has(path, callback) {
-    this.select(path, (doc) => {
+    this._select(path, (doc) => {
       callback(doc != null);
     });
   }

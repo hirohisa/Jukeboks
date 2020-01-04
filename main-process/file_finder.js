@@ -6,10 +6,10 @@ const _ = require('underscore');
 const fs = require('fs');
 const path = require('path');
 
-function cleanData(directoryPath) {
+function cleanData(dirPath) {
   var removeKeys = [];
   for(var storedPath in storage) {
-    if (!sy.keepDirectory(directoryPath, storedPath)) {
+    if (!sy.keepDirectory(dirPath, storedPath)) {
       removeKeys.push(storedPath);
     }
   }
@@ -23,23 +23,23 @@ const storage = {}
 
 class FileFinder {
 
-  search(directoryPath, callback) {
-    cleanData(directoryPath)
-    directoryPath = path.normalize(directoryPath)
-    var filePaths = storage[directoryPath]
-    if (filePaths) {
-      callback(filePaths)
+  search(dirPath, callback) {
+    cleanData(dirPath)
+    dirPath = path.normalize(dirPath)
+    var ds = storage[dirPath]
+    if (ds) {
+      callback(ds)
       return
     }
-    sy.findFiles(directoryPath, function(filePaths) {
-      storage[directoryPath] = filePaths
-      callback(filePaths)
+    sy.findFiles(dirPath, function(ds) {
+      storage[dirPath] = ds
+      callback(ds)
     })
   }
 
   removeFileInStorage(filePath) {
-    var directoryPath = path.dirname(filePath);
-    storage[directoryPath] = _.without(storage[directoryPath], filePath);
+    var dirPath = path.dirname(filePath);
+    storage[dirPath] = _.without(storage[dirPath], filePath);
   }
 
   moveToTrash(event, filePath) {

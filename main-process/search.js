@@ -2,12 +2,14 @@
 
 const fileFinder = require('./file_finder.js');
 const bookmarker = require('./bookmarker.js');
+const D = require('../lib/d.js');
+const path = require('path');
 
 function search(sender, data, identifer) {
-  fileFinder.search(data.path, (files) => {
+  fileFinder.search(data.path, (ds) => {
     var result = {
       path: data.path,
-      files: files,
+      ds: ds,
       referer: data.referer
     };
     sender.send(identifer, result);
@@ -18,8 +20,8 @@ function fetchBookmarks(sender, identifer) {
   bookmarker.selectAll((docs) => {
     var result = {
       path: '/bookmarks',
-      files: docs.map((doc) => {
-        return doc.path
+      ds: docs.map((doc) => {
+        return new D(path.basename(doc.path), doc.path, true)
       }),
     };
     sender.send(identifer, result);

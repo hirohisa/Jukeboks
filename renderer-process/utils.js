@@ -2,10 +2,10 @@
 const path = require('path')
 const ipc = require('electron').ipcRenderer
 
-module.exports.jump = function(directoryPath, referer = undefined) {
-  directoryPath = path.normalize(directoryPath)
+module.exports.jump = function(dirPath, referer = undefined) {
+  dirPath = path.normalize(dirPath)
   var data = {
-    path: directoryPath,
+    path: dirPath,
     referer: referer
   }
 

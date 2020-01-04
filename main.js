@@ -11,6 +11,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1080,
     height: 800,
+    webPreferences: {nodeIntegration: true},
     'accept-first-mouse': true,
     'title-bar-style': 'hidden'
   })
