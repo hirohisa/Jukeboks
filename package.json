@@ -1,6 +1,6 @@
 {
   "name": "jukeboks",
-  "version": "1.5.1",
+  "version": "2.0.0",
   "description": "Jukeboks is a fast viewer / player app",
   "main": "main.js",
   "scripts": {
@@ -12,7 +12,6 @@
   "author": "hirohisa",
   "license": "ISC",
   "dependencies": {
-    "electron": "^7.1.7",
     "nedb": "1.8.0",
     "optimist": "0.6.1",
     "queue": "4.5.1",
@@ -20,7 +19,8 @@
     "xel": "0.0.130"
   },
   "devDependencies": {
-    "electron-builder": "20.39.0",
+    "electron": "^7.1.7",
+    "electron-builder": "21.2.0",
     "electron-packager": "13.1.1",
     "jasmine": "3.3.1"
   }
