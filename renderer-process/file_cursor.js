@@ -24,12 +24,12 @@ function clear() {
   }
 }
 
-function makeLink(filePath, fileName, click) {
-  var klass = sy.isDirectory(filePath) ? "icon-folder" : "icon-picture"
+function makeLink(d, click) {
+  var klass = d.isDirectory ? "icon-folder" : "icon-picture"
 
   var html = `
-  <span class="nav-group-item" id="" href="${path.normalize(filePath)}">
-    <span class="icon ${klass}"></span>${fileName}</span>
+  <span class="nav-group-item" id="" href="${d.path}">
+    <span class="icon ${klass}"></span>${d.name}</span>
   </span>
   `;
 
@@ -47,7 +47,7 @@ function clickFileLink(filePath) {
 function filter(term) {
   clear()
   var referer = ui.getCurrent() ? ui.getCurrent().getAttribute('href') : undefined;
-  render(fileStorage.files, referer, term, ui.searchInputForm)
+  render(dirStorage.files, referer, term, ui.searchInputForm)
 }
 
 function reload(data) {
@@ -56,8 +56,8 @@ function reload(data) {
 
   // TODO: get current directory and validate with data.path
 
-  fileStorage.store(data.files)
-  render(data.files, data.referer, undefined, undefined)
+  dirStorage.store(data.ds)
+  render(data.ds, data.referer, undefined, undefined)
 }
 
 function getElementBy(href) {
@@ -85,7 +85,7 @@ function selectCurrent(href, focusTarget) {
 
 }
 
-function render(files, referer, term, focusTarget) {
+function render(ds, referer, term, focusTarget) {
   const queue = require('queue');
   var q = queue();
   q.autostart = true;
@@ -93,19 +93,16 @@ function render(files, referer, term, focusTarget) {
     term = term.toLowerCase();
   }
 
-  for (var i in files) {
-    var filePath = files[i]
-    var fileName = path.basename(filePath).normalize();
-
-    if (term && !fileName.toLowerCase().includes(term)) {
-      continue;
+  ds.forEach((d) => {
+    if (term && !d.name.toLowerCase().includes(term)) {
+      return;
     }
 
     q.push(
 
       // Bug: wrong links occur when queue has tasks
       () => {
-        var link = makeLink(filePath, fileName, (e) => {
+        var link = makeLink(d, (e) => {
           var target = e.target;
           if (e.target.className != "nav-group-item") {
             target = target.parentNode;
@@ -117,7 +114,7 @@ function render(files, referer, term, focusTarget) {
         ui.directoryTree.appendChild(link);
       }
     );
-  }
+  });
 
   q.push(
     () => {
@@ -127,10 +124,10 @@ function render(files, referer, term, focusTarget) {
 
 }
 
-class FileStorage {
+class DirStorage {
 
-  store(files) {
-    this.files = files
+  store(ds) {
+    this.ds = ds
   }
 
 }
@@ -181,7 +178,7 @@ class FileCursor {
   }
 
   up() {
-    var href = ui.directoryPath.getAttribute("href")
+    var href = ui.dirPath.getAttribute("href")
     utils.jump(href + '/..', href)
   }
 
@@ -195,7 +192,7 @@ class FileCursor {
 }
 
 const fileCursor = new FileCursor();
-const fileStorage = new FileStorage();
+const dirStorage = new DirStorage();
 
 var previousSearchInputValue = undefined
 function filterIfNeeded() {
@@ -260,11 +257,11 @@ ipc.on('didMoveDirectory', (event, data) => {
   let iconClassName = data.isBookmarked ? 'icon-star' : 'icon-star-empty';
   ui.directoryIcon.className = `icon ${iconClassName}`;
   ui.directoryName.innerHTML = path.basename(data.path);
-  ui.directoryPath.setAttribute('href', data.path);
+  ui.dirPath.setAttribute('href', data.path);
 })
 
 ipc.on('updateDirectoryData', (event, data) => {
-  if (ui.directoryPath.getAttribute('href') != data.path) { return; }
+  if (ui.dirPath.getAttribute('href') != data.path) { return; }
   switch (data.id) {
     case "bookmarkPath":
       ui.directoryIcon.className = "icon icon-star";

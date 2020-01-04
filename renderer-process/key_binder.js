@@ -49,7 +49,7 @@ document.addEventListener("keydown", (event) => {
   handleCommand(event.code, "down");
   var data = {
     code: event.code,
-    path: ui.directoryPath.getAttribute('href'),
+    path: ui.dirPath.getAttribute('href'),
     filePath: getFilePath()
   };
 

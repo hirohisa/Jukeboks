@@ -1,5 +1,5 @@
 {
-  "name": "Jukeboks",
+  "name": "jukeboks",
   "version": "1.5.1",
   "description": "Jukeboks is a fast viewer / player app",
   "main": "main.js",
@@ -12,6 +12,7 @@
   "author": "hirohisa",
   "license": "ISC",
   "dependencies": {
+    "electron": "^7.1.7",
     "nedb": "1.8.0",
     "optimist": "0.6.1",
     "queue": "4.5.1",
