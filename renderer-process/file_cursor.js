@@ -20,7 +20,7 @@ function scrollToRelative(from, to) {
 
 function clear() {
   while (ui.directoryTree.firstChild) {
-      ui.directoryTree.removeChild(ui.directoryTree.firstChild)
+    ui.directoryTree.removeChild(ui.directoryTree.firstChild)
   }
 }
 
@@ -47,7 +47,7 @@ function clickFileLink(filePath) {
 function filter(term) {
   clear()
   var referer = ui.getCurrent() ? ui.getCurrent().getAttribute('href') : undefined;
-  render(dirStorage.files, referer, term, ui.searchInputForm)
+  render(dirStorage.ds, referer, term, ui.searchInputForm)
 }
 
 function reload(data) {
@@ -150,7 +150,7 @@ class FileCursor {
 
   selectRandom() {
     var nodes = []
-    ui.directoryTree.childNodes.forEach(function(e) {
+    ui.directoryTree.childNodes.forEach(function (e) {
       if (e.id != 'directory-current-page') {
         nodes.push(e)
       }
@@ -245,7 +245,7 @@ ipc.on('selectCurrent', (event, data) => {
   selectCurrent(data.href, undefined);
 });
 
-ipc.on('removePath', function(event, data) {
+ipc.on('removePath', function (event, data) {
   var current = ui.getCurrent()
   if (current) {
     fileCursor.next();
