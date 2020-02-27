@@ -5,18 +5,17 @@ const define = require('../lib/define');
 
 const databasePath = define.rootPath + "/.Jukeboks/bookmarks.json";
 let db = new Database({ filename: databasePath, autoload: true });
-// let db = new Database();
-db.ensureIndex({ fieldName: 'path', unique: true }, function (err) {});
+db.ensureIndex({ fieldName: 'path', unique: true }, function (err) { });
 
 class Bookmarker {
 
   create(path, callback) {
-    this.select(path, function(doc) {
+    this.select(path, function (doc) {
       if (doc) {
-        db.update({ path: path},
+        db.update({ path: path },
           { $set: { createdAt: Date.now() } },
           {},
-          function(err, replaced) {
+          function (err, replaced) {
             callback(replaced, true);
           }
         );

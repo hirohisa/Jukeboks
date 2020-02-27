@@ -7,11 +7,11 @@ const bookmarker = require('./bookmarker.js');
 
 const ipc = require('electron').ipcMain;
 
-ipc.on('moveToTrash', function(event, data) {
-    fileFinder.moveToTrash(event, data.filePath)
+ipc.on('moveToTrash', function (event, data) {
+  fileFinder.moveToTrash(event, data.filePath)
 })
 
-ipc.on('bookmarkPath', function(event, data) {
+ipc.on('bookmarkPath', function (event, data) {
   if (!data.path) { return; }
 
   bookmarker.create(data.path, (result, updated) => {
@@ -22,7 +22,7 @@ ipc.on('bookmarkPath', function(event, data) {
   });
 })
 
-ipc.on('unbookmarkPath', function(event, data) {
+ipc.on('unbookmarkPath', function (event, data) {
   if (!data.path) { return; }
 
   bookmarker.remove(data.path, () => {
@@ -32,8 +32,8 @@ ipc.on('unbookmarkPath', function(event, data) {
 
 // delegate
 const proxyList = ['click', 'keydown', 'updateSearchText', 'endedVideo', 'selectFile', 'changeLayout', 'selectCurrent']
-proxyList.forEach(function(e) {
-  ipc.on(e, function(event, data) {
+proxyList.forEach(function (e) {
+  ipc.on(e, function (event, data) {
     event.sender.send(e, data);
   })
 })

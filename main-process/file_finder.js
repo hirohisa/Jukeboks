@@ -8,13 +8,13 @@ const path = require('path');
 
 function cleanData(dirPath) {
   var removeKeys = [];
-  for(var storedPath in storage) {
+  for (var storedPath in storage) {
     if (!sy.keepDirectory(dirPath, storedPath)) {
       removeKeys.push(storedPath);
     }
   }
 
-  for(var i in removeKeys) {
+  for (var i in removeKeys) {
     delete storage[removeKeys[i]];
   }
 }
@@ -31,7 +31,7 @@ class FileFinder {
       callback(ds)
       return
     }
-    sy.findFiles(dirPath, function(ds) {
+    sy.findFiles(dirPath, function (ds) {
       storage[dirPath] = ds
       callback(ds)
     })

@@ -12,8 +12,8 @@ function handleClick(id) {
   })
 }
 
-const clickedIdList = ['move-parent-directory', 'move-home-directory'];
-clickedIdList.forEach(function(e) {
+const clickedIdList = ['move-parent-directory', 'move-home-directory', 'show-virtual-directory'];
+clickedIdList.forEach(function (e) {
   handleClick(e);
 })
 
@@ -21,6 +21,7 @@ const showBookmarksElement = document.getElementById('show-bookmarks');
 showBookmarksElement.addEventListener("click", (event) => {
   ipc.send('requestBookmarks', {});
 })
+
 
 const dirPath = document.getElementById('path-directory');
 dirPath.addEventListener("click", (event) => {
@@ -34,12 +35,12 @@ dirPath.addEventListener("click", (event) => {
   ipc.send(id, data);
 });
 
-const changeLayoutElement = document.getElementById('change-layout');
+const changeLayoutElement = document.getElementById('change-layout-icon');
 changeLayoutElement.addEventListener("click", (event) => {
   ipc.send('changeLayout', {});
 })
 
-ipc.on('didMoveDirectory', function(event, data) {
+ipc.on('didMoveDirectory', function (event, data) {
   var isShowingContent = utils.isShowingContent();
   if (!isShowingContent) {
     changeLayoutElement.click();

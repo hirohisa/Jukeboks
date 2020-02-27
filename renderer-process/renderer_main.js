@@ -9,11 +9,14 @@ require('./renderer-process/notification.js')
 require('./renderer-process/menu.js')
 
 const def = require('./lib/define');
+const path = require('path');
+const D = require('./lib/d');
 
 // document onload
-const utils = require('./renderer-process/utils')
+const navigator = require('./renderer-process/navigator')
 
 function load() {
-  utils.jump(def.rootPath)
+  var d = new D(path.basename(def.rootPath), def.rootPath)
+  navigator.push(d);
 }
 window.onload = load

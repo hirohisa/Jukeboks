@@ -16,7 +16,7 @@
     "optimist": "0.6.1",
     "queue": "4.5.1",
     "underscore": "1.9.1",
-    "xel": "0.0.130"
+    "xel": "0.0.214"
   },
   "devDependencies": {
     "electron": "^7.1.7",

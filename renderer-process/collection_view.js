@@ -14,13 +14,13 @@ function createItem(d) {
   element.appendChild(createText(d.name));
   element.id = d.name;
   element.setAttribute('href', d.path);
-  element.addEventListener("click", function(e) {
+  element.addEventListener("click", function (e) {
     var href = e.target.getAttribute('href');
     if (!href) {
       href = e.target.parentNode.getAttribute('href');
     }
     if (href) {
-      var data = {href: href};
+      var data = { href: href };
       ipc.send('selectCurrent', data);
     }
   }, false);
@@ -44,7 +44,7 @@ function render(ds) {
     elements_selector: ".lazy"
   });
 
-  ds.forEach(function(d) {
+  ds.forEach(function (d) {
     renderToCollection(d);
   });
 
@@ -58,7 +58,7 @@ function renderToCollection(d) {
   if (d.isDirectory) {
     q.push(
       () => {
-        sy.findFiles(d.path, function(ds) {
+        sy.findFiles(d.path, function (ds) {
           if (ds.length == 0) { return }
           if (ds[0].isDirectory) { return }
 
@@ -90,7 +90,7 @@ ipc.on('keydown', (event, data) => {
 })
 
 
-ipc.on('selectFile', function(event, data) {
+ipc.on('selectFile', function (event, data) {
   if (!utils.isShowingContent()) {
     element = document.getElementById(path.basename(data.filePath));
     if (!element) { return; }
@@ -99,20 +99,20 @@ ipc.on('selectFile', function(event, data) {
 })
 
 const layoutIcon = document.getElementById('change-layout-icon');
-ipc.on('changeLayout', function(event, data) {
+ipc.on('changeLayout', function (event, data) {
   var data = {
     path: ui.dirPath.getAttribute('href')
   };
   var isShowingContent = utils.isShowingContent();
   isShowingContent ? utils.showCollection() : utils.showContent();
-  layoutIcon.className = isShowingContent ? 'icon icon-layout' : 'icon icon-newspaper';
+  layoutIcon.name = isShowingContent ? 'grid-on' : 'crop-original';
 
   if (isShowingContent) {
     ipc.send('requestFiles', data);
   }
 })
 
-ipc.on('responseFiles', function(event, data) {
+ipc.on('responseFiles', function (event, data) {
   q.end();
   utils.clean(mainCollection);
   render(data.ds);

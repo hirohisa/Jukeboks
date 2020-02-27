@@ -2,7 +2,8 @@
 
 const sy = require('../lib/system')
 const ui = require('../lib/ui')
-const utils = require('./utils.js')
+const D = require('../lib/d')
+const navigator = require('./navigator')
 const path = require('path')
 const _ = require('underscore');
 const ipc = require('electron').ipcRenderer;
@@ -28,7 +29,7 @@ function makeLink(d, click) {
   var klass = d.isDirectory ? "icon-folder" : "icon-picture"
 
   var html = `
-  <span class="nav-group-item" id="" href="${d.path}">
+  <span class="nav-group-item" id="" href="${d.path}" fileName="${d.name}">
     <span class="icon ${klass}"></span>${d.name}</span>
   </span>
   `;
@@ -40,7 +41,7 @@ function makeLink(d, click) {
 
 function clickFileLink(filePath) {
   if (sy.isDirectory(filePath)) {
-    utils.jump(filePath)
+    navigator.push(new D(path.basename(filePath), filePath))
   }
 }
 
@@ -60,15 +61,16 @@ function reload(data) {
   render(data.ds, data.referer, undefined, undefined)
 }
 
-function getElementBy(href) {
+function getElementBy(fileName) {
   var array = Array.from(document.getElementsByClassName('nav-group-item'));
-  return array.find(e => e.getAttribute('href') == href);
+  return array.find(e => e.getAttribute('fileName') == fileName);
 }
 
-function selectCurrent(href, focusTarget) {
+function selectCurrent(name, focusTarget) {
+
   var current = undefined;
-  if (href) {
-    current = getElementBy(href);
+  if (name) {
+    current = getElementBy(name);
     if (current) {
       current.id = 'directory-current-page';
     }
@@ -178,8 +180,7 @@ class FileCursor {
   }
 
   up() {
-    var href = ui.dirPath.getAttribute("href")
-    utils.jump(href + '/..', href)
+    navigator.pop()
   }
 
   down() {
@@ -229,13 +230,16 @@ ipc.on('keydown', (event, data) => {
 })
 
 ipc.on('click', (event, data) => {
+  const def = require('../lib/define');
   switch (data.id) {
     case "move-parent-directory":
       fileCursor.up()
       break;
     case "move-home-directory":
-      const def = require('../lib/define');
-      utils.jump(def.rootPath)
+      navigator.clear()
+      break;
+    case "show-virtual-directory":
+      navigator.push(new D(path.basename(def.virtualPath), def.virtualPath));
       break;
     default:
   }
@@ -254,20 +258,18 @@ ipc.on('removePath', function (event, data) {
 })
 
 ipc.on('didMoveDirectory', (event, data) => {
-  let iconClassName = data.isBookmarked ? 'icon-star' : 'icon-star-empty';
-  ui.directoryIcon.className = `icon ${iconClassName}`;
-  ui.directoryName.innerHTML = path.basename(data.path);
-  ui.dirPath.setAttribute('href', data.path);
+  ui.directoryIcon.name = data.isBookmarked ? 'bookmark' : 'bookmark-border';
+  ui.directoryName.innerHTML = path.basename(data.d.path);
 })
 
 ipc.on('updateDirectoryData', (event, data) => {
   if (ui.dirPath.getAttribute('href') != data.path) { return; }
   switch (data.id) {
     case "bookmarkPath":
-      ui.directoryIcon.className = "icon icon-star";
+      ui.directoryIcon.name = "bookmark";
       break;
     case "unbookmarkPath":
-      ui.directoryIcon.className = "icon icon-star-empty";
+      ui.directoryIcon.name = "bookmark-border";
       break;
     default:
   }
