@@ -12,16 +12,10 @@ function handleClick(id) {
   })
 }
 
-const clickedIdList = ['move-parent-directory', 'move-home-directory', 'show-virtual-directory'];
+const clickedIdList = ['move-parent-directory', 'move-home-directory', 'show-virtual-directory', 'show-bookmarks'];
 clickedIdList.forEach(function (e) {
   handleClick(e);
 })
-
-const showBookmarksElement = document.getElementById('show-bookmarks');
-showBookmarksElement.addEventListener("click", (event) => {
-  ipc.send('requestBookmarks', {});
-})
-
 
 const dirPath = document.getElementById('path-directory');
 dirPath.addEventListener("click", (event) => {

@@ -238,6 +238,9 @@ ipc.on('click', (event, data) => {
     case "move-home-directory":
       navigator.clear()
       break;
+    case "show-bookmarks":
+      navigator.push(new D(path.basename(def.bookmarksPath), def.bookmarksPath));
+      break;
     case "show-virtual-directory":
       navigator.push(new D(path.basename(def.virtualPath), def.virtualPath));
       break;

@@ -28,17 +28,7 @@ function searchVirtualFiles(sender, data, identifer) {
   })
 }
 
-function search(sender, data, identifer) {
-  const define = require('../define');
-  if (data.d.path.startsWith(define.virtualPath)) {
-    searchVirtualFiles(sender, data, identifer);
-  } else {
-    searchFiles(sender, data, identifer);
-  }
-
-}
-
-function fetchBookmarks(sender, identifer) {
+function searchBookmarks(sender, identifer) {
   bookmarker.selectAll((docs) => {
     var result = {
       path: '/Bookmarks',
@@ -48,6 +38,22 @@ function fetchBookmarks(sender, identifer) {
     };
     sender.send(identifer, result);
   });
+}
+
+function search(sender, data, identifer) {
+  const define = require('../define');
+
+  let rootDir = data.d.path.substring(1).split('/')[0]
+  switch (rootDir) {
+    case define.bookmarksPath.substring(1):
+      searchBookmarks(sender, identifer);
+      break;
+    case define.virtualPath.substring(1):
+      searchVirtualFiles(sender, data, identifer);
+      break;
+    default:
+      searchFiles(sender, data, identifer);
+  }
 }
 
 const ipc = require('electron').ipcMain;
@@ -60,7 +66,4 @@ ipc.on('movePath', function (event, data) {
 })
 ipc.on('requestFiles', function (event, data) {
   search(event.sender, data, 'responseFiles');
-})
-ipc.on('requestBookmarks', function (event, data) {
-  fetchBookmarks(event.sender, 'searchFiles');
 })
