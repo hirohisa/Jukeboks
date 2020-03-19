@@ -3,7 +3,7 @@
 const fileFinder = require('./file_finder.js');
 const bookmarker = require('./bookmarker.js');
 const virtualFinder = require('./virtual_finder.js');
-const D = require('../lib/d.js');
+const D = require('../d.js');
 const path = require('path');
 
 function searchFiles(sender, data, identifer) {
@@ -29,7 +29,7 @@ function searchVirtualFiles(sender, data, identifer) {
 }
 
 function search(sender, data, identifer) {
-  const define = require('../lib/define');
+  const define = require('../define');
   if (data.d.path.startsWith(define.virtualPath)) {
     searchVirtualFiles(sender, data, identifer);
   } else {

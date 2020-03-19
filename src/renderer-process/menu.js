@@ -3,8 +3,8 @@
 const _ = require('underscore');
 const remote = require('electron').remote;
 const Menu = remote.Menu;
-const ui = require('../lib/ui')
-const sy = require('../lib/system');
+const ui = require('../ui')
+const sy = require('../system');
 
 function showInFinder() {
   if (menuManager.event == undefined) return;
@@ -15,7 +15,7 @@ function showInFinder() {
 }
 
 function onNavigationEvent(event) {
-  var result = _.filter(event.path, function(o) {
+  var result = _.filter(event.path, function (o) {
     return o.id === 'sidebar'
   })
 

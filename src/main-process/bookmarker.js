@@ -1,7 +1,7 @@
 'use strict';
 
 const Database = require('nedb');
-const define = require('../lib/define');
+const define = require('../define');
 
 const databasePath = define.rootPath + "/.Jukeboks/bookmarks.json";
 let db = new Database({ filename: databasePath, autoload: true });

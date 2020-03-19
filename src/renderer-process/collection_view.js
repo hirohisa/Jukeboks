@@ -1,5 +1,5 @@
-const sy = require('../lib/system');
-const ui = require('../lib/ui');
+const sy = require('../system');
+const ui = require('../ui');
 const utils = require('./utils');
 const path = require('path');
 const queue = require('queue');

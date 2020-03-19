@@ -8,9 +8,9 @@ require('./renderer-process/collection_view.js')
 require('./renderer-process/notification.js')
 require('./renderer-process/menu.js')
 
-const def = require('./lib/define');
+const def = require('./define');
 const path = require('path');
-const D = require('./lib/d');
+const D = require('./d');
 
 // document onload
 const navigator = require('./renderer-process/navigator')

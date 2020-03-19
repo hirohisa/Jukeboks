@@ -1,5 +1,5 @@
 describe("FileOrganizer", () => {
-  const organizer = require('../lib/file_utils')
+  const organizer = require('../file_utils')
 
   describe("when finder sorts files ", () => {
     it("should be possible to sort ascending numbers ", () => {

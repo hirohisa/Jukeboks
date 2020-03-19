@@ -1,7 +1,7 @@
 'use strict';
 
-const define = require('../lib/define');
-const D = require('../lib/d');
+const define = require('../define');
+const D = require('../d');
 const filePath = define.rootPath + "/.Jukeboks/virtual_directory.csv";
 const fs = require('fs');
 const readStream = fs.createReadStream(filePath);

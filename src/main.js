@@ -3,15 +3,12 @@ const app = electron.app
 
 let win
 
-// let argv = require('optimist').argv;
-// console.log(argv['_'][0]);
-
 function createWindow() {
   const BrowserWindow = electron.BrowserWindow
   win = new BrowserWindow({
     width: 1080,
     height: 800,
-    webPreferences: {nodeIntegration: true},
+    webPreferences: { nodeIntegration: true },
     'accept-first-mouse': true,
     'title-bar-style': 'hidden'
   })

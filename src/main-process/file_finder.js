@@ -1,7 +1,7 @@
 'use strict'
 
-const define = require('../lib/define');
-const sy = require('../lib/system');
+const define = require('../define');
+const sy = require('../system');
 const _ = require('underscore');
 const fs = require('fs');
 const path = require('path');

@@ -1,6 +1,6 @@
 'use strict'
 
-const ui = require('../lib/ui')
+const ui = require('../ui')
 const ipc = require('electron').ipcRenderer;
 
 function getFilePath() {

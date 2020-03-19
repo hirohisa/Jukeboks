@@ -1,8 +1,8 @@
 'use strict'
 
-const sy = require('../lib/system')
-const ui = require('../lib/ui')
-const D = require('../lib/d')
+const sy = require('../system')
+const ui = require('../ui')
+const D = require('../d')
 const navigator = require('./navigator')
 const path = require('path')
 const _ = require('underscore');
@@ -230,7 +230,7 @@ ipc.on('keydown', (event, data) => {
 })
 
 ipc.on('click', (event, data) => {
-  const def = require('../lib/define');
+  const def = require('../define');
   switch (data.id) {
     case "move-parent-directory":
       fileCursor.up()

@@ -2,7 +2,7 @@
 
 const mainContent = document.getElementById('main-content')
 const videoSlider = document.getElementById('video-slider')
-const sy = require('../lib/system');
+const sy = require('../system');
 const utils = require('./utils');
 const queue = require('queue');
 var q = queue();
@@ -11,7 +11,7 @@ q.autostart = true;
 var videoTimer;
 
 var MEDIA = {
-  UNDEFINED : 0,
+  UNDEFINED: 0,
   IMAGE: 1,
   VIDEO: 2
 }
@@ -24,17 +24,17 @@ function ext(filePath) {
   switch (extname) {
     case ".mp3":
     case ".mp4":
-    return MEDIA.VIDEO;
-    break
+      return MEDIA.VIDEO;
+      break
     case ".jpeg":
     case ".jpg":
     case ".png":
     case ".gif":
     case ".svn":
-    return MEDIA.IMAGE;
-    break;
+      return MEDIA.IMAGE;
+      break;
     default:
-    break
+      break
   }
   return MEDIA.UNDEFINED;
 }
@@ -43,16 +43,16 @@ function createContent(src) {
   var element = undefined
   switch (ext(src)) {
     case MEDIA.VIDEO:
-    element = document.createElement("video")
-    element.src = src
-    element.autoplay = true
-    break
+      element = document.createElement("video")
+      element.src = src
+      element.autoplay = true
+      break
     case MEDIA.IMAGE:
-    element = document.createElement("img")
-    element.src = src
-    break
+      element = document.createElement("img")
+      element.src = src
+      break
     default:
-    break
+      break
   }
 
   return element
@@ -66,14 +66,14 @@ function render(filePath) {
     element.className = "visible"
     mainContent.appendChild(element)
     if (element.tagName.toLowerCase() == 'video') {
-      element.addEventListener("play", function(e) {
+      element.addEventListener("play", function (e) {
         var timeLabel = document.getElementById("video-time-label");
         var duration = e.target.duration + 1
-        var minutes = Math.floor(duration/60)
-        var seconds = ('0' + Math.floor(duration%60)).slice(-2)
+        var minutes = Math.floor(duration / 60)
+        var seconds = ('0' + Math.floor(duration % 60)).slice(-2)
         timeLabel.innerHTML = minutes + ':' + seconds
       }, true);
-      element.addEventListener("ended", function() {
+      element.addEventListener("ended", function () {
         ipc.send('endedVideo')
       }, true);
     }
@@ -85,10 +85,10 @@ function render(filePath) {
 function displayVideoSlider() {
   if (isDisplayingVideo()) {
     videoTimer = setInterval(seekVideo, 1000)
-    videoSlider.style.display =  "block";
+    videoSlider.style.display = "block";
   } else {
     clearInterval(videoTimer);
-    videoSlider.style.display =  "none";
+    videoSlider.style.display = "none";
   }
 }
 
@@ -140,7 +140,7 @@ videoSlider.addEventListener("change", (event) => {
 const ipc = require('electron').ipcRenderer;
 
 var stored = undefined;
-ipc.on('selectFile', function(event, data) {
+ipc.on('selectFile', function (event, data) {
   stored = data.filePath;
   if (utils.isShowingContent()) {
     utils.cleanContents();
@@ -148,7 +148,7 @@ ipc.on('selectFile', function(event, data) {
   }
 })
 
-ipc.on('changeLayoutToContent', function(event, data) {
+ipc.on('changeLayoutToContent', function (event, data) {
   utils.cleanContents();
   render(stored);
 })
