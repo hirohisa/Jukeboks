@@ -22,6 +22,10 @@ class Navigator {
     ipc.send('movePath', data)
   }
 
+  getCurrent() {
+    return stack.slice(-1)[0]
+  }
+
   push(d) {
     stack.push(d)
     this.move(d)
@@ -31,8 +35,7 @@ class Navigator {
     if (stack.length <= 1) return;
     var last = stack.pop();
 
-    var current = stack.slice(-1)[0]
-    this.move(current, path.basename(last.path));
+    this.move(this.getCurrent(), path.basename(last.path));
   }
 
 }

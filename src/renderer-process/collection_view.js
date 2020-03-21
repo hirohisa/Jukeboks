@@ -100,8 +100,9 @@ ipc.on('selectFile', function (event, data) {
 
 const layoutIcon = document.getElementById('change-layout-icon');
 ipc.on('changeLayout', function (event, data) {
+  const navigator = require('./navigator')
   var data = {
-    path: ui.dirPath.getAttribute('href')
+    d: navigator.getCurrent()
   };
   var isShowingContent = utils.isShowingContent();
   isShowingContent ? utils.showCollection() : utils.showContent();
