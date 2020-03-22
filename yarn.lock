@@ -1920,10 +1920,10 @@ xdg-basedir@^4.0.0:
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-4.0.0.tgz#4bc8d9984403696225ef83a1573cbbcb4e79db13"
   integrity sha512-PSNhEJDejZYV7h50BohL09Er9VaIefr2LMAf3OEmpCkjOi34eYyQYAXUTjEQtZJTKcF0E2UKTh+osDLsgNim9Q==
 
-xel@^0.0.218:
-  version "0.0.218"
-  resolved "https://registry.yarnpkg.com/xel/-/xel-0.0.218.tgz#c1dbc8aa5d7ddbaeef75fdb2e75f089e4a0de1d0"
-  integrity sha512-a4h988bMxLncdFI6rL8zUxmXSNSXcn7tQn9Cenq20hsBQm5eqaT8Qtjpwzy6QEW1S28/HCjc6N2gfcfbnxPh1g==
+xel@^0.0.219:
+  version "0.0.219"
+  resolved "https://registry.yarnpkg.com/xel/-/xel-0.0.219.tgz#83ca9e42501c58f8db1d0f035d05ae0dcaa50eea"
+  integrity sha512-Z2nLi2OiO9kzerDwCOaGO0Qz/c32vQmUa9cvtZTGIfdwweC9vapxj5pjBJX/LfKLEKsUXrUHPltuZDAkMbG4Ng==
 
 xmlbuilder@^9.0.7:
   version "9.0.7"
