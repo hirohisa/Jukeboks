@@ -261,18 +261,18 @@ ipc.on('removePath', function (event, data) {
 })
 
 ipc.on('didMoveDirectory', (event, data) => {
-  ui.directoryIcon.name = data.isBookmarked ? 'bookmark' : 'bookmark-border';
-  ui.directoryName.innerHTML = path.basename(data.d.path);
+  ui.bookmarkDirectoryIcon.name = data.isBookmarked ? 'bookmark' : 'bookmark-border';
+  ui.directoryCurrentDiv.innerHTML = data.d.name ?? path.basename(data.d.path);
 })
 
 ipc.on('updateDirectoryData', (event, data) => {
   if (ui.dirPath.getAttribute('href') != data.path) { return; }
   switch (data.id) {
     case "bookmarkPath":
-      ui.directoryIcon.name = "bookmark";
+      ui.bookmarkDirectoryIcon.name = "bookmark";
       break;
     case "unbookmarkPath":
-      ui.directoryIcon.name = "bookmark-border";
+      ui.bookmarkDirectoryIcon.name = "bookmark-border";
       break;
     default:
   }

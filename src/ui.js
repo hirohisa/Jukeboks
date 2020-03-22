@@ -6,14 +6,14 @@ const directoryTree = document.getElementById('directory-tree');
 module.exports.directoryTree = directoryTree;
 module.exports.sideBar = document.getElementById('sidebar');
 
-const dirPath = document.getElementById('path-directory');
+const dirPath = document.getElementById('directory-current');
 module.exports.dirPath = dirPath;
 
-const directoryIcon = document.getElementById('bookmark-directory');
-module.exports.directoryIcon = directoryIcon;
+const bookmarkDirectoryIcon = document.getElementById('bookmark-directory');
+module.exports.bookmarkDirectoryIcon = bookmarkDirectoryIcon;
 
-const directoryName = document.getElementById('path-directory-name');
-module.exports.directoryName = directoryName;
+const directoryCurrentDiv = document.getElementById('directory-current-name');
+module.exports.directoryCurrentDiv = directoryCurrentDiv;
 
 const searchInputForm = document.getElementById('search-form-input')
 module.exports.searchInputForm = searchInputForm
