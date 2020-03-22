@@ -12,7 +12,7 @@ function getFilePath() {
 }
 
 function isFocusInputField() {
-  return document.activeElement.tagName.toLowerCase() == "input"
+  return document.activeElement.id.toLowerCase() == "search-form-input"
 }
 
 function execCommands(data) {

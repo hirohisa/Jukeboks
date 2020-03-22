@@ -38,6 +38,14 @@
             <x-icon name="bookmark-border" id="path-directory-icon"></x-icon>
           </button>
         </div>
+
+        <div class="pull-right">
+          <x-input class="btn btn-default nav-group-input" id="search-form-input">
+            <x-icon name="search"></x-icon>
+            <x-label>Search</x-label>
+          </x-input>
+        </div>
+
       </div>
     </header>
     <div class="window-content">
@@ -50,11 +58,6 @@
             <div id="path-directory-name"></div>
           </span>
           <h5 class="nav-group-title">Files</h5>
-          <ul class="list-group">
-            <li class="list-group-header">
-              <input class="form-control" type="text" placeholder="Search" id="search-form-input">
-            </li>
-          </ul>
           <nav id="directory-tree"></nav>
         </nav>
       </div>
