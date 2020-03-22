@@ -61,16 +61,16 @@ function reload(data) {
   render(data.ds, data.referer, undefined, undefined)
 }
 
-function getElementBy(fileName) {
+function getElementBy(d) {
   var array = Array.from(document.getElementsByClassName('nav-group-item'));
-  return array.find(e => e.getAttribute('fileName') == fileName);
+  return array.find(e => e.getAttribute('fileName') == d.name || e.getAttribute('href') == d.path);
 }
 
-function selectCurrent(name, focusTarget) {
+function selectCurrent(referer, focusTarget) {
 
   var current = undefined;
-  if (name) {
-    current = getElementBy(name);
+  if (referer) {
+    current = getElementBy(referer);
     if (current) {
       current.id = 'directory-current-page';
     }

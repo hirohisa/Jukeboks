@@ -35,7 +35,7 @@ class Navigator {
     if (stack.length <= 1) return;
     var last = stack.pop();
 
-    this.move(this.getCurrent(), path.basename(last.path));
+    this.move(this.getCurrent(), last);
   }
 
 }
