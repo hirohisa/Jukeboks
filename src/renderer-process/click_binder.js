@@ -17,14 +17,15 @@ clickedIdList.forEach(function (e) {
   handleClick(e);
 })
 
-const dirPath = document.getElementById('path-directory');
-dirPath.addEventListener("click", (event) => {
-  const directoryIcon = document.getElementById('path-directory-icon');
-  let notYetBookmark = directoryIcon.className.indexOf('empty') > -1;
+const bookmarkDirectoryIcon = document.getElementById('bookmark-directory');
+bookmarkDirectoryIcon.addEventListener("click", (event) => {
+  let notYetBookmark = event.target.getAttribute("name") == "bookmark-border";
+
   let id = notYetBookmark ? 'bookmarkPath' : 'unbookmarkPath';
+  const navigator = require('./navigator')
   let data = {
     id: id,
-    path: dirPath.getAttribute('href')
+    d: navigator.getCurrent()
   };
   ipc.send(id, data);
 });

@@ -12,10 +12,10 @@ ipc.on('moveToTrash', function (event, data) {
 })
 
 ipc.on('bookmarkPath', function (event, data) {
-  if (!data.path) { return; }
+  if (!data.d) { return; }
 
-  bookmarker.create(data.path, (result, updated) => {
-    let fileName = path.basename(data.path);
+  bookmarker.create(data.d.path, (result, updated) => {
+    let fileName = path.basename(data.d.path);
     let message = updated ? `Updated directory [${fileName}]` : `Bookmarked directory [${fileName}]`;
     event.sender.send('showNotification', { message: message });
     event.sender.send('updateDirectoryData', data);
@@ -23,9 +23,9 @@ ipc.on('bookmarkPath', function (event, data) {
 })
 
 ipc.on('unbookmarkPath', function (event, data) {
-  if (!data.path) { return; }
+  if (!data.d) { return; }
 
-  bookmarker.remove(data.path, () => {
+  bookmarker.remove(data.d.path, () => {
     event.sender.send('updateDirectoryData', data);
   });
 })

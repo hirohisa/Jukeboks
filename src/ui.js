@@ -9,7 +9,7 @@ module.exports.sideBar = document.getElementById('sidebar');
 const dirPath = document.getElementById('path-directory');
 module.exports.dirPath = dirPath;
 
-const directoryIcon = document.getElementById('path-directory-icon');
+const directoryIcon = document.getElementById('bookmark-directory');
 module.exports.directoryIcon = directoryIcon;
 
 const directoryName = document.getElementById('path-directory-name');
@@ -21,7 +21,7 @@ module.exports.searchInputForm = searchInputForm
 // utils
 
 // https://stackoverflow.com/questions/494143/
-module.exports.createElementFromHTML = function(htmlString) {
+module.exports.createElementFromHTML = function (htmlString) {
   var div = document.createElement('div');
   div.innerHTML = htmlString.trim();
   return div.firstChild;
@@ -29,7 +29,7 @@ module.exports.createElementFromHTML = function(htmlString) {
 
 // get element
 
-module.exports.getCurrent = function() {
+module.exports.getCurrent = function () {
   var current = document.getElementById('directory-current-page')
   if (current) {
     return current

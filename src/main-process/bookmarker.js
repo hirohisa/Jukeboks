@@ -10,7 +10,7 @@ db.ensureIndex({ fieldName: 'path', unique: true }, function (err) { });
 class Bookmarker {
 
   create(path, callback) {
-    this.select(path, function (doc) {
+    this._select(path, function (doc) {
       if (doc) {
         db.update({ path: path },
           { $set: { createdAt: Date.now() } },
