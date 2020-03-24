@@ -71,6 +71,10 @@ class VirtualFinder {
     callback(ds)
   }
 
+  import(filePaths) {
+    console.log(filePaths)
+  }
+
 }
 
 read();

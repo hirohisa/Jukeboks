@@ -1,7 +1,8 @@
 'use strict';
 
-const path = require('path');
+require('./menu.js');
 require('./search.js');
+const path = require('path');
 const fileFinder = require('./file_finder.js');
 const bookmarker = require('./bookmarker.js');
 
