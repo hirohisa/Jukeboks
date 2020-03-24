@@ -40,15 +40,15 @@ function createText(text) {
 }
 
 function render(ds) {
-  var myLazyLoad = new LazyLoad({
-    elements_selector: ".lazy"
-  });
+  // var myLazyLoad = new LazyLoad({
+  //   elements_selector: ".lazy"
+  // });
 
   ds.forEach(function (d) {
     renderToCollection(d);
   });
 
-  myLazyLoad.update();
+  // myLazyLoad.update();
 }
 
 function renderToCollection(d) {
