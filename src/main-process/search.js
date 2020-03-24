@@ -3,7 +3,6 @@
 const fileFinder = require('./file_finder.js');
 const bookmarker = require('./bookmarker.js');
 const virtualFinder = require('./virtual_finder.js');
-const D = require('../d.js');
 const path = require('path');
 
 function searchFiles(sender, data, identifer) {
@@ -29,12 +28,10 @@ function searchVirtualFiles(sender, data, identifer) {
 }
 
 function searchBookmarks(sender, identifer) {
-  bookmarker.selectAll((docs) => {
+  bookmarker.selectAll((ds) => {
     var result = {
       path: '/Bookmarks',
-      ds: docs.map((doc) => {
-        return new D(path.basename(doc.path), doc.path, true)
-      }),
+      ds: ds,
     };
     sender.send(identifer, result);
   });

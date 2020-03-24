@@ -2,6 +2,7 @@
 
 const Database = require('nedb');
 const define = require('../define');
+const D = require('../d');
 
 const databasePath = define.rootPath + "/.Jukeboks/bookmarks.json";
 let db = new Database({ filename: databasePath, autoload: true });
@@ -45,7 +46,11 @@ class Bookmarker {
 
   selectAll(callback) {
     db.find({}).sort({ createdAt: -1 }).exec(function (err, docs) {
-      callback(docs);
+      const path = require('path');
+      let ds = docs.map((doc) => {
+        return new D(path.basename(doc.path), doc.path, true)
+      });
+      callback(ds);
     });
   }
 
