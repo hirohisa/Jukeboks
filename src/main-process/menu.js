@@ -36,8 +36,9 @@ const template = [
           const { dialog, ipcMain } = require('electron')
           dialog.showOpenDialog({ properties: ['openFile'] }).then(result => {
             if (result.canceled) { return; }
+            if (result.filePaths.length == 0) { return; }
             const virtualFinder = require('./virtual_finder.js');
-            virtualFinder.import(result.filePaths);
+            virtualFinder.importFile(result.filePaths[0]);
           }).catch(err => {
             console.log(err)
           })
