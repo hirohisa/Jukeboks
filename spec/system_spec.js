@@ -1,5 +1,5 @@
 describe("Sy", () => {
-  const system = require('../lib/system')
+  const system = require('../src/system')
 
   describe("when finder check unused directory", () => {
     it("try several patterns", () => {

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
+  <title>Jukeboks</title>
+
+  <link rel="stylesheet" href="./module/photon-0.1.2/css/photon.min.css">
+  <link rel="stylesheet" href="./css/main.css" />
+
+  <link rel="stylesheet" href="./../node_modules/xel/themes/macos.css">
+  <script src="./../node_modules/xel/xel.min.js"></script>
+</head>
+
+<body>
+  <div class="window">
+    <header class="toolbar toolbar-header">
+      <div class="toolbar-actions">
+        <button class="btn btn-default" id="move-parent-directory">
+          <x-icon name="navigate-before"></x-icon>
+        </button>
+        <button class="btn btn-default">
+          <x-icon name="bookmark-border" id="bookmark-directory"></x-icon>
+        </button>
+
+        <div class="btn-group">
+          <button class="btn btn-default" id="move-home-directory">
+            <x-icon name="home"></x-icon>
+          </button>
+          <button class="btn btn-default" id="show-bookmarks">
+            <x-icon name="book"></x-icon>
+          </button>
+          <button class="btn btn-default" id="show-virtual-directory">
+            <x-icon name="collections"></x-icon>
+          </button>
+        </div>
+        <button class="btn btn-default">
+          <x-icon name="crop-original" id="change-layout-icon"></x-icon>
+        </button>
+
+        <div class="pull-right">
+          <x-input class="btn btn-default nav-group-input" id="search-form-input">
+            <x-icon name="search"></x-icon>
+            <x-label>Search</x-label>
+          </x-input>
+        </div>
+
+      </div>
+    </header>
+    <div class="window-content">
+      <!-- .navigation -->
+      <div class="pane-sm sidebar" id="sidebar">
+        <nav class="nav-group">
+          <h5 class="nav-group-title">Directory</h5>
+          <span class="nav-group-item nav-group-item-disactive" id="directory-current">
+
+            <div id="directory-current-name"></div>
+          </span>
+          <h5 class="nav-group-title">Files</h5>
+          <nav id="directory-tree"></nav>
+        </nav>
+      </div>
+
+      <!-- .main-content -->
+      <div class="pane" id="main-panel">
+        <main id="main-content"></main>
+        <main id="main-collection" class="grid"></main>
+        <div class="video-component">
+          <x-slider value="0" min="0" max="100" id="video-slider" skin="arrow">
+            <x-label value="0">0:00</x-label>
+            <x-label value="100" id="video-time-label"></x-label>
+          </x-slider>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="./renderer-process/renderer_main.js"></script>
+
+</html>

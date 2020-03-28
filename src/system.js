@@ -3,17 +3,22 @@ const D = require('./d.js');
 const organizer = require('./file_utils.js');
 const path = require('path');
 
-module.exports.isDirectory = function(filePath) {
+module.exports.isDirectory = function (filePath) {
+  const define = require('./define');
+  if (filePath.startsWith(define.virtualPath)) {
+    return true;
+  }
+
   const fs = require('fs');
   try {
     var stats = fs.lstatSync(filePath);
     return stats.isDirectory();
-  } catch(e) {
+  } catch (e) {
     return false;
   }
 }
 
-module.exports.showInFinder = function(path) {
+module.exports.showInFinder = function (path) {
   const { spawn } = require('child_process');
   spawn('open', ["-R", path]);
 }
@@ -25,15 +30,15 @@ function convert(dirPath, dirents) {
   })
 }
 
-module.exports.findFiles = function(dirPath, callback) {
+module.exports.findFiles = function (dirPath, callback) {
   const fs = require('fs')
-  fs.readdir(dirPath, {withFileTypes: true}, function(error, dirents) {
-    if (error) dirents = []
-    callback(convert(dirPath, organizer.sort(dirents)))
+  fs.readdir(dirPath, { withFileTypes: true }, function (error, dirs) {
+    if (error) dirs = []
+    callback(convert(dirPath, organizer.sort(dirs)))
   })
 }
 
-module.exports.keepDirectory = function(current, src) {
+module.exports.keepDirectory = function (current, src) {
   if (!current.startsWith(src)) {
     return false;
   }

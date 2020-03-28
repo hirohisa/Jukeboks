@@ -1,5 +1,5 @@
 describe("O", () => {
-  const O = require('../lib/o')
+  const O = require('../src/o')
 
   it("initialize with string", () => {
     var dirent, expected, o

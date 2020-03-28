@@ -1,22 +1,22 @@
 'use strict';
 
 const Database = require('nedb');
-const define = require('../lib/define');
+const define = require('../define');
+const D = require('../d');
 
 const databasePath = define.rootPath + "/.Jukeboks/bookmarks.json";
 let db = new Database({ filename: databasePath, autoload: true });
-// let db = new Database();
-db.ensureIndex({ fieldName: 'path', unique: true }, function (err) {});
+db.ensureIndex({ fieldName: 'path', unique: true }, function (err) { });
 
 class Bookmarker {
 
   create(path, callback) {
-    this.select(path, function(doc) {
+    this._select(path, function (doc) {
       if (doc) {
-        db.update({ path: path},
+        db.update({ path: path },
           { $set: { createdAt: Date.now() } },
           {},
-          function(err, replaced) {
+          function (err, replaced) {
             callback(replaced, true);
           }
         );
@@ -46,7 +46,11 @@ class Bookmarker {
 
   selectAll(callback) {
     db.find({}).sort({ createdAt: -1 }).exec(function (err, docs) {
-      callback(docs);
+      const path = require('path');
+      let ds = docs.map((doc) => {
+        return new D(path.basename(doc.path), doc.path, true)
+      });
+      callback(ds);
     });
   }
 

@@ -2,7 +2,7 @@
 
 class D {
 
-  constructor(name, path, isDirectory=true) {
+  constructor(name, path, isDirectory = true) {
     this.name = name
     this.path = path
     this.isDirectory = isDirectory
