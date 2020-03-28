@@ -43,7 +43,22 @@ const template = [
             console.log(err)
           })
         }
-      }
+      },
+      {
+        label: 'Export virtual directory',
+        click: async () => {
+          const { dialog, ipcMain } = require('electron')
+          dialog.showOpenDialog({ properties: ['openDirectory'] }).then(result => {
+            if (result.canceled) { return; }
+            console.log(result)
+            if (result.filePaths.length == 0) { return; }
+            const virtualFinder = require('./virtual_finder.js');
+            virtualFinder.exportFile(result.filePaths[0]);
+          }).catch(err => {
+            console.log(err)
+          })
+        }
+      },
     ]
   },
 ]

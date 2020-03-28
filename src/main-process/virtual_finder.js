@@ -10,11 +10,11 @@ db.ensureIndex({ fieldName: 'path', unique: true }, (err) => { });
 
 var storage = {};
 
-function stream(filePath, callback, completion) {
+function readStream(filePath, callback, completion) {
   const fs = require('fs');
-  const readStream = fs.createReadStream(filePath);
+  const stream = fs.createReadStream(filePath);
   const readline = require('readline');
-  const reader = readline.createInterface(readStream, {});
+  const reader = readline.createInterface(stream, {});
   reader.on('line', (line) => {
     var s = line.split(',').map(e => e.trim());
     if (s < 3) return;
@@ -24,6 +24,29 @@ function stream(filePath, callback, completion) {
     callback(d, s);
   });
   reader.on('close', completion);
+}
+
+function writeStream(filePath, docs, completion) {
+  const fs = require("fs");
+
+  const stream = fs.createWriteStream(filePath);
+
+  var bufferCount = 0
+  docs.forEach(doc => {
+    bufferCount += 1
+    stream.write(`${doc.path},${doc.name},${doc.terms.join(",")}\n`)
+    if (bufferCount > 20) {
+      stream.uncork();
+      stream.cork();
+      bufferCount = 0;
+    }
+  })
+  stream.end("\n");
+
+  stream.on("error", (err) => {
+    if (err)
+      console.log(err.message);
+  });
 }
 
 function normalizeDirname(dirPath) {
@@ -37,7 +60,7 @@ function getStorageKeys() {
   return Object.keys(storage).map(e => {
     return new D(e, define.virtualPath + "/" + e)
   }).sort((a, b) => {
-    if (a.name > b.name) {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) {
       return 1;
     } else {
       return -1;
@@ -62,7 +85,7 @@ class VirtualFinder {
     var ds = storage[dirname]
     if (!ds) ds = []
     ds = ds.sort((a, b) => {
-      if (a.name > b.name) {
+      if (a.name.toLowerCase() > b.name.toLowerCase()) {
         return 1;
       } else {
         return -1;
@@ -156,7 +179,7 @@ class VirtualFinder {
   }
 
   _selectAll(callback) {
-    db.find({}).exec((err, docs) => {
+    db.find({}).sort({ name: -1 }).exec((err, docs) => {
       callback(docs);
     });
   }
@@ -172,11 +195,18 @@ class VirtualFinder {
   }
 
   importFile(filePath) {
-    stream(filePath, (d, terms) => {
+    readStream(filePath, (d, terms) => {
       this.create(d, terms, () => {
         this._saveToStorage(d, terms)
       });
     }, () => { })
+  }
+
+  exportFile(dirPath) {
+    var filePath = dirPath + "/" + "virtual_directory.csv"
+    this._selectAll((docs) => {
+      writeStream(filePath, docs, () => { })
+    })
   }
 
 }
