@@ -63,20 +63,26 @@ function reload(data) {
 
 function getElementBy(d) {
   var array = Array.from(document.getElementsByClassName('nav-group-item'));
-  return array.find(e => e.getAttribute('fileName') == d.name || e.getAttribute('href') == d.path);
+
+  var result = array.find(e => e.getAttribute('href') == d.path);
+  if (result) {
+    return result
+  }
+
+  return array.find(e => e.getAttribute('fileName') == d.name);
 }
 
 function selectCurrent(referer, focusTarget) {
+  var current = ui.getCurrent();
+  var next = undefined
 
-  var current = undefined;
   if (referer) {
-    current = getElementBy(referer);
-    if (current) {
-      current.id = 'directory-current-page';
+    next = getElementBy(referer);
+    if (next) {
+      next.id = 'directory-current-page';
+      current.id = '';
+      current = next
     }
-  }
-  if (!current) {
-    current = ui.getCurrent();
   }
 
   fileCursor.select(current);
@@ -249,7 +255,7 @@ ipc.on('click', (event, data) => {
 })
 
 ipc.on('selectCurrent', (event, data) => {
-  selectCurrent(data.href, undefined);
+  selectCurrent(data, undefined);
 });
 
 ipc.on('removePath', function (event, data) {

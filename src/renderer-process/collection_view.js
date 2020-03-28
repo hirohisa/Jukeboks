@@ -15,12 +15,9 @@ function createItem(d) {
   element.id = d.name;
   element.setAttribute('href', d.path);
   element.addEventListener("click", function (e) {
-    var href = e.target.getAttribute('href');
-    if (!href) {
-      href = e.target.parentNode.getAttribute('href');
-    }
+    var href = e.target.getAttribute('href') || e.target.parentNode.getAttribute('href');
     if (href) {
-      var data = { href: href };
+      var data = { path: href };
       ipc.send('selectCurrent', data);
     }
   }, false);
@@ -91,11 +88,10 @@ ipc.on('keydown', (event, data) => {
 
 
 ipc.on('selectFile', function (event, data) {
-  if (!utils.isShowingContent()) {
-    element = document.getElementById(path.basename(data.filePath));
-    if (!element) { return; }
-    element.scrollIntoView(true);
-  }
+  if (utils.isShowingContent()) { return }
+  element = document.getElementById(path.basename(data.filePath));
+  if (!element) { return }
+  element.scrollIntoView(true);
 })
 
 const layoutIcon = document.getElementById('change-layout-icon');
