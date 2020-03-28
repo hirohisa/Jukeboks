@@ -10,18 +10,6 @@ db.ensureIndex({ fieldName: 'path', unique: true }, (err) => { });
 
 var storage = {};
 
-async function sortStorage() {
-  for (var key in storage) {
-    storage[key] = storage[key].sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      } else {
-        return -1;
-      }
-    })
-  }
-}
-
 function stream(filePath, callback, completion) {
   const fs = require('fs');
   const readStream = fs.createReadStream(filePath);
@@ -48,7 +36,13 @@ function normalizeDirname(dirPath) {
 function getStorageKeys() {
   return Object.keys(storage).map(e => {
     return new D(e, define.virtualPath + "/" + e)
-  });
+  }).sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    } else {
+      return -1;
+    }
+  })
 }
 
 class VirtualFinder {
@@ -67,6 +61,13 @@ class VirtualFinder {
 
     var ds = storage[dirname]
     if (!ds) ds = []
+    ds = ds.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      } else {
+        return -1;
+      }
+    })
     callback(ds)
   }
 
@@ -140,6 +141,7 @@ class VirtualFinder {
       docs.forEach(doc => {
         let d = new D(doc.name, doc.path, true)
         doc.terms.forEach(e => {
+          if (!e || e.length == 0) { return; }
           if (!storage[e]) storage[e] = [];
           storage[e].push(d);
         })
@@ -161,6 +163,7 @@ class VirtualFinder {
 
   _saveToStorage(d, terms) {
     terms.forEach(e => {
+      if (!e || e.length == 0) { return; }
       if (!storage[e]) storage[e] = [];
       var hit = storage[e].filter(_d => _d.path == d.path)
       if (hit.length > 0) { return; }
@@ -173,7 +176,7 @@ class VirtualFinder {
       this.create(d, terms, () => {
         this._saveToStorage(d, terms)
       });
-    }, () => { sortStorage() })
+    }, () => { })
   }
 
 }
