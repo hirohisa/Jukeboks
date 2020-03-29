@@ -62,8 +62,10 @@ function getStorageKeys() {
   }).sort((a, b) => {
     if (a.name.toLowerCase() > b.name.toLowerCase()) {
       return 1;
-    } else {
+    } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
       return -1;
+    } else {
+      return a.path > b.path ? 1 : -1;
     }
   })
 }
@@ -87,8 +89,10 @@ class VirtualFinder {
     ds = ds.sort((a, b) => {
       if (a.name.toLowerCase() > b.name.toLowerCase()) {
         return 1;
-      } else {
+      } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
         return -1;
+      } else {
+        return a.path > b.path ? 1 : -1;
       }
     })
     callback(ds)

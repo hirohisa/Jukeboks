@@ -72,7 +72,7 @@ function getElementBy(d) {
   return array.find(e => e.getAttribute('fileName') == d.name);
 }
 
-function selectCurrent(referer, focusTarget) {
+function selectCurrent(referer) {
   var current = ui.getCurrent();
   var next = undefined
 
@@ -86,10 +86,7 @@ function selectCurrent(referer, focusTarget) {
   }
 
   fileCursor.select(current);
-  if (!focusTarget) {
-    focusTarget = current;
-  }
-  scrollTo(focusTarget);
+  scrollTo(current);
 
 }
 
@@ -126,7 +123,7 @@ function render(ds, referer, term, focusTarget) {
 
   q.push(
     () => {
-      selectCurrent(referer, focusTarget);
+      selectCurrent(referer);
     }
   )
 
@@ -255,7 +252,7 @@ ipc.on('click', (event, data) => {
 })
 
 ipc.on('selectCurrent', (event, data) => {
-  selectCurrent(data, undefined);
+  selectCurrent(data);
 });
 
 ipc.on('removePath', function (event, data) {
