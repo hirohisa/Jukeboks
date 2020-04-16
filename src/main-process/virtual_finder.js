@@ -15,8 +15,9 @@ function readStream(filePath, callback, completion) {
   const stream = fs.createReadStream(filePath);
   const readline = require('readline');
   const reader = readline.createInterface(stream, {});
+  var separator = "\t"
   reader.on('line', (line) => {
-    var s = line.split(',').map(e => e.trim());
+    var s = line.split(separator).map(e => e.trim());
     if (s < 3) return;
     var path = s.shift();
     var name = s.shift();
@@ -32,9 +33,10 @@ function writeStream(filePath, docs, completion) {
   const stream = fs.createWriteStream(filePath);
 
   var bufferCount = 0
+  var separator = "\t"
   docs.forEach(doc => {
     bufferCount += 1
-    stream.write(`${doc.path},${doc.name},${doc.terms.join(",")}\n`)
+    stream.write(`${([doc.path, doc.name] + doc.terms).join(separator)}\n`)
     if (bufferCount > 20) {
       stream.uncork();
       stream.cork();
@@ -207,7 +209,7 @@ class VirtualFinder {
   }
 
   exportFile(dirPath) {
-    var filePath = dirPath + "/" + "virtual_directory.csv"
+    var filePath = dirPath + "/" + "virtual_directory.tsv"
     this._selectAll((docs) => {
       writeStream(filePath, docs, () => { })
     })
