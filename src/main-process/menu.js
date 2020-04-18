@@ -1,17 +1,5 @@
 const { app, Menu } = require('electron')
 
-function searchVirtualFiles(sender, data, identifer) {
-  virtualFinder.search(data.d.path, (ds) => {
-    var result = {
-      path: data.path,
-      ds: ds,
-      referer: data.referer
-    };
-    sender.send(identifer, result);
-  })
-}
-
-
 const template = [
   // { role: 'appMenu' }
   ...([{
@@ -32,13 +20,15 @@ const template = [
     submenu: [
       {
         label: 'Import virtual directory',
-        click: async () => {
-          const { dialog, ipcMain } = require('electron')
+        click: async (m, b, e) => {
+          const { dialog } = require('electron')
           dialog.showOpenDialog({ properties: ['openFile'] }).then(result => {
             if (result.canceled) { return; }
             if (result.filePaths.length == 0) { return; }
             const virtualFinder = require('./virtual_finder.js');
-            virtualFinder.importFile(result.filePaths[0]);
+            virtualFinder.importFile(result.filePaths[0], () => {
+              b.webContents.send("showNotification", { message: "Complete: Import virtual directory" })
+            });
           }).catch(err => {
             console.log(err)
           })
@@ -46,14 +36,15 @@ const template = [
       },
       {
         label: 'Export virtual directory',
-        click: async () => {
-          const { dialog, ipcMain } = require('electron')
+        click: async (m, b, e) => {
+          const { dialog } = require('electron')
           dialog.showOpenDialog({ properties: ['openDirectory'] }).then(result => {
             if (result.canceled) { return; }
-            console.log(result)
             if (result.filePaths.length == 0) { return; }
             const virtualFinder = require('./virtual_finder.js');
-            virtualFinder.exportFile(result.filePaths[0]);
+            virtualFinder.exportFile(result.filePaths[0], () => {
+              b.webContents.send("showNotification", { message: "Complete: Export virtual directory" })
+            });
           }).catch(err => {
             console.log(err)
           })

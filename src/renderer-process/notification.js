@@ -2,7 +2,7 @@
 
 const ipc = require('electron').ipcRenderer;
 
-const notificationFunction = function(data) {
+const notificationFunction = function (data) {
   let notification = new Notification('Jukeboks', {
     silent: true,
     body: data.message

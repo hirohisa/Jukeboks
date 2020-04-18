@@ -3,6 +3,7 @@
 const Database = require('nedb');
 const define = require('../define');
 const D = require('../d');
+const ipc = require('electron').ipcRenderer;
 
 const databasePath = define.rootPath + "/.Jukeboks/virtual_directory.json";
 let db = new Database({ filename: databasePath, autoload: true });
@@ -36,7 +37,7 @@ function writeStream(filePath, docs, completion) {
   var separator = "\t"
   docs.forEach(doc => {
     bufferCount += 1
-    stream.write(`${([doc.path, doc.name] + doc.terms).join(separator)}\n`)
+    stream.write(`${[doc.path, doc.name].concat(doc.terms).join(separator)}\n`)
     if (bufferCount > 20) {
       stream.uncork();
       stream.cork();
@@ -200,18 +201,18 @@ class VirtualFinder {
     });
   }
 
-  importFile(filePath) {
+  importFile(filePath, completion) {
     readStream(filePath, (d, terms) => {
       this.create(d, terms, () => {
         this._saveToStorage(d, terms)
       });
-    }, () => { })
+    }, completion)
   }
 
-  exportFile(dirPath) {
+  exportFile(dirPath, completion) {
     var filePath = dirPath + "/" + "virtual_directory.tsv"
     this._selectAll((docs) => {
-      writeStream(filePath, docs, () => { })
+      writeStream(filePath, docs, completion)
     })
   }
 
