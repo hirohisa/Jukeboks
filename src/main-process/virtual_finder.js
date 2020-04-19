@@ -3,13 +3,13 @@
 const Database = require('nedb');
 const define = require('../define');
 const D = require('../d');
-const ipc = require('electron').ipcRenderer;
 
 const databasePath = define.rootPath + "/.Jukeboks/virtual_directory.json";
 let db = new Database({ filename: databasePath, autoload: true });
 db.ensureIndex({ fieldName: 'path', unique: true }, (err) => { });
 
 var storage = {};
+var _storageKeys = undefined;
 
 function readStream(filePath, callback, completion) {
   const fs = require('fs');
@@ -60,7 +60,11 @@ function normalizeDirname(dirPath) {
 }
 
 function getStorageKeys() {
-  return Object.keys(storage).map(e => {
+  if (_storageKeys) {
+    return _storageKeys;
+  }
+
+  _storageKeys = Object.keys(storage).map(e => {
     return new D(e, define.virtualPath + "/" + e)
   }).sort((a, b) => {
     if (a.name.toLowerCase() > b.name.toLowerCase()) {
@@ -71,12 +75,14 @@ function getStorageKeys() {
       return a.path > b.path ? 1 : -1;
     }
   })
+
+  return _storageKeys;
 }
 
 class VirtualFinder {
 
   constructor() {
-    this._setup()
+    this.setUpStorage(() => { })
   }
 
   search(dirPath, callback) {
@@ -166,7 +172,9 @@ class VirtualFinder {
     db.remove({ path: path }, {}, (err, numRemoved) => { });
   }
 
-  _setup() {
+  setUpStorage(callback) {
+    storage = {}
+    _storageKeys = undefined;
     this._selectAll(docs => {
       docs.forEach(doc => {
         let d = new D(doc.name, doc.path, true)
@@ -176,6 +184,7 @@ class VirtualFinder {
           storage[e].push(d);
         })
       })
+      callback();
     })
   }
 

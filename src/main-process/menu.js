@@ -50,6 +50,15 @@ const template = [
           })
         }
       },
+      {
+        label: 'Refresh virtual directory',
+        click: async (m, b, e) => {
+          const virtualFinder = require('./virtual_finder.js');
+          virtualFinder.setUpStorage(() => {
+            b.webContents.send("showNotification", { message: "Complete: ERefresh virtual directory" })
+          });
+        }
+      },
     ]
   },
 ]
