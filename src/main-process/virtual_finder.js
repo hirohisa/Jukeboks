@@ -45,7 +45,7 @@ function writeStream(filePath, docs, completion) {
     }
   })
   stream.end("\n");
-
+  stream.on("close", completion)
   stream.on("error", (err) => {
     if (err)
       console.log(err.message);
@@ -211,11 +211,18 @@ class VirtualFinder {
   }
 
   importFile(filePath, completion) {
+    var readCount = 0;
+    var writeCount = 0;
     readStream(filePath, (d, terms) => {
+      readCount += 1;
       this.create(d, terms, () => {
         this._saveToStorage(d, terms)
+        writeCount += 1;
+        if (writeCount == readCount) {
+          completion();
+        }
       });
-    }, completion)
+    }, () => { })
   }
 
   exportFile(dirPath, completion) {
