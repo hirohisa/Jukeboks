@@ -12,7 +12,7 @@ function handleClick(id) {
   })
 }
 
-const clickedIdList = ['move-parent-directory', 'move-home-directory', 'show-virtual-directory', 'show-bookmarks'];
+const clickedIdList = ['move-parent-directory', 'move-home-directory', 'show-tag-directory', 'show-bookmarks'];
 clickedIdList.forEach(function (e) {
   handleClick(e);
 })

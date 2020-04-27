@@ -5,7 +5,7 @@ const path = require('path');
 
 module.exports.isDirectory = function (filePath) {
   const define = require('./define');
-  if (filePath.startsWith(define.virtualPath)) {
+  if (filePath.startsWith(define.tagPath)) {
     return true;
   }
 

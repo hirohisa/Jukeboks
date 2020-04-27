@@ -4,12 +4,41 @@ const Database = require('nedb');
 const define = require('../define');
 const D = require('../d');
 
-const databasePath = define.rootPath + "/.Jukeboks/virtual_directory.json";
+const databasePath = define.rootPath + "/.Jukeboks/tags.json";
 let db = new Database({ filename: databasePath, autoload: true });
 db.ensureIndex({ fieldName: 'path', unique: true }, (err) => { });
 
 var storage = {};
+var _storageKeyMap = {};
 var _storageKeys = undefined;
+
+function setUpStorage() {
+  storage = {};
+  _storageKeyMap = {};
+  _storageKeys = undefined;
+}
+
+function saveToStorage(d, terms) {
+  terms.forEach(e => {
+    if (!e || e.length == 0) { return; }
+    if (!storage[e]) storage[e] = [];
+    var hit = storage[e].filter(_d => _d.path == d.path)
+    if (hit.length > 0) { return; }
+    storage[e].push(d);
+  });
+}
+
+function sort(ds) {
+  return ds.sort((a, b) => {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) {
+      return 1;
+    } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
+      return -1;
+    } else {
+      return a.path > b.path ? 1 : -1;
+    }
+  })
+}
 
 function readStream(filePath, callback, completion) {
   const fs = require('fs');
@@ -52,9 +81,9 @@ function writeStream(filePath, docs, completion) {
   });
 }
 
-function normalizeDirname(dirPath) {
-  if (dirPath.startsWith(define.virtualPath)) {
-    return dirPath.slice(define.virtualPath.length + 1)
+function getTagNameFrom(dirPath) {
+  if (dirPath.startsWith(define.tagPath)) {
+    return dirPath.slice(define.tagPath.length + 1)
   }
   return dirPath
 }
@@ -64,47 +93,27 @@ function getStorageKeys() {
     return _storageKeys;
   }
 
-  _storageKeys = Object.keys(storage).map(e => {
-    return new D(e, define.virtualPath + "/" + e)
-  }).sort((a, b) => {
-    if (a.name.toLowerCase() > b.name.toLowerCase()) {
-      return 1;
-    } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
-      return -1;
-    } else {
-      return a.path > b.path ? 1 : -1;
-    }
-  })
-
+  _storageKeys = sort(Object.keys(storage).map(e => new D(e, define.tagPath + "/" + e)))
   return _storageKeys;
 }
 
-class VirtualFinder {
+class TagFinder {
 
   constructor() {
-    this.setUpStorage(() => { })
+    this.setUp(() => { })
   }
 
   search(dirPath, callback) {
-    var dirname = normalizeDirname(dirPath)
+    var tag = getTagNameFrom(dirPath)
 
-    if (!dirname || dirname.length == 0) {
+    if (!tag || tag.length == 0) {
       callback(getStorageKeys())
       return;
     }
 
-    var ds = storage[dirname]
+    var ds = storage[tag]
     if (!ds) ds = []
-    ds = ds.sort((a, b) => {
-      if (a.name.toLowerCase() > b.name.toLowerCase()) {
-        return 1;
-      } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
-        return -1;
-      } else {
-        return a.path > b.path ? 1 : -1;
-      }
-    })
-    callback(ds)
+    callback(sort(ds))
   }
 
   create(d, terms, callback) {
@@ -138,8 +147,8 @@ class VirtualFinder {
   }
 
   remove(filePath) {
-    if (filePath.startsWith(define.virtualPath)) {
-      var dirname = normalizeDirname(filePath)
+    if (filePath.startsWith(define.tagPath)) {
+      var dirname = getTagNameFrom(filePath)
       if (!dirname || dirname.length == 0) { return; }
       this.search(dirname, (ds) => {
         ds.forEach(d => {
@@ -172,17 +181,12 @@ class VirtualFinder {
     db.remove({ path: path }, {}, (err, numRemoved) => { });
   }
 
-  setUpStorage(callback) {
-    storage = {}
-    _storageKeys = undefined;
+  setUp(callback) {
+    setUpStorage();
     this._selectAll(docs => {
       docs.forEach(doc => {
         let d = new D(doc.name, doc.path, true)
-        doc.terms.forEach(e => {
-          if (!e || e.length == 0) { return; }
-          if (!storage[e]) storage[e] = [];
-          storage[e].push(d);
-        })
+        saveToStorage(d, doc.terms)
       })
       callback();
     })
@@ -200,23 +204,13 @@ class VirtualFinder {
     });
   }
 
-  _saveToStorage(d, terms) {
-    terms.forEach(e => {
-      if (!e || e.length == 0) { return; }
-      if (!storage[e]) storage[e] = [];
-      var hit = storage[e].filter(_d => _d.path == d.path)
-      if (hit.length > 0) { return; }
-      storage[e].push(d);
-    });
-  }
-
   importFile(filePath, completion) {
     var readCount = 0;
     var writeCount = 0;
     readStream(filePath, (d, terms) => {
       readCount += 1;
       this.create(d, terms, () => {
-        this._saveToStorage(d, terms)
+        saveToStorage(d, terms)
         writeCount += 1;
         if (writeCount == readCount) {
           completion();
@@ -226,7 +220,7 @@ class VirtualFinder {
   }
 
   exportFile(dirPath, completion) {
-    var filePath = dirPath + "/" + "virtual_directory.tsv"
+    var filePath = dirPath + "/" + "master.tsv"
     this._selectAll((docs) => {
       writeStream(filePath, docs, completion)
     })
@@ -234,4 +228,4 @@ class VirtualFinder {
 
 }
 
-module.exports = new VirtualFinder();
+module.exports = new TagFinder();

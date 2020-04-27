@@ -19,15 +19,15 @@ const template = [
     label: 'File',
     submenu: [
       {
-        label: 'Import virtual directory',
+        label: 'Import file tags',
         click: async (m, b, e) => {
           const { dialog } = require('electron')
           dialog.showOpenDialog({ properties: ['openFile'] }).then(result => {
             if (result.canceled) { return; }
             if (result.filePaths.length == 0) { return; }
-            const virtualFinder = require('./virtual_finder.js');
-            virtualFinder.importFile(result.filePaths[0], () => {
-              b.webContents.send("showNotification", { message: "Complete: Import virtual directory" })
+            const tagFinder = require('./tag_finder.js');
+            tagFinder.importFile(result.filePaths[0], () => {
+              b.webContents.send("showNotification", { message: "Complete: Import file tags" })
             });
           }).catch(err => {
             console.log(err)
@@ -35,15 +35,15 @@ const template = [
         }
       },
       {
-        label: 'Export virtual directory',
+        label: 'Export file tags',
         click: async (m, b, e) => {
           const { dialog } = require('electron')
           dialog.showOpenDialog({ properties: ['openDirectory'] }).then(result => {
             if (result.canceled) { return; }
             if (result.filePaths.length == 0) { return; }
-            const virtualFinder = require('./virtual_finder.js');
-            virtualFinder.exportFile(result.filePaths[0], () => {
-              b.webContents.send("showNotification", { message: "Complete: Export virtual directory" })
+            const tagFinder = require('./tag_finder.js');
+            tagFinder.exportFile(result.filePaths[0], () => {
+              b.webContents.send("showNotification", { message: "Complete: Export file tags" })
             });
           }).catch(err => {
             console.log(err)
@@ -51,11 +51,11 @@ const template = [
         }
       },
       {
-        label: 'Refresh virtual directory',
+        label: 'Refresh file tags',
         click: async (m, b, e) => {
-          const virtualFinder = require('./virtual_finder.js');
-          virtualFinder.setUpStorage(() => {
-            b.webContents.send("showNotification", { message: "Complete: ERefresh virtual directory" })
+          const tagFinder = require('./tag_finder.js');
+          tagFinder.setUp(() => {
+            b.webContents.send("showNotification", { message: "Complete: Refresh file tags" })
           });
         }
       },
