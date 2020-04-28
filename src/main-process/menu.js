@@ -59,6 +59,15 @@ const template = [
           });
         }
       },
+      {
+        label: 'Organize and merge file tags',
+        click: async (m, b, e) => {
+          const tagFinder = require('./tag_finder.js');
+          tagFinder.organize(() => {
+            b.webContents.send("showNotification", { message: "Complete: Organize and merge file tags" })
+          });
+        }
+      },
     ]
   },
 ]

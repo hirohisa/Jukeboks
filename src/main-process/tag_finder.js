@@ -9,12 +9,10 @@ let db = new Database({ filename: databasePath, autoload: true });
 db.ensureIndex({ fieldName: 'path', unique: true }, (err) => { });
 
 var storage = {};
-var _storageKeyMap = {};
 var _storageKeys = undefined;
 
 function setUpStorage() {
   storage = {};
-  _storageKeyMap = {};
   _storageKeys = undefined;
 }
 
@@ -26,6 +24,11 @@ function saveToStorage(d, terms) {
     if (hit.length > 0) { return; }
     storage[e].push(d);
   });
+}
+
+function strip(str) {
+  str = str.replace(/\s/g, '')
+  return str.toLowerCase()
 }
 
 function sort(ds) {
@@ -88,7 +91,7 @@ function getTagNameFrom(dirPath) {
   return dirPath
 }
 
-function getStorageKeys() {
+function getAllTags() {
   if (_storageKeys) {
     return _storageKeys;
   }
@@ -104,12 +107,12 @@ class TagFinder {
   }
 
   search(dirPath, callback) {
-    var tag = getTagNameFrom(dirPath)
-
-    if (!tag || tag.length == 0) {
-      callback(getStorageKeys())
+    if (dirPath == define.tagPath) {
+      callback(getAllTags())
       return;
     }
+
+    var tag = getTagNameFrom(dirPath)
 
     var ds = storage[tag]
     if (!ds) ds = []
@@ -148,37 +151,41 @@ class TagFinder {
 
   remove(filePath) {
     if (filePath.startsWith(define.tagPath)) {
-      var dirname = getTagNameFrom(filePath)
-      if (!dirname || dirname.length == 0) { return; }
-      this.search(dirname, (ds) => {
-        ds.forEach(d => {
-          this._select(d.path, (doc) => {
-            var data = {
-              name: doc.name,
-              terms: doc.terms.filter(t => t != dirname),
-            }
-            this._update(doc.path, data, () => { })
-          })
-        })
-        delete storage[dirname];
-      })
+      this._removeTag(getTagNameFrom(filePath))
       return;
     }
 
+    this._removeDoc(filePath);
+  }
+
+  _removeTag(tagName) {
+    if (!tagName || tagName.length == 0) { return; }
+
+    this.search(tagName, (ds) => {
+      ds.forEach(d => {
+        this._select(d.path, (doc) => {
+          var data = {
+            name: doc.name,
+            terms: doc.terms.filter(t => t != tagName),
+          }
+          this._update(doc.path, data, () => { })
+        })
+      })
+      delete storage[tagName];
+    })
+  }
+
+  _removeDoc(filePath) {
     this._select(filePath, (doc) => {
       if (doc) {
         doc.terms.forEach(e => {
           var array = storage[e].filter(d => d.path != filePath);
           storage[e] = array;
         })
-        this._remove(filePath)
+        db.remove({ path: filePath }, {}, (err, numRemoved) => { });
       }
     });
 
-  }
-
-  _remove(path) {
-    db.remove({ path: path }, {}, (err, numRemoved) => { });
   }
 
   setUp(callback) {
@@ -223,6 +230,59 @@ class TagFinder {
     var filePath = dirPath + "/" + "master.tsv"
     this._selectAll((docs) => {
       writeStream(filePath, docs, completion)
+    })
+  }
+
+  organize(completion) {
+    const queue = require('queue');
+    const q = queue();
+    q.autostart = true;
+    var taskCount = 0;
+    var finishedCount = 0;
+
+    var self = this;
+    var keyStorage = {};
+
+    self.setUp(() => {
+      var ds = getAllTags();
+      ds.forEach(d => {
+        var key = strip(d.name)
+        if (!keyStorage[key]) keyStorage[key] = [];
+        keyStorage[key].push(d)
+      })
+
+      var keys = Object.keys(keyStorage).filter(key => {
+        return keyStorage[key].length > 1;
+      });
+
+      keys.forEach(function (key) {
+        var first = undefined;
+        keyStorage[key].forEach(d => {
+          if (first) {
+            self.search(d.path, ds => {
+              ds.forEach(_d => {
+                self._select(_d.path, doc => {
+                  q.push(() => {
+                    taskCount += 1;
+                    var data = {
+                      name: doc.name,
+                      terms: doc.terms.filter(t => t != d.name).concat([first]),
+                    }
+                    self._update(doc.path, data, () => {
+                      finishedCount += 1;
+                      if (finishedCount >= taskCount) {
+                        completion();
+                      }
+                    })
+                  })
+                })
+              })
+            })
+          }
+
+          if (!first) first = d.name;
+        })
+      });
     })
   }
 
