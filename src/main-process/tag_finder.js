@@ -3,6 +3,7 @@
 const Database = require('nedb');
 const define = require('../define');
 const D = require('../d');
+const fileUtils = require('../file_utils')
 
 const databasePath = define.rootPath + "/.Jukeboks/tags.json";
 let db = new Database({ filename: databasePath, autoload: true });
@@ -33,13 +34,12 @@ function strip(str) {
 
 function sort(ds) {
   return ds.sort((a, b) => {
-    if (a.name.toLowerCase() > b.name.toLowerCase()) {
-      return 1;
-    } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
-      return -1;
-    } else {
-      return a.path > b.path ? 1 : -1;
+    var result = fileUtils.sortAlgorithm(a.name, b.name);
+    if (result != 0) {
+      return result;
     }
+
+    return fileUtils.sortAlgorithm(a.path, b.path);
   })
 }
 

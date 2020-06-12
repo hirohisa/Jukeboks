@@ -23,8 +23,8 @@ module.exports.showInFinder = function (path) {
   spawn('open', ["-R", path]);
 }
 
-function convert(dirPath, dirents) {
-  return dirents.map((e) => {
+function convert(dirPath, dirs) {
+  return dirs.map((e) => {
     let ePath = path.normalize(dirPath + '/' + e.name)
     return new D(e.name, ePath, e.isDirectory())
   })
@@ -34,7 +34,7 @@ module.exports.findFiles = function (dirPath, callback) {
   const fs = require('fs')
   fs.readdir(dirPath, { withFileTypes: true }, function (error, dirs) {
     if (error) dirs = []
-    callback(convert(dirPath, organizer.sort(dirs)))
+    callback(convert(dirPath, organizer.sortDirs(dirs)))
   })
 }
 
