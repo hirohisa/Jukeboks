@@ -70,7 +70,7 @@ var sortAlgorithm = function (a, b) {
     return aIsNumber ? -1 : 1
   }
 
-  return aStructure.length < bStructure.length ? -1 : 0
+  return aStructure.length < bStructure.length ? -1 : 1
 }
 
 module.exports.sortAlgorithm = sortAlgorithm
@@ -83,6 +83,10 @@ class O {
 
 }
 
+var sortAlgorithmForDir = function (a, b) {
+  return sortAlgorithm(a.dir.name, b.dir.name)
+}
+
 module.exports.sortDirs = function (dirs) {
   var objects = []
   for (var i in dirs) {
@@ -92,7 +96,7 @@ module.exports.sortDirs = function (dirs) {
     objects.push(new O(dir))
   }
 
-  return objects.sort(sortAlgorithm).map((e, i, a) => {
+  return objects.sort(sortAlgorithmForDir).map((e, i, a) => {
     return e.dir
   })
 }
