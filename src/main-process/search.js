@@ -2,7 +2,7 @@
 
 const fileFinder = require('./file_finder.js');
 const bookmarker = require('./bookmarker.js');
-const virtualFinder = require('./virtual_finder.js');
+const tagFinder = require('./tag_finder.js');
 const path = require('path');
 
 function searchFiles(sender, data, identifer) {
@@ -16,8 +16,8 @@ function searchFiles(sender, data, identifer) {
   })
 }
 
-function searchVirtualFiles(sender, data, identifer) {
-  virtualFinder.search(data.d.path, (ds) => {
+function searchTagFiles(sender, data, identifer) {
+  tagFinder.search(data.d.path, (ds) => {
     var result = {
       path: data.path,
       ds: ds,
@@ -45,8 +45,8 @@ function search(sender, data, identifer) {
     case define.bookmarksPath.substring(1):
       searchBookmarks(sender, identifer);
       break;
-    case define.virtualPath.substring(1):
-      searchVirtualFiles(sender, data, identifer);
+    case define.tagPath.substring(1):
+      searchTagFiles(sender, data, identifer);
       break;
     default:
       searchFiles(sender, data, identifer);
