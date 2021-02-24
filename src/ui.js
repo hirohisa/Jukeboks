@@ -6,11 +6,8 @@ const directoryTree = document.getElementById('directory-tree');
 module.exports.directoryTree = directoryTree;
 module.exports.sideBar = document.getElementById('sidebar');
 
-const dirPath = document.getElementById('directory-current');
-module.exports.dirPath = dirPath;
-
-const bookmarkDirectoryIcon = document.getElementById('bookmark-directory');
-module.exports.bookmarkDirectoryIcon = bookmarkDirectoryIcon;
+// const bookmarkDirectoryIcon = document.getElementById('bookmark-directory');
+// module.exports.bookmarkDirectoryIcon = bookmarkDirectoryIcon;
 
 const directoryCurrentDiv = document.getElementById('directory-current-name');
 module.exports.directoryCurrentDiv = directoryCurrentDiv;

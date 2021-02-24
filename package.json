@@ -12,16 +12,15 @@
   "author": "hirohisa",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^8.1.1",
-    "electron-builder": "^22.4.1",
-    "electron-packager": "^14.2.1",
-    "jasmine": "3.3.1"
+    "electron": "^11.2.3",
+    "electron-builder": "^22.9.1",
+    "electron-packager": "^15.2.0",
+    "jasmine": "3.6.4"
   },
   "dependencies": {
-    "minimist": "^1.2.3",
     "nedb": "^1.8.0",
-    "queue": "^6.0.1",
-    "underscore": "^1.9.2",
-    "xel": "^0.0.219"
+    "queue": "^6.0.2",
+    "underscore": "^1.12.0",
+    "xel": "^0.0.230"
   }
 }

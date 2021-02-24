@@ -5,61 +5,70 @@
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
   <title>Jukeboks</title>
-
   <link rel="stylesheet" href="./module/photon-0.1.2/css/photon.min.css">
-  <link rel="stylesheet" href="./css/main.css" />
-
   <link rel="stylesheet" href="./../node_modules/xel/themes/macos.css">
   <script src="./../node_modules/xel/xel.min.js"></script>
+  <link rel="stylesheet" href="./css/main.css" />
+
 </head>
 
 <body>
   <div class="window">
-    <header class="toolbar toolbar-header">
-      <div class="toolbar-actions">
-        <button class="btn btn-default" id="move-parent-directory">
-          <x-icon name="navigate-before"></x-icon>
-        </button>
-        <button class="btn btn-default">
-          <x-icon name="bookmark-border" id="bookmark-directory"></x-icon>
-        </button>
-
-        <div class="btn-group">
-          <button class="btn btn-default" id="move-home-directory">
-            <x-icon name="home"></x-icon>
-          </button>
-          <button class="btn btn-default" id="show-bookmarks">
-            <x-icon name="book"></x-icon>
-          </button>
-          <button class="btn btn-default" id="show-tag-directory">
-            <x-icon name="collections"></x-icon>
-          </button>
-        </div>
-        <button class="btn btn-default">
-          <x-icon name="crop-original" id="change-layout-icon"></x-icon>
-        </button>
-
-        <div class="pull-right">
-          <x-input class="btn btn-default nav-group-input" id="search-form-input">
-            <x-icon name="search"></x-icon>
-            <x-label>Search</x-label>
-          </x-input>
-        </div>
-
-      </div>
-    </header>
-    <div class="window-content">
+    <content class="window-content">
       <!-- .navigation -->
-      <div class="pane-sm sidebar" id="sidebar">
-        <nav class="nav-group">
-          <h5 class="nav-group-title">Directory</h5>
-          <span class="nav-group-item nav-group-item-disactive" id="directory-current">
+      <div class="side">
+        <div class="explorer" id="sidebar">
+          <nav class="menu">
+            <div class="shortcut">
+              <ul>
+                <li>
+                  <a id="move-home-directory">
+                    <span class="btn icon icon-home"></span>
+                  </a>
+                </li>
+                <li>
+                  <a id="show-bookmarks">
+                    <span class="btn icon icon-star"></span>
+                  </a>
+                </li>
+                <li>
+                  <a id="show-tag-directory">
+                    <span class="btn icon icon-tag"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="control">
+              <ul>
+                <li>
+                  <a id="show-tag-directory">
+                    <x-icon class="btn" name="crop-original" id="change-layout"></x-icon>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
 
-            <div id="directory-current-name"></div>
-          </span>
-          <h5 class="nav-group-title">Files</h5>
-          <nav id="directory-tree"></nav>
-        </nav>
+          <nav class="explorer-main">
+            <div class="navigation-back" id="navigation-pop">
+              <span class="btn icon icon-left-open-big"></span>
+            </div>
+            <div class="dir-name primary" id="directory-current-name">dir name</div>
+            <div id="directory-tree"></div>
+          </nav>
+        </div>
+        <div class="content-menu">
+          <ul>
+            <li>
+              <div class="search-form">
+                <x-input id="search-form-input">
+                  <x-icon name="search"></x-icon>
+                  <x-label>Search</x-label>
+                </x-input>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <!-- .main-content -->
@@ -73,7 +82,8 @@
           </x-slider>
         </div>
       </div>
-    </div>
+    </content>
+    <footer class="footer"></footer>
   </div>
 </body>
 <script type="text/javascript" src="./renderer-process/renderer_main.js"></script>
