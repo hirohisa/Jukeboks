@@ -182,11 +182,7 @@ class FileCursor {
     scrollToRelative(current, next)
   }
 
-  up() {
-    navigator.pop()
-  }
-
-  down() {
+  move() {
     var current = ui.getCurrent()
     if (current) {
       clickFileLink(current.getAttribute('href'))
@@ -223,10 +219,10 @@ ipc.on('keydown', (event, data) => {
       fileCursor.next()
       break;
     case "ArrowLeft":
-      fileCursor.up()
+      navigator.pop();
       break;
     case "ArrowRight":
-      fileCursor.down()
+      fileCursor.move()
       break;
     default:
   }
@@ -235,11 +231,11 @@ ipc.on('keydown', (event, data) => {
 ipc.on('click', (event, data) => {
   const def = require('../define');
   switch (data.id) {
-    case "move-parent-directory":
-      fileCursor.up()
+    case "navigation-pop":
+      navigator.pop();
       break;
     case "move-home-directory":
-      navigator.clear()
+      navigator.clear();
       break;
     case "show-bookmarks":
       navigator.push(new D(path.basename(def.bookmarksPath), def.bookmarksPath));
@@ -264,22 +260,21 @@ ipc.on('removePath', function (event, data) {
 })
 
 ipc.on('didMoveDirectory', (event, data) => {
-  ui.bookmarkDirectoryIcon.name = data.isBookmarked ? 'bookmark' : 'bookmark-border';
   ui.directoryCurrentDiv.innerHTML = data.d.name ?? path.basename(data.d.path);
 })
 
-ipc.on('updateDirectoryData', (event, data) => {
-  if (ui.dirPath.getAttribute('href') != data.path) { return; }
-  switch (data.id) {
-    case "bookmarkPath":
-      ui.bookmarkDirectoryIcon.name = "bookmark";
-      break;
-    case "unbookmarkPath":
-      ui.bookmarkDirectoryIcon.name = "bookmark-border";
-      break;
-    default:
-  }
-});
+// ipc.on('updateDirectoryData', (event, data) => {
+//   if (ui.dirPath.getAttribute('href') != data.path) { return; }
+//   switch (data.id) {
+//     case "bookmarkPath":
+//       ui.bookmarkDirectoryIcon.name = "bookmark";
+//       break;
+//     case "unbookmarkPath":
+//       ui.bookmarkDirectoryIcon.name = "bookmark-border";
+//       break;
+//     default:
+//   }
+// });
 
 ipc.on('endedVideo', (event, data) => {
   fileCursor.next()

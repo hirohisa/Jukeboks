@@ -2,6 +2,7 @@
 
 const ui = require('../ui')
 const ipc = require('electron').ipcRenderer;
+const navigator = require('./navigator');
 
 function getFilePath() {
   if (ui.getCurrent() != undefined) {
@@ -49,7 +50,7 @@ document.addEventListener("keydown", (event) => {
   handleCommand(event.code, "down");
   var data = {
     code: event.code,
-    path: ui.dirPath.getAttribute('href'),
+    // path: ui.dirPath.getAttribute('href'),
     filePath: getFilePath()
   };
 

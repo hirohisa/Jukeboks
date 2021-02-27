@@ -94,7 +94,7 @@ ipc.on('selectFile', function (event, data) {
   element.scrollIntoView(true);
 })
 
-const layoutIcon = document.getElementById('change-layout-icon');
+const layoutIcon = document.getElementById('change-layout');
 ipc.on('changeLayout', function (event, data) {
   const navigator = require('./navigator')
   var data = {
