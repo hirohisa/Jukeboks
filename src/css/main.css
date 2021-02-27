@@ -60,18 +60,28 @@ body {
 }
 
 .explorer-main {
-  overflow: scroll;
-}
-
-.explorer-main {
   width: 220px;
   height: 100%;
   display: inline-block;
+  border-right: 1px solid var(--divider-color);
 }
 
-.explorer-main .navigation-back{
+.explorer-main .directory-title {
+  width: 100%;
+  position: sticky;
+}
+
+.explorer-main .directory-title .navigation-back {
   margin: 10px 0 10px 5px;
 }
+
+.explorer-main .directory-contents {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: calc(100% - 100px);
+  margin: 10px 0 10px 5px;
+}
+
 
 #directory-current-page {
   background-color: var(--selected-background);
@@ -146,7 +156,8 @@ nav.menu {
 
 div.dir-name {
   font-size: 16px;
-  margin: 10px 0 10px 5px;
+  margin: 10px 5px 10px 5px;
+  word-wrap: break-word;
   border-bottom: 1px solid var(--divider-color);
 }
 

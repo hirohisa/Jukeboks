@@ -17,7 +17,7 @@
     <content class="window-content">
       <!-- .navigation -->
       <div class="side">
-        <div class="explorer" id="sidebar">
+        <div class="explorer">
           <nav class="menu">
             <div class="shortcut">
               <ul>
@@ -50,11 +50,15 @@
           </nav>
 
           <nav class="explorer-main">
-            <div class="navigation-back" id="navigation-pop">
-              <span class="btn icon icon-left-open-big"></span>
+            <div class="directory-title">
+              <div class="navigation-back" id="navigation-pop">
+                <span class="btn icon icon-left-open-big"></span>
+              </div>
+              <div class="dir-name primary" id="directory-current-name">dir name</div>
             </div>
-            <div class="dir-name primary" id="directory-current-name">dir name</div>
-            <div id="directory-tree"></div>
+            <div class="directory-contents" id="directory-tree">
+              tree
+            </div>
           </nav>
         </div>
         <div class="content-menu">

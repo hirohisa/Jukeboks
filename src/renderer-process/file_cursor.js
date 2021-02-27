@@ -16,7 +16,7 @@ function scrollTo(element) {
 function scrollToRelative(from, to) {
   var fromTop = from.getBoundingClientRect().top
   var toTop = to.getBoundingClientRect().top
-  ui.sideBar.scrollTop += toTop - fromTop
+  ui.directoryTree.scrollTop += toTop - fromTop
 }
 
 function clear() {

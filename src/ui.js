@@ -4,7 +4,6 @@
 
 const directoryTree = document.getElementById('directory-tree');
 module.exports.directoryTree = directoryTree;
-module.exports.sideBar = document.getElementById('sidebar');
 
 // const bookmarkDirectoryIcon = document.getElementById('bookmark-directory');
 // module.exports.bookmarkDirectoryIcon = bookmarkDirectoryIcon;
