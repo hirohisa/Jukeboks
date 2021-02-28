@@ -18,7 +18,7 @@ module.exports.isDirectory = function (filePath) {
   }
 }
 
-module.exports.showInFinder = function (path) {
+module.exports.revealInFinder = function (path) {
   const { spawn } = require('child_process');
   spawn('open', ["-R", path]);
 }

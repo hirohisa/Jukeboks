@@ -243,6 +243,10 @@ ipc.on('click', (event, data) => {
     case "show-tag-directory":
       navigator.push(new D(path.basename(def.tagPath), def.tagPath));
       break;
+    case "open-directory":
+      var current = navigator.getCurrent();
+      sy.revealInFinder(current.path);
+      break;
     default:
   }
 })

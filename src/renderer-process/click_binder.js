@@ -12,8 +12,7 @@ function handleClick(id) {
   })
 }
 
-// 'move-parent-directory',
-const clickedIdList = ['navigation-pop', 'move-home-directory', 'show-tag-directory', 'show-bookmarks'];
+const clickedIdList = ['navigation-pop', 'move-home-directory', 'show-tag-directory', 'show-bookmarks', 'open-directory'];
 clickedIdList.forEach(function (e) {
   handleClick(e);
 })
