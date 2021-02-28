@@ -7,6 +7,9 @@ const navigator = require('./navigator')
 const path = require('path')
 const _ = require('underscore');
 const ipc = require('electron').ipcRenderer;
+const queue = require('queue');
+var q = queue();
+q.autostart = true;
 
 function scrollTo(element) {
   if (!element) { return; }
@@ -48,7 +51,7 @@ function clickFileLink(filePath) {
 function filter(term) {
   clear()
   var referer = ui.getCurrent() ? ui.getCurrent().getAttribute('href') : undefined;
-  render(dirStorage.ds, referer, term, ui.searchInputForm)
+  render(dirStorage.ds, referer, term)
 }
 
 function reload(data) {
@@ -58,7 +61,7 @@ function reload(data) {
   // TODO: get current directory and validate with data.path
 
   dirStorage.store(data.ds)
-  render(data.ds, data.referer, undefined, undefined)
+  render(data.ds, data.referer, undefined)
 }
 
 function getElementBy(d) {
@@ -90,10 +93,7 @@ function selectCurrent(referer) {
 
 }
 
-function render(ds, referer, term, focusTarget) {
-  const queue = require('queue');
-  var q = queue();
-  q.autostart = true;
+function render(ds, referer, term) {
   if (term) {
     term = term.toLowerCase();
   }

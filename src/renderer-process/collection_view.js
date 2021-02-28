@@ -37,15 +37,9 @@ function createText(text) {
 }
 
 function render(ds) {
-  // var myLazyLoad = new LazyLoad({
-  //   elements_selector: ".lazy"
-  // });
-
   ds.forEach(function (d) {
     renderToCollection(d);
   });
-
-  // myLazyLoad.update();
 }
 
 function renderToCollection(d) {
@@ -60,7 +54,7 @@ function renderToCollection(d) {
           if (ds[0].isDirectory) { return }
 
           var img = document.createElement("img");
-          img.className = 'grid-item-content lazy';
+          img.className = 'grid-item-content';
           img.src = "file://" + ds[0].path;
           element.appendChild(img);
         });
@@ -69,7 +63,7 @@ function renderToCollection(d) {
     q.push(
       () => {
         var img = document.createElement("img");
-        img.className = 'grid-item-content lazy';
+        img.className = 'grid-item-content';
         img.src = "file://" + d.path;
         element.appendChild(img);
       });
