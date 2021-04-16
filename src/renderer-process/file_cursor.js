@@ -7,6 +7,9 @@ const navigator = require('./navigator')
 const path = require('path')
 const _ = require('underscore');
 const ipc = require('electron').ipcRenderer;
+const queue = require('queue');
+var q = queue();
+q.autostart = true;
 
 function scrollTo(element) {
   if (!element) { return; }
@@ -16,7 +19,7 @@ function scrollTo(element) {
 function scrollToRelative(from, to) {
   var fromTop = from.getBoundingClientRect().top
   var toTop = to.getBoundingClientRect().top
-  ui.sideBar.scrollTop += toTop - fromTop
+  ui.directoryTree.scrollTop += toTop - fromTop
 }
 
 function clear() {
@@ -48,7 +51,7 @@ function clickFileLink(filePath) {
 function filter(term) {
   clear()
   var referer = ui.getCurrent() ? ui.getCurrent().getAttribute('href') : undefined;
-  render(dirStorage.ds, referer, term, ui.searchInputForm)
+  render(dirStorage.ds, referer, term)
 }
 
 function reload(data) {
@@ -58,7 +61,7 @@ function reload(data) {
   // TODO: get current directory and validate with data.path
 
   dirStorage.store(data.ds)
-  render(data.ds, data.referer, undefined, undefined)
+  render(data.ds, data.referer, undefined)
 }
 
 function getElementBy(d) {
@@ -90,10 +93,7 @@ function selectCurrent(referer) {
 
 }
 
-function render(ds, referer, term, focusTarget) {
-  const queue = require('queue');
-  var q = queue();
-  q.autostart = true;
+function render(ds, referer, term) {
   if (term) {
     term = term.toLowerCase();
   }
@@ -182,11 +182,7 @@ class FileCursor {
     scrollToRelative(current, next)
   }
 
-  up() {
-    navigator.pop()
-  }
-
-  down() {
+  move() {
     var current = ui.getCurrent()
     if (current) {
       clickFileLink(current.getAttribute('href'))
@@ -223,10 +219,10 @@ ipc.on('keydown', (event, data) => {
       fileCursor.next()
       break;
     case "ArrowLeft":
-      fileCursor.up()
+      navigator.pop();
       break;
     case "ArrowRight":
-      fileCursor.down()
+      fileCursor.move()
       break;
     default:
   }
@@ -235,17 +231,21 @@ ipc.on('keydown', (event, data) => {
 ipc.on('click', (event, data) => {
   const def = require('../define');
   switch (data.id) {
-    case "move-parent-directory":
-      fileCursor.up()
+    case "navigation-pop":
+      navigator.pop();
       break;
     case "move-home-directory":
-      navigator.clear()
+      navigator.clear();
       break;
     case "show-bookmarks":
       navigator.push(new D(path.basename(def.bookmarksPath), def.bookmarksPath));
       break;
     case "show-tag-directory":
       navigator.push(new D(path.basename(def.tagPath), def.tagPath));
+      break;
+    case "open-directory":
+      var current = navigator.getCurrent();
+      sy.revealInFinder(current.path);
       break;
     default:
   }
@@ -264,22 +264,21 @@ ipc.on('removePath', function (event, data) {
 })
 
 ipc.on('didMoveDirectory', (event, data) => {
-  ui.bookmarkDirectoryIcon.name = data.isBookmarked ? 'bookmark' : 'bookmark-border';
   ui.directoryCurrentDiv.innerHTML = data.d.name ?? path.basename(data.d.path);
 })
 
-ipc.on('updateDirectoryData', (event, data) => {
-  if (ui.dirPath.getAttribute('href') != data.path) { return; }
-  switch (data.id) {
-    case "bookmarkPath":
-      ui.bookmarkDirectoryIcon.name = "bookmark";
-      break;
-    case "unbookmarkPath":
-      ui.bookmarkDirectoryIcon.name = "bookmark-border";
-      break;
-    default:
-  }
-});
+// ipc.on('updateDirectoryData', (event, data) => {
+//   if (ui.dirPath.getAttribute('href') != data.path) { return; }
+//   switch (data.id) {
+//     case "bookmarkPath":
+//       ui.bookmarkDirectoryIcon.name = "bookmark";
+//       break;
+//     case "unbookmarkPath":
+//       ui.bookmarkDirectoryIcon.name = "bookmark-border";
+//       break;
+//     default:
+//   }
+// });
 
 ipc.on('endedVideo', (event, data) => {
   fileCursor.next()

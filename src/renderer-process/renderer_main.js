@@ -6,7 +6,7 @@ require('./renderer-process/file_cursor.js')
 require('./renderer-process/content_view.js')
 require('./renderer-process/collection_view.js')
 require('./renderer-process/notification.js')
-require('./renderer-process/menu.js')
+// require('./renderer-process/menu.js')
 
 const def = require('./define');
 const path = require('path');

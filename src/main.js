@@ -6,8 +6,8 @@ let win
 function createWindow() {
   const BrowserWindow = electron.BrowserWindow
   win = new BrowserWindow({
-    width: 1080,
-    height: 800,
+    width: 1500,
+    height: 1280,
     webPreferences: { nodeIntegration: true },
     'accept-first-mouse': true,
     'title-bar-style': 'hidden'
