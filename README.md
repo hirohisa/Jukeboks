@@ -13,7 +13,7 @@ In Jukeboks, you can preview images and movies while selecting files.
 - [x] Automatically play movies with siblings
 - [x] Support Multiple buffering
 - [ ] Enable to create shortcuts
-- [x] Filename Sorting Rules like macOS
+- [x] File Sort Numerically
 
 ## Application's screen
 

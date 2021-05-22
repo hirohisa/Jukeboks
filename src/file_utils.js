@@ -11,20 +11,20 @@ function isNumber(x) {
 function structure(string) {
   var structure = []
 
-  var now = ""
-  var isNowIsNumber = isNumber(string[0])
+  var s = ""
+  var isSIsNumber = isNumber(string[0])
   for (var i in string) {
-    var char = string[i]
-    var isCharIsNumber = isNumber(char)
-    if (isNowIsNumber == isCharIsNumber) {
-      now += char
+    var c = string[i]
+    var isCIsNumber = isNumber(c)
+    if (isSIsNumber == isCIsNumber) {
+      s += c
     } else {
-      structure.push(now)
-      now = char
-      isNowIsNumber = isCharIsNumber
+      structure.push(s)
+      s = c
+      isSIsNumber = isCIsNumber
     }
   }
-  structure.push(now)
+  structure.push(s)
   return structure
 }
 
@@ -33,15 +33,11 @@ module.exports.structure = structure
 var toComparedString = function (str) {
   if (str == undefined) return str
 
-  str = str.replace(/[A-Za-z]/g, function (s) {
-    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-  })
-
   return str.toLowerCase()
 }
 
 
-var sortAlgorithm = function (a, b) {
+var sortNumerically = function (a, b) {
   var aStructure = structure(a)
   var bStructure = structure(b)
   for (var i in aStructure) {
@@ -65,7 +61,7 @@ var sortAlgorithm = function (a, b) {
       return nA < nB ? -1 : 1
     }
     if (!aIsNumber && !bIsNumber) {
-      return _a < _b ? -1 : 1
+      return _a.localeCompare(_b)
     }
     return aIsNumber ? -1 : 1
   }
@@ -73,7 +69,7 @@ var sortAlgorithm = function (a, b) {
   return aStructure.length < bStructure.length ? -1 : 1
 }
 
-module.exports.sortAlgorithm = sortAlgorithm
+module.exports.sortNumerically = sortNumerically
 
 class O {
 
@@ -83,8 +79,8 @@ class O {
 
 }
 
-var sortAlgorithmForDir = function (a, b) {
-  return sortAlgorithm(a.dir.name, b.dir.name)
+var sortNumericallyForDir = function (a, b) {
+  return sortNumerically(a.dir.name, b.dir.name)
 }
 
 module.exports.sortDirs = function (dirs) {
@@ -96,7 +92,7 @@ module.exports.sortDirs = function (dirs) {
     objects.push(new O(dir))
   }
 
-  return objects.sort(sortAlgorithmForDir).map((e, i, a) => {
+  return objects.sort(sortNumericallyForDir).map((e, i, a) => {
     return e.dir
   })
 }
