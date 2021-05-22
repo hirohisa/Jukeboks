@@ -34,12 +34,12 @@ function strip(str) {
 
 function sort(ds) {
   return ds.sort((a, b) => {
-    var result = fileUtils.sortAlgorithm(a.name, b.name);
+    var result = fileUtils.sortNumerically(a.name, b.name);
     if (result != 0) {
       return result;
     }
 
-    return fileUtils.sortAlgorithm(a.path, b.path);
+    return fileUtils.sortNumerically(a.path, b.path);
   })
 }
 

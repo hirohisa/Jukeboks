@@ -11,7 +11,7 @@ describe("FileOrganizer", () => {
         "1", "2", "3", "4", "5", "13", "21",
       ]
 
-      expect(dirs.sort(organizer.sortAlgorithm)).toEqual(expected)
+      expect(dirs.sort(organizer.sortNumerically)).toEqual(expected)
     })
 
     it("should be possible to sort random numbers", () => {
@@ -23,7 +23,7 @@ describe("FileOrganizer", () => {
         "1", "2", "3", "4", "5", "13", "21",
       ]
 
-      expect(dirs.sort(organizer.sortAlgorithm)).toEqual(expected)
+      expect(dirs.sort(organizer.sortNumerically)).toEqual(expected)
     })
 
     it("should be possible to sort complex numbers", () => {
@@ -35,7 +35,7 @@ describe("FileOrganizer", () => {
         "001", "002", "013", "014", "015", "103", "113", "123",
       ]
 
-      expect(dirs.sort(organizer.sortAlgorithm)).toEqual(expected)
+      expect(dirs.sort(organizer.sortNumerically)).toEqual(expected)
     })
 
     it("should be possible to sort mixed string ", () => {
@@ -47,7 +47,7 @@ describe("FileOrganizer", () => {
         "1_s_01", "2_s_02", "3_s_03", "10_s_10", "11_s_11", "a_01", "a_11", "s_01", "s_02", "s_03", "t_01",
       ]
 
-      expect(dirs.sort(organizer.sortAlgorithm)).toEqual(expected)
+      expect(dirs.sort(organizer.sortNumerically)).toEqual(expected)
     })
 
     it("should be possible to sort mixed string that has prefix is not number", () => {
@@ -59,7 +59,7 @@ describe("FileOrganizer", () => {
         "西暦2019年11月21日", "西暦2019年12月2日", "西暦2019年12月21日", "西暦2020年1月01日", "西暦2020年1月2日", "西暦2020年1月2日", "西暦2020年1月05日", "西暦2020年1月21日",
       ]
 
-      expect(dirs.sort(organizer.sortAlgorithm)).toEqual(expected)
+      expect(dirs.sort(organizer.sortNumerically)).toEqual(expected)
     })
 
   })
