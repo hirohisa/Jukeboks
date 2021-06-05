@@ -243,6 +243,9 @@ ipc.on('click', (event, data) => {
     case "show-tag-directory":
       navigator.push(new D(path.basename(def.tagPath), def.tagPath));
       break;
+    case "show-tag-drive":
+      navigator.push(new D(path.basename(def.volumesPath), def.volumesPath));
+      break;
     case "open-directory":
       var current = navigator.getCurrent();
       sy.revealInFinder(current.path);
