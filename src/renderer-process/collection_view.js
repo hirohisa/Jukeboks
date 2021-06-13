@@ -42,6 +42,14 @@ function render(ds) {
   });
 }
 
+function createImg(path) {
+  var img = document.createElement("img");
+  img.className = 'grid-item-content';
+  img.loading = "lazy"
+  img.src = "file://" + path;
+  return img;
+}
+
 function renderToCollection(d) {
   var element = createItem(d);
   mainCollection.appendChild(element);
@@ -53,19 +61,13 @@ function renderToCollection(d) {
           if (ds.length == 0) { return }
           if (ds[0].isDirectory) { return }
 
-          var img = document.createElement("img");
-          img.className = 'grid-item-content';
-          img.src = "file://" + ds[0].path;
-          element.appendChild(img);
+          element.appendChild(createImg(ds[0].path));
         });
       });
   } else {
     q.push(
       () => {
-        var img = document.createElement("img");
-        img.className = 'grid-item-content';
-        img.src = "file://" + d.path;
-        element.appendChild(img);
+        element.appendChild(createImg(d.path));
       });
   }
 }

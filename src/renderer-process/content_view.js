@@ -48,8 +48,9 @@ function createContent(src) {
       element.autoplay = true
       break
     case MEDIA.IMAGE:
-      element = document.createElement("img")
-      element.src = src
+      element = document.createElement("img");
+      element.src = src;
+      element.loading = "lazy";
       break
     default:
       break
