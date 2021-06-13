@@ -3,9 +3,9 @@
 require('./menu.js');
 require('./search.js');
 const path = require('path');
-const fileFinder = require('./file_finder.js');
-const tagFinder = require('./tag_finder.js');
-const bookmarker = require('./bookmarker.js');
+const fileFinder = require('../repository/file_finder.js');
+const tagFinder = require('../repository/tag_finder.js');
+const bookmarker = require('../repository/bookmarker.js');
 
 const ipc = require('electron').ipcMain;
 
