@@ -3,7 +3,6 @@
 const fileFinder = require('./file_finder.js');
 const bookmarker = require('./bookmarker.js');
 const tagFinder = require('./tag_finder.js');
-const path = require('path');
 
 function searchFiles(sender, data, identifer) {
   fileFinder.search(data.d.path, (ds) => {
@@ -53,14 +52,16 @@ function search(sender, data, identifer) {
   }
 }
 
-const ipc = require('electron').ipcMain;
-ipc.on('movePath', function (event, data) {
+function movePath(event, data) {
   bookmarker.has(data.d.path, (isBookmarked) => {
     data.isBookmarked = isBookmarked;
     event.sender.send('didMoveDirectory', data);
     search(event.sender, data, 'searchFiles');
   });
-})
+}
+
+const ipc = require('electron').ipcMain;
+ipc.on('movePath', movePath);
 ipc.on('requestFiles', function (event, data) {
   search(event.sender, data, 'responseFiles');
 })

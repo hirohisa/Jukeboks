@@ -1,16 +1,15 @@
 'use strict';
 
 const ipc = require('electron').ipcRenderer
-const path = require('path')
 
 var stack = [];
 
 class Navigator {
 
   clear() {
-    var root = stack[0]
-    stack = [root]
-    this.move(root)
+    var r = stack[0]
+    stack = [r]
+    this.move(r)
   }
 
   move(d, referer = undefined) {

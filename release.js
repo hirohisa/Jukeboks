@@ -2,8 +2,6 @@
 
 const builder = require('electron-builder');
 const Platform = builder.Platform;
-// const fs = require('fs');
-// const packagejson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 
 builder.build({
     targets: Platform.MAC.createTarget(),
@@ -14,5 +12,7 @@ builder.build({
         'mac': {
             'target': 'zip',
         },
+        extraFiles: ["app/bin/jukeboks"],
+        files: ["src/**/*"]
     },
 });

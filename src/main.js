@@ -1,4 +1,4 @@
-const electron = require('electron')
+const electron = require('electron');
 const app = electron.app
 
 let win
@@ -8,22 +8,31 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1500,
     height: 1280,
-    webPreferences: { nodeIntegration: true },
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      nodeIntegrationInSubFrames: true,
+      contextIsolation: false,
+      javascript: true,
+    },
     'accept-first-mouse': true,
     'title-bar-style': 'hidden'
   })
 
-  const path = require('path')
-  const url = require('url')
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-
+  const path = require('path');
+  win.hide();
+  win.loadURL(`file://${path.join(__dirname, 'index.html')}`);
   if (process.env.NODE_ENV == 'development') {
     win.webContents.openDevTools();
   }
+  win.webContents.on('did-finish-load', () => {
+    var data = {
+      argv: process.argv,
+      cwd: process.cwd()
+    }
+    win.webContents.send('jukeboks-open', data);
+    win.show();
+  });
 
   win.on('closed', () => {
     win = null

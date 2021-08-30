@@ -10,13 +10,27 @@ require('./renderer-process/notification.js')
 
 const def = require('./define');
 const path = require('path');
-const D = require('./d');
 
 // document onload
 const navigator = require('./renderer-process/navigator')
 
-function load() {
-  var d = new D(path.basename(def.rootPath), def.rootPath)
-  navigator.push(d);
+function open(data) {
+  const sy = require('./system');
+  var dir = def.rootPath;
+  if (data.argv.length > 1) {
+    var a = data.argv[1];
+    if (!path.isAbsolute(a)) {
+      a = path.join(data.cwd, a);
+    }
+    dir = a;
+    if (!sy.isDirectory(dir)) {
+      dir = path.dirname(dir);
+    }
+  }
+  const D = require('./d');
+  navigator.push(new D(path.basename(dir), dir));
 }
-window.onload = load
+var ipcRenderer = require('electron').ipcRenderer;
+ipcRenderer.on('jukeboks-open', function (event, data) {
+  open(data);
+});

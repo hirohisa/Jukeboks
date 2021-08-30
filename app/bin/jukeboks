@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# ln -s /Applications/Jukeboks.app/Contents/app/bin/jukeboks /usr/local/bin/jukeboks
+function realpath() { python -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$0"; }
+CONTENTS="$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")"
+JUKEAPP="$CONTENTS/MacOS/Jukeboks"
+$JUKEAPP "$@" &
+exit $?

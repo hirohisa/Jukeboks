@@ -12,7 +12,7 @@
   "author": "hirohisa",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^11.2.3",
+    "electron": "^13.2.3",
     "electron-builder": "^22.9.1",
     "electron-packager": "^15.2.0",
     "jasmine": "3.6.4"
