@@ -18,7 +18,8 @@ const clickedIdList = [
   'show-tag-directory',
   'show-bookmarks',
   'open-directory',
-  'show-tag-drive'
+  'show-tag-drive',
+  'directory-current-name',
 ];
 clickedIdList.forEach(function (e) {
   handleClick(e);

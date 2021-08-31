@@ -250,6 +250,11 @@ ipc.on('click', (event, data) => {
       var current = navigator.getCurrent();
       sy.revealInFinder(current.path);
       break;
+    case "directory-current-name":
+      var current = navigator.getCurrent();
+      var dir = path.dirname(current.path);
+      navigator.push(new D(path.basename(dir), dir), current);
+      break;
     default:
   }
 })

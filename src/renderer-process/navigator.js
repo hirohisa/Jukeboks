@@ -17,7 +17,6 @@ class Navigator {
       d: d,
       referer: referer
     }
-
     ipc.send('movePath', data)
   }
 
@@ -25,9 +24,9 @@ class Navigator {
     return stack.slice(-1)[0]
   }
 
-  push(d) {
+  push(d, referer = undefined) {
     stack.push(d)
-    this.move(d)
+    this.move(d, referer)
   }
 
   pop() {
