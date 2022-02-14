@@ -31,6 +31,7 @@ function ext(filePath) {
     case ".png":
     case ".gif":
     case ".svn":
+    case ".webp":
       return MEDIA.IMAGE;
       break;
     default:
