@@ -20,7 +20,7 @@ function ext(filePath) {
   if (!filePath) return MEDIA.UNDEFINED;
   if (sy.isDirectory(filePath)) return MEDIA.UNDEFINED;
   const path = require('path');
-  var extname = path.extname(filePath).toLowerCase();
+  const extname = path.extname(filePath).toLowerCase();
   switch (extname) {
     case ".mp3":
     case ".mp4":
@@ -61,17 +61,16 @@ function createContent(src) {
 
 function render(filePath) {
   filePath = filePath.split('/').map(s => encodeURIComponent(s)).join('/')
-  var src = "file://" + filePath
-  var element = createContent(filePath)
+  const element = createContent(filePath)
   if (element && isActive()) {
     element.className = "visible"
     mainContent.appendChild(element)
     if (element.tagName.toLowerCase() == 'video') {
       element.addEventListener("play", function (e) {
-        var timeLabel = document.getElementById("video-time-label");
-        var duration = e.target.duration + 1
-        var minutes = Math.floor(duration / 60)
-        var seconds = ('0' + Math.floor(duration % 60)).slice(-2)
+        const timeLabel = document.getElementById("video-time-label");
+        const duration = e.target.duration + 1
+        const minutes = Math.floor(duration / 60)
+        const seconds = ('0' + Math.floor(duration % 60)).slice(-2)
         timeLabel.innerHTML = minutes + ':' + seconds
       }, true);
       element.addEventListener("ended", function () {
@@ -91,14 +90,6 @@ function displayVideoSlider() {
     clearInterval(videoTimer);
     videoSlider.style.display = "none";
   }
-}
-
-function moveVideoTime(event) {
-  if (!onVideoContent(event)) return;
-
-  var mainContentRect = mainContent.getBoundingClientRect()
-  var ratio = (event.x - mainContentRect.left) / mainContentRect.width;
-  moveCurrentTimeOfVideoWithRatio(ratio)
 }
 
 function moveCurrentTimeOfVideoWithRatio(ratio) {
@@ -134,7 +125,7 @@ function isDisplayingVideo() {
 }
 
 videoSlider.addEventListener("change", (event) => {
-  var ratio = videoSlider.value / 100;
+  const ratio = videoSlider.value / 100;
   moveCurrentTimeOfVideoWithRatio(ratio);
 })
 

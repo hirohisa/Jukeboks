@@ -14,15 +14,6 @@ module.exports.directoryCurrentDiv = directoryCurrentDiv;
 const searchInputForm = document.getElementById('search-form-input')
 module.exports.searchInputForm = searchInputForm
 
-// utils
-
-// https://stackoverflow.com/questions/494143/
-module.exports.createElementFromHTML = function (htmlString) {
-  var div = document.createElement('div');
-  div.innerHTML = htmlString.trim();
-  return div.firstChild;
-}
-
 // get element
 
 module.exports.getCurrent = function () {
