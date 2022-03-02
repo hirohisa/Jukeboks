@@ -29,16 +29,18 @@ function clear() {
 }
 
 function makeLink(d, click) {
-  var klass = d.isDirectory ? "icon-folder" : "icon-picture"
+  const klass = d.isDirectory ? "icon-folder" : "icon-picture";
 
-  var html = `
-  <span class="nav-group-item" id="" href="${d.path}" fileName="${d.name}">
-    <span class="icon ${klass}"></span>${d.name}</span>
-  </span>
-  `;
-
-  var link = ui.createElementFromHTML(html);
+  const link = document.createElement("span");
+  link.className = "nav-group-item";
   link.addEventListener("click", click, false);
+  link.setAttribute("href", d.path);
+  link.setAttribute("fileName", d.name);
+
+  const span = document.createElement("span");
+  span.className = `icon ${klass}`;
+  link.innerHTML = span.outerHTML + d.name;
+
   return link;
 }
 
@@ -147,43 +149,32 @@ class FileCursor {
       current.id = ''
     }
     element.id = 'directory-current-page'
-    var data = {
+    const data = {
       filePath: element.getAttribute('href')
     }
     ipc.send('selectFile', data)
   }
 
-  selectRandom() {
-    var nodes = []
-    ui.directoryTree.childNodes.forEach(function (e) {
-      if (e.id != 'directory-current-page') {
-        nodes.push(e)
-      }
-    })
-
-    this.select(_.sample(nodes))
-  }
-
   previous() {
-    var current = ui.getCurrent()
+    const current = ui.getCurrent()
     if (!current) return
-    var previous = current.previousSibling
+    const previous = current.previousSibling
     if (!previous) return
     this.select(previous)
     scrollToRelative(current, previous)
   }
 
   next() {
-    var current = ui.getCurrent()
+    const current = ui.getCurrent()
     if (!current) return
-    var next = current.nextSibling
+    const next = current.nextSibling
     if (!next) return
     this.select(next)
     scrollToRelative(current, next)
   }
 
   move() {
-    var current = ui.getCurrent()
+    const current = ui.getCurrent()
     if (current) {
       clickFileLink(current.getAttribute('href'))
     }
