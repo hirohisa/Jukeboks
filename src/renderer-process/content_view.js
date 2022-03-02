@@ -26,6 +26,7 @@ function ext(filePath) {
     case ".mp4":
       return MEDIA.VIDEO;
       break
+    case ".webp":
     case ".jpeg":
     case ".jpg":
     case ".png":
